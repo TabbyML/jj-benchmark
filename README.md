@@ -1,6 +1,12 @@
-# Deploy Next.js to GitHub Pages
+# Jujutsu Benchmark
 
-This is a Next.js template which can be deployed to GitHub Pages as a static site.
+This repository contains benchmarks for [Jujutsu (jj)](https://github.com/martinvonz/jj), a next-generation version control system.
+
+## Project Structure
+
+- `tasks/`: Contains the benchmark tasks, each with its own instructions, bootstrap scripts, and tests.
+- `jobs/`: Stores the results of benchmark runs.
+- `site/`: A Next.js application to visualize benchmark results.
 
 ## Deploying to GitHub Pages
 
