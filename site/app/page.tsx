@@ -1,6 +1,7 @@
 import { Github, ChevronDown, Trophy, Search, Filter, ArrowUpRight, Terminal } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import resultData from "./result-data";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -12,20 +13,8 @@ interface LeaderboardEntry {
   agent: string;
   totalEvals: number;
   successRate: number;
-  successRateWithDocs: number;
   isNew?: boolean;
 }
-
-const data: LeaderboardEntry[] = [
-  { id: "1", model: "GPT 5.3 Codex (xhigh)", agent: "Codex", totalEvals: 20, successRate: 90, successRateWithDocs: 100, isNew: true },
-  { id: "2", model: "Claude Opus 4.6", agent: "Claude Code", totalEvals: 20, successRate: 75, successRateWithDocs: 100 },
-  { id: "3", model: "Gemini 3.0 Pro Preview", agent: "OpenCode", totalEvals: 20, successRate: 75, successRateWithDocs: 90 },
-  { id: "4", model: "Claude Sonnet 4.6", agent: "Claude Code", totalEvals: 20, successRate: 70, successRateWithDocs: 100 },
-  { id: "5", model: "Gemini 3.0 Pro Preview", agent: "Gemini CLI", totalEvals: 20, successRate: 70, successRateWithDocs: 90 },
-  { id: "6", model: "Cursor Composer 1.5", agent: "Cursor", totalEvals: 20, successRate: 65, successRateWithDocs: 95 },
-  { id: "7", model: "Claude Sonnet 4.5", agent: "Claude Code", totalEvals: 20, successRate: 60, successRateWithDocs: 85 },
-  { id: "8", model: "GPT 5.2 Codex (xhigh)", agent: "Codex", totalEvals: 20, successRate: 55, successRateWithDocs: 85 },
-];
 
 function ProgressBar({ value, colorClass }: { value: number; colorClass: string }) {
   return (
@@ -38,7 +27,7 @@ function ProgressBar({ value, colorClass }: { value: number; colorClass: string 
   );
 }
 
-function ScoreCell({ value, highlight = false }: { value: number; highlight?: boolean }) {
+function ScoreCell({ value }: { value: number }) {
   let colorClass = "bg-primary";
   let textClass = "text-muted-foreground";
   
@@ -56,10 +45,6 @@ function ScoreCell({ value, highlight = false }: { value: number; highlight?: bo
     textClass = "text-red-500";
   }
 
-  if (highlight) {
-    // Override for the highlighted column if needed, or keep logic
-  }
-
   return (
     <div className="flex items-center gap-3">
       <span className={cn("w-12 text-right", textClass)}>{value}%</span>
@@ -68,7 +53,25 @@ function ScoreCell({ value, highlight = false }: { value: number; highlight?: bo
   );
 }
 
-export default function Home() {
+export default async function Home() {
+  const data = Object.entries(resultData.evals)
+    .map(([key, val], index) => {
+      const parts = key.split("__");
+      const agentRaw = parts[0] || "Unknown";
+      const agent = agentRaw.charAt(0).toUpperCase() + agentRaw.slice(1);
+      const model = parts[1] || "Unknown";
+
+      return {
+        id: String(index + 1),
+        model: model,
+        agent: agent,
+        totalEvals: val.n_trials,
+        successRate: Math.round(val.metrics[0].mean * 100),
+        isNew: index === 0,
+      };
+    })
+    .sort((a, b) => b.successRate - a.successRate);
+
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20">
       {/* Background Gradient Effect */}
@@ -83,11 +86,11 @@ export default function Home() {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50 pb-2">
-            SuperSDK Agent Benchmark
+            JJ Benchmark
           </h1>
           
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Performance results of AI coding agents on SuperSDK integration and usage tasks, 
+            Performance results of AI coding agents on Jujutsu tasks, 
             measuring success rate and execution time with high precision.
           </p>
 
@@ -99,7 +102,7 @@ export default function Home() {
             <div className="h-4 w-px bg-border"></div>
             <span className="flex items-center gap-2">
               <Terminal className="w-4 h-4" />
-              <span>Last run: February 18, 2026</span>
+              <span>Last run: {new Date(resultData.startedAt).toLocaleDateString()}</span>
             </span>
           </div>
         </div>
@@ -108,9 +111,6 @@ export default function Home() {
         <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
           <h2 className="text-2xl font-semibold flex items-center gap-2">
             Agent Performance
-            <span className="text-xs font-normal text-muted-foreground bg-secondary px-2 py-1 rounded-md border border-border">
-              v2.4
-            </span>
           </h2>
           
           <div className="flex items-center gap-3">
@@ -122,14 +122,6 @@ export default function Home() {
                 className="pl-9 pr-4 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-64"
               />
             </div>
-            <button className="flex items-center gap-2 px-4 py-2 bg-card border border-border rounded-lg text-sm hover:bg-secondary transition-colors">
-              <Filter className="w-4 h-4" />
-              <span>Filters</span>
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
-              <span>Show All Agents</span>
-              <ChevronDown className="w-4 h-4" />
-            </button>
           </div>
         </div>
 
@@ -140,17 +132,9 @@ export default function Home() {
               <thead className="bg-secondary/50 text-muted-foreground font-medium border-b border-border">
                 <tr>
                   <th className="px-6 py-4 w-[30%]">Model</th>
-                  <th className="px-6 py-4 w-[15%]">Agent</th>
-                  <th className="px-6 py-4 w-[10%] text-center">Total Evals</th>
-                  <th className="px-6 py-4 w-[20%]">Success Rate</th>
-                  <th className="px-6 py-4 w-[25%]">
-                    <div className="flex items-center gap-1 cursor-help group relative w-fit">
-                      Success with Docs
-                      <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-48 p-2 bg-popover text-popover-foreground text-xs rounded shadow-lg border border-border z-10">
-                        Pass rate when agents had access to bundled SuperSDK documentation.
-                      </div>
-                    </div>
-                  </th>
+                  <th className="px-6 py-4 w-[20%]">Agent</th>
+                  <th className="px-6 py-4 w-[15%] text-center">Total Evals</th>
+                  <th className="px-6 py-4 w-[35%]">Success Rate</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
@@ -176,7 +160,7 @@ export default function Home() {
                     <td className="px-6 py-4 text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-[10px] font-bold border border-border">
-                          {row.agent.substring(0, 1)}
+                          {row.agent.substring(0, 1).toUpperCase()}
                         </div>
                         {row.agent}
                       </div>
@@ -187,21 +171,10 @@ export default function Home() {
                     <td className="px-6 py-4">
                       <ScoreCell value={row.successRate} />
                     </td>
-                    <td className="px-6 py-4">
-                      <ScoreCell value={row.successRateWithDocs} highlight />
-                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-          
-          {/* Table Footer */}
-          <div className="px-6 py-4 border-t border-border bg-secondary/20 text-xs text-muted-foreground flex justify-between items-center">
-            <p>* AGENTS.md provides bundled SuperSDK documentation for AI coding agents.</p>
-            <button className="flex items-center gap-1 hover:text-foreground transition-colors">
-              Full Methodology <ArrowUpRight className="w-3 h-3" />
-            </button>
           </div>
         </div>
       </div>
