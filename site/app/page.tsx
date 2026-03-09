@@ -11,7 +11,7 @@ interface LeaderboardEntry {
   id: string;
   model: string;
   agent: string;
-  totalEvals: number;
+  passedEvals: number;
   successRate: number;
   isNew?: boolean;
 }
@@ -19,9 +19,9 @@ interface LeaderboardEntry {
 function ProgressBar({ value, colorClass }: { value: number; colorClass: string }) {
   return (
     <div className="h-2 w-24 bg-secondary rounded-full overflow-hidden">
-      <div 
-        className={cn("h-full transition-all duration-500 ease-out", colorClass)} 
-        style={{ width: `${value}%` }} 
+      <div
+        className={cn("h-full transition-all duration-500 ease-out", colorClass)}
+        style={{ width: `${value}%` }}
       />
     </div>
   );
@@ -30,7 +30,7 @@ function ProgressBar({ value, colorClass }: { value: number; colorClass: string 
 function ScoreCell({ value }: { value: number }) {
   let colorClass = "bg-primary";
   let textClass = "text-muted-foreground";
-  
+
   if (value >= 90) {
     colorClass = "bg-emerald-500";
     textClass = "text-emerald-500 font-bold";
@@ -56,16 +56,22 @@ function ScoreCell({ value }: { value: number }) {
 export default async function Home() {
   const data = Object.entries(resultData.evals)
     .map(([key, val], index) => {
-      const parts = key.split("__");
-      const agentRaw = parts[0] || "Unknown";
+      let parts = key.split("__");
+      let agentRaw = parts[0] || "Unknown";
+      let model = parts[1] || "Unknown";
+
+      if (parts.length === 2) {
+        agentRaw = "Terminus-2";
+        model = parts[0];
+      }
+
       const agent = agentRaw.charAt(0).toUpperCase() + agentRaw.slice(1);
-      const model = parts[1] || "Unknown";
 
       return {
         id: String(index + 1),
         model: model,
         agent: agent,
-        totalEvals: val.n_trials,
+        passedEvals: Math.round(val.metrics[0].mean * val.n_trials),
         successRate: Math.round(val.metrics[0].mean * 100),
         isNew: index === 0,
       };
@@ -76,7 +82,7 @@ export default async function Home() {
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20">
       {/* Background Gradient Effect */}
       <div className="fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 dark:opacity-40"></div>
-      
+
       <div className="container mx-auto px-4 py-16 max-w-6xl">
         {/* Header Section */}
         <div className="text-center mb-16 space-y-6">
@@ -84,13 +90,13 @@ export default async function Home() {
             <span className="flex h-2 w-2 rounded-full bg-emerald-500 mx-2 animate-pulse"></span>
             <span className="text-xs font-medium px-2">Live Benchmarks</span>
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50 pb-2">
             JJ Benchmark
           </h1>
-          
+
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Performance results of AI coding agents on Jujutsu tasks, 
+            Performance results of AI coding agents on Jujutsu tasks,
             measuring success rate and execution time with high precision.
           </p>
 
@@ -112,13 +118,13 @@ export default async function Home() {
           <h2 className="text-2xl font-semibold flex items-center gap-2">
             Agent Performance
           </h2>
-          
+
           <div className="flex items-center gap-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input 
-                type="text" 
-                placeholder="Search agents..." 
+              <input
+                type="text"
+                placeholder="Search agents..."
                 className="pl-9 pr-4 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-64"
               />
             </div>
@@ -133,14 +139,14 @@ export default async function Home() {
                 <tr>
                   <th className="px-6 py-4 w-[30%]">Model</th>
                   <th className="px-6 py-4 w-[20%]">Agent</th>
-                  <th className="px-6 py-4 w-[15%] text-center">Total Evals</th>
+                  <th className="px-6 py-4 w-[15%] text-center">Passed</th>
                   <th className="px-6 py-4 w-[35%]">Success Rate</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
                 {data.map((row, index) => (
-                  <tr 
-                    key={row.id} 
+                  <tr
+                    key={row.id}
                     className="group hover:bg-secondary/30 transition-colors duration-200"
                   >
                     <td className="px-6 py-4 font-medium text-foreground flex items-center gap-3">
@@ -166,7 +172,7 @@ export default async function Home() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-center text-muted-foreground font-mono">
-                      {row.totalEvals}
+                      {row.passedEvals}
                     </td>
                     <td className="px-6 py-4">
                       <ScoreCell value={row.successRate} />

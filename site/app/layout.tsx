@@ -6,8 +6,8 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'SuperSDK Agent Benchmark',
-  description: 'Performance results of AI coding agents on SuperSDK integration and usage tasks.',
+  title: 'JJ Benchmark',
+  description: 'Performance results of AI coding agents on JJ integration and usage tasks.',
 };
 
 export default function RootLayout({
