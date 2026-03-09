@@ -1,0 +1,69 @@
+{
+  "schema_version": "ATIF-v1.6",
+  "session_id": "401f283f-0677-42a9-a5ba-f02472ec0e4c",
+  "agent": {
+    "name": "pochi",
+    "version": "unknown",
+    "model_name": "zai/glm-4.7"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "user",
+      "message": "<system-reminder># System Information\n\nOperating System: linux\nDefault Shell: \nHome Directory: /root\nCurrent Working Directory: /app\nCurrent Time: Mon Mar 09 2026 04:18:40 GMT+0000 (Coordinated Universal Time)\n\n# Current Working Directory (/app) Files\n\n\n# GIT STATUS\nCurrent branch: \nMain branch (you will usually use this for PRs): \n\nRecent commits:\n\n\n# TODOs\nNo TODOs yet, if you are working on tasks that would benefit from a todo list please use the todoWrite tool to create one.</system-reminder>\n''"
+    },
+    {
+      "step_id": 2,
+      "source": "agent",
+      "model_name": "zai/glm-4.7",
+      "message": "The user has sent an empty message. I should check what's in the current directory to understand the context and then ask them what they'd like help with.\n\nLet me list the files in the current directory to see what we're working with.",
+      "reasoning_content": "The user has sent an empty message. I should check what's in the current directory to understand the context and then ask them what they'd like help with.\n\nLet me list the files in the current directory to see what we're working with.",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_5d06",
+          "function_name": "listFiles",
+          "arguments": {
+            "path": "/app",
+            "recursive": true
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "call_5d06",
+            "content": "{'files': [], 'isTruncated': False}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 3,
+      "source": "agent",
+      "model_name": "zai/glm-4.7",
+      "message": "The directory is empty. The user sent an empty message, so I should ask them what they'd like help with. I'll use the askFollowupQuestion tool to understand their needs.",
+      "reasoning_content": "The directory is empty. The user sent an empty message, so I should ask them what they'd like help with. I'll use the askFollowupQuestion tool to understand their needs.",
+      "tool_calls": [
+        {
+          "tool_call_id": "call_d354",
+          "function_name": "askFollowupQuestion",
+          "arguments": {
+            "question": "The current directory is empty. What would you like help with today?",
+            "followUp": [
+              "Create a new project",
+              "Help with an existing project (please provide the project path)",
+              "General programming question",
+              "Something else"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "final_metrics": {
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 11792,
+    "total_cached_tokens": 0,
+    "total_steps": 3
+  }
+}

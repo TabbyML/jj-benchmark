@@ -1,0 +1,53 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 1,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773032428.1885953,
+            "stop": 1773032428.2582057
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_no_divergent_commits",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.020171621115878224,
+                "start": 1773032428.199542,
+                "stop": 1773032428.2344162,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_no_divergent_commits():\n        # If a commit is divergent, jj log -r 'bookmarks(exact:feature)' will show multiple commits,\n        # or the bookmark itself will be conflicted and error out when referenced as `feature`.\n        # We can check if 'feature' resolves to exactly one commit.\n        result = run_jj([\"log\", \"-r\", \"feature\", \"--no-graph\", \"-T\", \"commit_id ++ \\\"\\\\n\\\"\"])\n>       assert result.returncode == 0, f\"jj log failed, 'feature' bookmark might still be conflicted: {result.stderr}\"\nE       AssertionError: jj log failed, 'feature' bookmark might still be conflicted: Error: Name `feature` is conflicted\nE         Hint: Use commit ID to select single revision from: 83847730920a\nE         Hint: Use `bookmarks(exact:feature)` to select all revisions\nE         Hint: To set which revision the bookmark points to, run `jj bookmark set feature -r <REVISION>`\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'log', '-r', 'feature', '--no-graph', '-T', 'commit_id ++ \"\\\\n\"'], returncode=1, stdout='...lect all revisions\\nHint: To set which revision the bookmark points to, run `jj bookmark set feature -r <REVISION>`\\n').returncode\n\n/tests/test_final_state.py:17: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_resolved_change_id_file",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.019905815017409623,
+                "start": 1773032428.2346377,
+                "stop": 1773032428.256995,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_resolved_change_id_file():\n        assert os.path.isfile(RESOLVED_CHANGE_ID_FILE), f\"{RESOLVED_CHANGE_ID_FILE} does not exist.\"\n        with open(RESOLVED_CHANGE_ID_FILE, \"r\") as f:\n            written_id = f.read().strip()\n    \n        # Get the actual change ID of the feature bookmark\n        result = run_jj([\"log\", \"-r\", \"feature\", \"--no-graph\", \"-T\", \"change_id\"])\n>       assert result.returncode == 0, f\"Failed to get change ID for 'feature': {result.stderr}\"\nE       AssertionError: Failed to get change ID for 'feature': Error: Name `feature` is conflicted\nE         Hint: Use commit ID to select single revision from: 83847730920a\nE         Hint: Use `bookmarks(exact:feature)` to select all revisions\nE         Hint: To set which revision the bookmark points to, run `jj bookmark set feature -r <REVISION>`\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'log', '-r', 'feature', '--no-graph', '-T', 'change_id'], returncode=1, stdout='', stderr...lect all revisions\\nHint: To set which revision the bookmark points to, run `jj bookmark set feature -r <REVISION>`\\n').returncode\n\n/tests/test_final_state.py:28: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_main_content_file",
+                "status": "passed",
+                "duration": 0.0005850209854543209,
+                "start": 1773032428.2572067,
+                "stop": 1773032428.25792,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

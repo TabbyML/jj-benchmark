@@ -1,0 +1,78 @@
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (8.5.0-2ubuntu10.7).
+0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 6 packages in 18ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 5 items
+
+tests/test_final_state.py ..FFF                                          [100%]
+
+=================================== FAILURES ===================================
+________________ test_jj_bookmark_exists_and_points_to_migrate _________________
+
+    def test_jj_bookmark_exists_and_points_to_migrate():
+        # Check if the bookmark exists
+        result = run_cmd(["jj", "bookmark", "list"])
+        assert result.returncode == 0, f"jj bookmark list failed: {result.stderr}"
+>       assert "jj-migration" in result.stdout, "The bookmark 'jj-migration' does not exist in jj."
+E       AssertionError: The bookmark 'jj-migration' does not exist in jj.
+E       assert 'jj-migration' in 'main: qsunqsvr 26b7cebe Initial commit\n'
+E        +  where 'main: qsunqsvr 26b7cebe Initial commit\n' = CompletedProcess(args=['jj', 'bookmark', 'list'], returncode=0, stdout='main: qsunqsvr 26b7cebe Initial commit\n', stderr='').stdout
+
+tests/test_final_state.py:24: AssertionError
+____________________________ test_git_branch_exists ____________________________
+
+    def test_git_branch_exists():
+        result = run_cmd(["git", "branch"])
+        assert result.returncode == 0, f"git branch failed: {result.stderr}"
+>       assert "jj-migration" in result.stdout, "The Git branch 'jj-migration' does not exist."
+E       AssertionError: The Git branch 'jj-migration' does not exist.
+E       assert 'jj-migration' in '* (no branch)\n  main\n'
+E        +  where '* (no branch)\n  main\n' = CompletedProcess(args=['git', 'branch'], returncode=0, stdout='* (no branch)\n  main\n', stderr='').stdout
+
+tests/test_final_state.py:35: AssertionError
+_____________ test_git_branch_points_to_same_commit_as_jj_bookmark _____________
+
+    def test_git_branch_points_to_same_commit_as_jj_bookmark():
+        # Get the git commit hash for the branch
+        git_result = run_cmd(["git", "rev-parse", "jj-migration"])
+>       assert git_result.returncode == 0, f"git rev-parse failed: {git_result.stderr}"
+E       AssertionError: git rev-parse failed: fatal: ambiguous argument 'jj-migration': unknown revision or path not in the working tree.
+E         Use '--' to separate paths from revisions, like this:
+E         'git <command> [<revision>...] -- [<file>...]'
+E         
+E       assert 128 == 0
+E        +  where 128 = CompletedProcess(args=['git', 'rev-parse', 'jj-migration'], returncode=128, stdout='jj-migration\n', stderr="fatal: am...orking tree.\nUse '--' to separate paths from revisions, like this:\n'git <command> [<revision>...] -- [<file>...]'\n").returncode
+
+tests/test_final_state.py:40: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_dot_jj_directory_exists
+PASSED tests/test_final_state.py::test_app_py_has_migrate_function
+FAILED tests/test_final_state.py::test_jj_bookmark_exists_and_points_to_migrate
+FAILED tests/test_final_state.py::test_git_branch_exists - AssertionError: Th...
+FAILED tests/test_final_state.py::test_git_branch_points_to_same_commit_as_jj_bookmark
+========================= 3 failed, 2 passed in 0.08s ==========================
