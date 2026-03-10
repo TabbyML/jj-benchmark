@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, Suspense } from "react";
-import { ChevronDown, ChevronRight, CheckCircle2, XCircle, Clock, Cpu, Search, AlertTriangle, ArrowUpDown, ArrowUp, ArrowDown, Filter, Coins, X } from "lucide-react";
+import { CheckCircle2, XCircle, Search, AlertTriangle, ArrowUpDown, ArrowUp, ArrowDown, Filter, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { clsx, type ClassValue } from "clsx";
@@ -38,43 +38,6 @@ const tasksData = Object.entries(tasksDataRaw).map(([taskName, trials]) => {
 
 const allModels = Array.from(new Set(tasksData.flatMap(t => t.trials.map(tr => tr.model))));
 const allAgents = Array.from(new Set(tasksData.flatMap(t => t.trials.map(tr => tr.agent))));
-
-function BackToTop() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener("scroll", toggleVisibility);
-    return () => window.removeEventListener("scroll", toggleVisibility);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  };
-
-  if (!isVisible) return null;
-
-  return (
-    <button
-      type="button"
-      onClick={scrollToTop}
-      className="fixed bottom-8 right-8 p-3 bg-secondary text-foreground rounded-full shadow-lg border border-border hover:bg-secondary/80 transition-all z-50 flex items-center justify-center group backdrop-blur-sm"
-      aria-label="Back to top"
-    >
-      <ArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
-    </button>
-  );
-}
 
 function TasksContent() {
   const router = useRouter();
@@ -440,5 +403,42 @@ export default function TasksPage() {
         <TasksContent />
       </Suspense>
     </div>
+  );
+}
+
+function BackToTop() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.scrollY > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
+  if (!isVisible) return null;
+
+  return (
+    <button
+      type="button"
+      onClick={scrollToTop}
+      className="fixed bottom-8 right-8 p-3 bg-secondary text-foreground rounded-full shadow-lg border border-border hover:bg-secondary/80 transition-all z-50 flex items-center justify-center group backdrop-blur-sm"
+      aria-label="Back to top"
+    >
+      <ArrowUp className="w-5 h-5 group-hover:-translate-y-1 transition-transform" />
+    </button>
   );
 }
