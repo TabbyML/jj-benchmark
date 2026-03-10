@@ -154,12 +154,12 @@ export default async function Home() {
                       <div className="flex flex-col">
                         <span className="flex items-center gap-2">
                           {row.model}
-                          {index === 0 && <Trophy className="w-3 h-3 text-yellow-500" />}
+                          {/* {index === 0 && <Trophy className="w-3 h-3 text-yellow-500" />}
                           {row.isNew && (
                             <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-500 border border-blue-500/20">
                               NEW
                             </span>
-                          )}
+                          )} */}
                         </span>
                       </div>
                     </td>
