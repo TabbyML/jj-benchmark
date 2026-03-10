@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import aggregatedTasks from "../../jobs/aggregated-tasks.json";
+import tasksDataRaw from "../../tasks.json";
 import {
   Select,
   SelectContent,
@@ -14,13 +14,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 // Convert object to array and sort by task name
-const tasksData = Object.entries(aggregatedTasks).map(([taskName, trials]) => {
+const tasksData = Object.entries(tasksDataRaw).map(([taskName, trials]) => {
   return {
     taskName,
     trials: (trials as any[]).map(t => ({ 
@@ -359,13 +364,15 @@ function TasksContent() {
                           </div>
                         </td>
                         <td className="px-4 sm:px-6 py-3 text-muted-foreground">
-                          <div className="group/latency relative flex items-center gap-2 w-max cursor-help">
-                            <span className="font-mono text-xs sm:text-sm">{trial.latency_sec ? `${trial.latency_sec.toFixed(1)}s` : '-'}</span>
-                            
-                            {/* Latency Tooltip */}
-                            {trial.latency_breakdown && (
-                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/latency:block z-10 w-48 p-3 rounded-lg shadow-xl bg-popover border border-border text-xs text-popover-foreground">
-                                <div className="space-y-1.5">
+                          {trial.latency_breakdown ? (
+                            <HoverCard openDelay={200} closeDelay={100}>
+                              <HoverCardTrigger asChild>
+                                <button type="button" className="flex items-center gap-2 w-max cursor-help hover:text-foreground transition-colors">
+                                  <span className="font-mono text-xs sm:text-sm">{trial.latency_sec ? `${trial.latency_sec.toFixed(1)}s` : '-'}</span>
+                                </button>
+                              </HoverCardTrigger>
+                              <HoverCardContent side="top" align="center" className="w-48 p-3 bg-popover shadow-xl border-border z-50">
+                                <div className="space-y-1.5 text-xs text-popover-foreground">
                                   <div className="flex justify-between">
                                     <span className="text-muted-foreground">Env Setup:</span>
                                     <span className="font-mono">{trial.latency_breakdown.env_setup?.toFixed(1) || '-'}s</span>
@@ -383,11 +390,13 @@ function TasksContent() {
                                     <span className="font-mono">{trial.latency_breakdown.verifier?.toFixed(1) || '-'}s</span>
                                   </div>
                                 </div>
-                                {/* Tooltip Arrow */}
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-4 border-transparent border-t-border"></div>
-                              </div>
-                            )}
-                          </div>
+                              </HoverCardContent>
+                            </HoverCard>
+                          ) : (
+                            <div className="flex items-center gap-2 w-max">
+                              <span className="font-mono text-xs sm:text-sm">{trial.latency_sec ? `${trial.latency_sec.toFixed(1)}s` : '-'}</span>
+                            </div>
+                          )}
                         </td>
                         <td className="px-4 sm:px-6 py-3 text-muted-foreground">
                           <div className="flex items-center gap-2">
