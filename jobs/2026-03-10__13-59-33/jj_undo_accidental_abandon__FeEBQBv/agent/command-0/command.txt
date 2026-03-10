@@ -1,0 +1,45 @@
+pochi --model deepinfra/glm-4.7-flash --stream-json > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+'## Scenario
+
+You are a support engineer working in a jj-backed repository located at `/home/user/project`. You were reviewing your commit history and accidentally ran `jj abandon` on a commit that contained important work — a change described as **"add user authentication module"**. You need to inspect the operation log to identify the accidental abandon operation, then use `jj undo` (or `jj op restore`) to recover the lost commit.
+
+## Starting Environment
+
+- A jj repository exists at `/home/user/project/`.
+- The repository has been initialized with Git backend (`jj git init`).
+- User identity has been configured in the repo:
+  - `user.name = "Support Engineer"`
+  - `user.email = "support@example.com"`
+- The repository contains the following linear commit history (from oldest to newest):
+  1. A root commit (auto-created by jj)
+  2. A commit described as **"initial project scaffold"** — contains a file `README.md` with the text `# MyProject`
+  3. A commit described as **"add user authentication module"** — contains a file `src/auth.py` with the text `# Authentication module`
+  4. A commit described as **"update README with usage instructions"** — contains a file `README.md` updated with the text `# MyProject\n\n## Usage\nSee docs.`
+- A bookmark named **`main`** points to the **"update README with usage instructions"** commit (the topmost committed change).
+- The working copy (`@`) is a new empty change on top of the `main` bookmark'"'"'s commit.
+- **After the above setup, `jj abandon` was run on the "add user authentication module" commit**, removing it from the visible history. This is the accidental operation you must undo.
+
+## Your Task
+
+Your goal is to recover the **"add user authentication module"** commit and restore the repository to the state it was in **before** the accidental `jj abandon` operation.
+
+Specifically, after completing the task, the repository must satisfy ALL of the following conditions:
+
+1. **The commit "add user authentication module" must exist and be visible** in the jj revision log (`jj log`). It must appear as a non-abandoned commit between the "initial project scaffold" commit and the "update README with usage instructions" commit.
+
+2. **The file `src/auth.py` must be present** in the "add user authentication module" commit. Running `jj file show -r <that commit> src/auth.py` must output `# Authentication module`.
+
+3. **The linear ancestry chain must be restored**: The "update README with usage instructions" commit must have the "add user authentication module" commit as its parent, and the "add user authentication module" commit must have the "initial project scaffold" commit as its parent.
+
+4. **The `main` bookmark must still point to the "update README with usage instructions" commit** (the topmost fully-described commit).
+
+5. **The working copy (`@`) must be a new, empty change** on top of the `main` bookmark'"'"'s commit (the "update README with usage instructions" commit).
+
+## Approach Hints (do NOT run commands yet, understand first)
+
+- Use `jj op log` to list the operation log and identify the operation that performed the accidental `jj abandon`.
+- Use `jj undo` to undo the most recent operation (if the abandon was the last operation), OR use `jj op restore <operation-id>` to restore to a specific earlier state if multiple operations occurred after.
+- After undoing, verify with `jj log` that the commit history is correct.
+- Do not create any new commits or modify any file contents manually — the recovery must be done purely through the operation log.
+'
+EOF

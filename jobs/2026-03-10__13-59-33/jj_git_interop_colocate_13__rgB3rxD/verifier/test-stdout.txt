@@ -1,0 +1,110 @@
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Get:2 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Hit:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Get:5 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1895 kB]
+Get:6 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [34.8 kB]
+Get:7 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1260 kB]
+Get:8 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [3300 kB]
+Fetched 6616 kB in 4s (1781 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (8.5.0-2ubuntu10.7).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.5 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 5 packages in 29ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0 -- /root/.cache/uv/archive-v0/nnyfMjXz2mx4qdE2xCDNI/bin/python
+cachedir: .pytest_cache
+rootdir: /tests
+collecting ... collected 5 items
+
+../../tests/test_final_state.py::test_jj_directory_exists FAILED         [ 20%]
+../../tests/test_final_state.py::test_jj_bookmark_exists FAILED          [ 40%]
+../../tests/test_final_state.py::test_git_branch_exists FAILED           [ 60%]
+../../tests/test_final_state.py::test_head_commit_description FAILED     [ 80%]
+../../tests/test_final_state.py::test_feature_file_exists_and_content FAILED [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_jj_directory_exists ___________________________
+
+    def test_jj_directory_exists():
+        dot_jj = os.path.join(REPO_DIR, ".jj")
+>       assert os.path.isdir(dot_jj), f"The .jj directory does not exist. Did you run `jj git init --colocate`?"
+E       AssertionError: The .jj directory does not exist. Did you run `jj git init --colocate`?
+E       assert False
+E        +  where False = <function isdir at 0x73b0413602c0>('/home/user/my-project/.jj')
+E        +    where <function isdir at 0x73b0413602c0> = <module 'posixpath' (frozen)>.isdir
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_final_state.py:12: AssertionError
+___________________________ test_jj_bookmark_exists ____________________________
+
+    def test_jj_bookmark_exists():
+        result = run_cmd("jj", "bookmark", "list")
+>       assert result.returncode == 0, f"jj bookmark list failed: {result.stderr}"
+E       AssertionError: jj bookmark list failed: Error: There is no jj repo in "."
+E         Hint: It looks like this is a git repo. You can create a jj repo backed by it by running this:
+E         jj git init
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', 'bookmark', 'list'], returncode=1, stdout='', stderr='Error: There is no jj repo in "."\nHint: It looks like this is a git repo. You can create a jj repo backed by it by running this:\njj git init\n').returncode
+
+/tests/test_final_state.py:16: AssertionError
+____________________________ test_git_branch_exists ____________________________
+
+    def test_git_branch_exists():
+        result = run_cmd("git", "branch")
+        assert result.returncode == 0, f"git branch failed: {result.stderr}"
+>       assert "feature-x" in result.stdout, "The git branch 'feature-x' does not exist. Make sure the jj bookmark was exported to Git."
+E       AssertionError: The git branch 'feature-x' does not exist. Make sure the jj bookmark was exported to Git.
+E       assert 'feature-x' in '* main\n'
+E        +  where '* main\n' = CompletedProcess(args=['git', 'branch'], returncode=0, stdout='* main\n', stderr='').stdout
+
+/tests/test_final_state.py:22: AssertionError
+_________________________ test_head_commit_description _________________________
+
+    def test_head_commit_description():
+        result = run_cmd("jj", "log", "--no-graph", "-r", "@", "-T", "description")
+>       assert result.returncode == 0, f"jj log failed: {result.stderr}"
+E       AssertionError: jj log failed: Error: There is no jj repo in "."
+E         Hint: It looks like this is a git repo. You can create a jj repo backed by it by running this:
+E         jj git init
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', '@', '-T', 'description'], returncode=1, stdout='', stderr='Error: There is no jj repo in "."\nHint: It looks like this is a git repo. You can create a jj repo backed by it by running this:\njj git init\n').returncode
+
+/tests/test_final_state.py:26: AssertionError
+_____________________ test_feature_file_exists_and_content _____________________
+
+    def test_feature_file_exists_and_content():
+        feature_file = os.path.join(REPO_DIR, "feature.txt")
+>       assert os.path.isfile(feature_file), "The file 'feature.txt' does not exist in the working copy."
+E       AssertionError: The file 'feature.txt' does not exist in the working copy.
+E       assert False
+E        +  where False = <function isfile at 0x73b041360220>('/home/user/my-project/feature.txt')
+E        +    where <function isfile at 0x73b041360220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_final_state.py:31: AssertionError
+=========================== short test summary info ============================
+FAILED ../../tests/test_final_state.py::test_jj_directory_exists - AssertionE...
+FAILED ../../tests/test_final_state.py::test_jj_bookmark_exists - AssertionEr...
+FAILED ../../tests/test_final_state.py::test_git_branch_exists - AssertionErr...
+FAILED ../../tests/test_final_state.py::test_head_commit_description - Assert...
+FAILED ../../tests/test_final_state.py::test_feature_file_exists_and_content
+============================== 5 failed in 0.07s ===============================

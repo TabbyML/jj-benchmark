@@ -1,0 +1,191 @@
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 66ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 7 items
+
+tests/test_final_state.py FFFFFFF                                        [100%]
+
+=================================== FAILURES ===================================
+_________________ test_implement_core_feature_commit_restored __________________
+
+    def test_implement_core_feature_commit_restored():
+        """The commit with description 'implement core feature' must be visible."""
+        rc, out, err = _jj("log", "--no-pager", "-r", "description(substring:'implement core feature')")
+        assert rc == 0, f"jj log failed: {err}"
+>       assert "implement core feature" in out, (
+            f"'implement core feature' not found in log output: {out}"
+        )
+E       AssertionError: 'implement core feature' not found in log output: 
+E       assert 'implement core feature' in ''
+
+tests/test_final_state.py:21: AssertionError
+_______________________ test_bad_description_not_present _______________________
+
+    def test_bad_description_not_present():
+        """The bad description 'WIP: bad description do not merge' must NOT be visible in jj log."""
+        rc, out, err = _jj("log", "--no-pager", "-r", "description(substring:'WIP: bad description do not merge')")
+        # Command should succeed but return no revisions (empty output)
+        assert rc == 0, f"jj log command failed unexpectedly: {err}"
+>       assert "WIP: bad description do not merge" not in out, (
+            f"Bad description commit still present after recovery. Output: {out}"
+        )
+E       AssertionError: Bad description commit still present after recovery. Output: ○  lquvlrlz support@example.com 2026-03-06 18:04:41 18c5a370
+E         │  WIP: bad description do not merge
+E         ~
+E         
+E       assert 'WIP: bad de...do not merge' not in '○  lquvlrlz...t merge\n~\n'
+E         
+E         'WIP: bad description do not merge' is contained here:
+E           c5a370
+E           │  WIP: bad description do not merge
+E           ~
+
+tests/test_final_state.py:31: AssertionError
+________________________ test_add_tests_commit_restored ________________________
+
+    def test_add_tests_commit_restored():
+        """The commit with description 'add tests for core feature' must be visible."""
+        rc, out, err = _jj("log", "--no-pager", "-r", "description(substring:'add tests for core feature')")
+        assert rc == 0, f"jj log failed: {err}"
+>       assert "add tests for core feature" in out, (
+            f"'add tests for core feature' not found in log output: {out}"
+        )
+E       AssertionError: 'add tests for core feature' not found in log output: 
+E       assert 'add tests for core feature' in ''
+
+tests/test_final_state.py:40: AssertionError
+______________________ test_all_three_commits_in_history _______________________
+
+    def test_all_three_commits_in_history():
+        """All three original commits must appear in the full jj log."""
+        rc, out, err = _jj("log", "--no-pager")
+        assert rc == 0, f"jj log failed: {err}"
+        assert "add initial readme" in out, (
+            f"'add initial readme' not found in full log: {out}"
+        )
+>       assert "implement core feature" in out, (
+            f"'implement core feature' not found in full log: {out}"
+        )
+E       AssertionError: 'implement core feature' not found in full log: @  nzuwnlnx support@example.com 2026-03-06 18:04:44 3b1fccec
+E         │  (empty) (no description set)
+E         ○  lquvlrlz support@example.com 2026-03-06 18:04:41 18c5a370
+E         │  WIP: bad description do not merge
+E         ○  szwnsnwl support@example.com 2026-03-06 18:04:34 dd158fdf
+E         │  add initial readme
+E         ◆  zzzzzzzz root() 00000000
+E         
+E       assert 'implement core feature' in '@  nzuwnlnx support@example.com 2026-03-06 18:04:44 3b1fccec\n│  (empty) (no description set)\n○  lquvlrlz support@ex...ge\n○  szwnsnwl support@example.com 2026-03-06 18:04:34 dd158fdf\n│  add initial readme\n◆  zzzzzzzz root() 00000000\n'
+
+tests/test_final_state.py:52: AssertionError
+________________________ test_undo_operations_in_oplog _________________________
+
+    def test_undo_operations_in_oplog():
+        """At least one undo operation must appear in jj op log (shown as 'undo:')."""
+        rc, out, err = _jj("op", "log", "--no-pager")
+        assert rc == 0, f"jj op log failed: {err}"
+        # jj op log shows undo entries with "undo: restore to operation ..."
+>       assert "undo:" in out, (
+            f"No undo operation found in op log. Output: {out}"
+        )
+E       AssertionError: No undo operation found in op log. Output: @  b86d4ee6a81b root@7d740a1b7476 3 days ago, lasted 11 milliseconds
+E         │  abandon commit 1d48cf6c7145faf67c831fdd4c2882fefa81b816
+E         │  args: jj abandon 'description(substring:\'add tests for core feature\')'
+E         ○  314b98138521 root@fc53181df0b7 3 days ago, lasted 23 milliseconds
+E         │  describe commit a1d56c8f45c92bb56f4b652e3046c64185f2baf8
+E         │  args: jj describe -m 'WIP: bad description do not merge' -r 'description(substring:\'implement core feature\')'
+E         ○  02f5de8c2f8f root@bfa1719701b5 3 days ago, lasted 9 milliseconds
+E         │  new empty commit
+E         │  args: jj new
+E         ○  8e7d2082c0ce root@bfa1719701b5 3 days ago, lasted 8 milliseconds
+E         │  describe commit b425a106d751112340d000559b092682caad4ccd
+E         │  args: jj describe -m 'add tests for core feature'
+E         ○  25bbf958a27d root@bfa1719701b5 3 days ago, lasted 8 milliseconds
+E         │  snapshot working copy
+E         │  args: jj describe -m 'add tests for core feature'
+E         ○  06984dd93c74 root@7c59649cb83c 3 days ago, lasted 7 milliseconds
+E         │  new empty commit
+E         │  args: jj new
+E         ○  a766abc35631 root@7c59649cb83c 3 days ago, lasted 11 milliseconds
+E         │  describe commit dafb60fbe605b3656a4b44f5017cbdd9c01f3126
+E         │  args: jj describe -m 'implement core feature'
+E         ○  815db95cd2ee root@7c59649cb83c 3 days ago, lasted 14 milliseconds
+E         │  snapshot working copy
+E         │  args: jj describe -m 'implement core feature'
+E         ○  2e33ef8c1616 root@065e59b6c4d7 3 days ago, lasted 8 milliseconds
+E         │  new empty commit
+E         │  args: jj new
+E         ○  d3bcebe10da7 root@065e59b6c4d7 3 days ago, lasted 12 milliseconds
+E         │  describe commit 6ccc51c2fd491f3c2c2d2700036dbd5734c2e540
+E         │  args: jj describe -m 'add initial readme'
+E         ○  1e2947ef34f3 root@065e59b6c4d7 3 days ago, lasted 12 milliseconds
+E         │  snapshot working copy
+E         │  args: jj describe -m 'add initial readme'
+E         ○  0ed195537de8 root@236e9aa3704b 3 days ago, lasted 13 milliseconds
+E         │  add workspace 'default'
+E         ○  000000000000 root()
+E         
+E       assert 'undo:' in "@  b86d4ee6a81b root@7d740a1b7476 3 days ago, lasted 11 milliseconds\n│  abandon commit 1d48cf6c7145faf67c831fdd4c288...ed195537de8 root@236e9aa3704b 3 days ago, lasted 13 milliseconds\n│  add workspace 'default'\n○  000000000000 root()\n"
+
+tests/test_final_state.py:65: AssertionError
+________________________ test_tests_py_file_accessible _________________________
+
+    def test_tests_py_file_accessible():
+        """tests.py must be accessible in the 'add tests for core feature' commit."""
+        rc, out, err = _jj(
+            "file", "list", "--no-pager",
+            "-r", "description(substring:'add tests for core feature')"
+        )
+>       assert rc == 0, f"jj file list failed: {err}"
+E       AssertionError: jj file list failed: Error: Revset `description(substring:'add tests for core feature')` didn't resolve to any revisions
+E         
+E       assert 1 == 0
+
+tests/test_final_state.py:76: AssertionError
+_________________________ test_core_py_file_accessible _________________________
+
+    def test_core_py_file_accessible():
+        """core.py must be accessible in the 'implement core feature' commit."""
+        rc, out, err = _jj(
+            "file", "list", "--no-pager",
+            "-r", "description(substring:'implement core feature')"
+        )
+>       assert rc == 0, f"jj file list failed: {err}"
+E       AssertionError: jj file list failed: Error: Revset `description(substring:'implement core feature')` didn't resolve to any revisions
+E         
+E       assert 1 == 0
+
+tests/test_final_state.py:88: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_implement_core_feature_commit_restored
+FAILED tests/test_final_state.py::test_bad_description_not_present - Assertio...
+FAILED tests/test_final_state.py::test_add_tests_commit_restored - AssertionE...
+FAILED tests/test_final_state.py::test_all_three_commits_in_history - Asserti...
+FAILED tests/test_final_state.py::test_undo_operations_in_oplog - AssertionEr...
+FAILED tests/test_final_state.py::test_tests_py_file_accessible - AssertionEr...
+FAILED tests/test_final_state.py::test_core_py_file_accessible - AssertionErr...
+============================== 7 failed in 0.22s ===============================

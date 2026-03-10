@@ -1,0 +1,167 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 13,
+            "passed": 3,
+            "failed": 10,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122710.9209433,
+            "stop": 1773122711.327029
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_no_mixed_commit_in_history",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.028008072869852185,
+                "start": 1773122710.9447637,
+                "stop": 1773122710.994091,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_no_mixed_commit_in_history():\n        \"\"\"The 'add API endpoint and fix login bug' commit must not exist.\"\"\"\n        result = run(\n            [\"log\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"',\n             \"-r\", 'description(substring:\"add API endpoint and fix login bug\")'],\n            cwd=REPO,\n        )\n        assert result.returncode == 0\n>       assert \"add API endpoint and fix login bug\" not in result.stdout\nE       AssertionError: assert 'add API end...ix login bug' not in 'add API end...ogin bug\\n\\n'\nE         \nE         'add API endpoint and fix login bug' is contained here:\nE         Strings contain only whitespace, escaping them using repr()\nE           'add API endpoint and fix login bug\\n\\n'\n\n/tests/test_final_state.py:21: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_no_wip_bump_version_in_history",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.021790327969938517,
+                "start": 1773122710.994428,
+                "stop": 1773122711.0198843,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_no_wip_bump_version_in_history():\n        \"\"\"The 'wip: bump version' commit must not exist.\"\"\"\n        result = run(\n            [\"log\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"',\n             \"-r\", 'description(substring:\"wip: bump version\")'],\n            cwd=REPO,\n        )\n        assert result.returncode == 0\n>       assert \"wip: bump version\" not in result.stdout\nE       AssertionError: assert 'wip: bump version' not in 'wip: bump version\\n\\n'\nE         \nE         'wip: bump version' is contained here:\nE         Strings contain only whitespace, escaping them using repr()\nE           'wip: bump version\\n\\n'\n\n/tests/test_final_state.py:32: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_no_fixup_commit_in_history",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02145365998148918,
+                "start": 1773122711.0201569,
+                "stop": 1773122711.044961,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_no_fixup_commit_in_history():\n        \"\"\"The fixup commit must not exist.\"\"\"\n        result = run(\n            [\"log\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"',\n             \"-r\", 'description(substring:\"fixup: missing newline in release notes\")'],\n            cwd=REPO,\n        )\n        assert result.returncode == 0\n>       assert \"fixup: missing newline in release notes\" not in result.stdout\nE       AssertionError: assert 'fixup: miss...elease notes' not in 'fixup: miss...se notes\\n\\n'\nE         \nE         'fixup: missing newline in release notes' is contained here:\nE         Strings contain only whitespace, escaping them using repr()\nE           'fixup: missing newline in release notes\\n\\n'\n\n/tests/test_final_state.py:43: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_fix_login_bug_commit_exists",
+                "status": "passed",
+                "duration": 0.02084467583335936,
+                "start": 1773122711.0452375,
+                "stop": 1773122711.066336,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_add_api_endpoint_commit_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022065775003284216,
+                "start": 1773122711.066821,
+                "stop": 1773122711.0930104,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_add_api_endpoint_commit_exists():\n        result = run(\n            [\"log\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"',\n             \"-r\", 'description(substring:\"add API endpoint\")'],\n            cwd=REPO,\n        )\n        assert result.returncode == 0\n        # Must match exactly \"add API endpoint\" \u2014 not \"add API endpoint and fix login bug\"\n        lines = result.stdout.strip().splitlines()\n        descs = [l.strip() for l in lines if l.strip()]\n>       assert any(d.rstrip() == \"add API endpoint\" for d in descs), \\\n            f\"Expected 'add API endpoint' commit, got: {descs}\"\nE       AssertionError: Expected 'add API endpoint' commit, got: ['add API endpoint and fix login bug']\nE       assert False\nE        +  where False = any(<generator object test_add_api_endpoint_commit_exists.<locals>.<genexpr> at 0x7c1865ef6f10>)\n\n/tests/test_final_state.py:66: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_bump_version_description_correct",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022206143010407686,
+                "start": 1773122711.0934248,
+                "stop": 1773122711.1191895,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_bump_version_description_correct():\n        result = run(\n            [\"log\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"',\n             \"-r\", 'description(substring:\"bump version to 2.3.0\")'],\n            cwd=REPO,\n        )\n        assert result.returncode == 0\n>       assert \"bump version to 2.3.0\" in result.stdout\nE       assert 'bump version to 2.3.0' in ''\nE        +  where '' = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-T', 'description ++ \"\\\\n\"', '-r', 'description(substring:\"bump version to 2.3.0\")'], returncode=0, stdout='', stderr='').stdout\n\n/tests/test_final_state.py:77: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_fix_login_bug_contains_only_auth_py",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023502969183027744,
+                "start": 1773122711.119493,
+                "stop": 1773122711.1466138,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_fix_login_bug_contains_only_auth_py():\n        result = run(\n            [\"show\", \"--name-only\",\n             \"-r\", 'description(substring:\"fix login bug\")'],\n            cwd=REPO,\n        )\n        assert result.returncode == 0, f\"jj show failed: {result.stderr}\"\n        assert \"src/auth.py\" in result.stdout\n>       assert \"src/api.py\" not in result.stdout\nE       AssertionError: assert 'src/api.py' not in 'Commit ID: ...rc/auth.py\\n'\nE         \nE         'src/api.py' is contained here:\nE           ogin bug\nE           \nE           src/api.py\nE           src/auth.py\n\n/tests/test_final_state.py:88: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_add_api_endpoint_contains_only_api_py",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022324592107906938,
+                "start": 1773122711.147081,
+                "stop": 1773122711.173398,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_add_api_endpoint_contains_only_api_py():\n        result = run(\n            [\"log\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"',\n             \"-r\", 'description(substring:\"add API endpoint\")'],\n            cwd=REPO,\n        )\n        assert result.returncode == 0\n        lines = [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]\n        # Find the exact \"add API endpoint\" commit\n        exact_commits = [l for l in lines if l.rstrip() == \"add API endpoint\"]\n>       assert len(exact_commits) == 1, f\"Expected exactly 1 'add API endpoint' commit, got: {lines}\"\nE       AssertionError: Expected exactly 1 'add API endpoint' commit, got: ['add API endpoint and fix login bug']\nE       assert 0 == 1\nE        +  where 0 = len([])\n\n/tests/test_final_state.py:101: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_add_release_notes_contains_release_notes_md",
+                "status": "passed",
+                "duration": 0.02250330033712089,
+                "start": 1773122711.1737623,
+                "stop": 1773122711.1965742,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_bump_version_commit_contains_version_txt",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.020506602944806218,
+                "start": 1773122711.196904,
+                "stop": 1773122711.2209744,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_bump_version_commit_contains_version_txt():\n        result = run(\n            [\"show\", \"--name-only\",\n             \"-r\", 'description(substring:\"bump version to 2.3.0\")'],\n            cwd=REPO,\n        )\n>       assert result.returncode == 0, f\"jj show failed: {result.stderr}\"\nE       AssertionError: jj show failed: Error: Revset `description(substring:\"bump version to 2.3.0\")` didn't resolve to any revisions\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', '--no-pager', 'show', '--name-only', '-r', 'description(substring:\"bump version to 2.3.0\"... stdout='', stderr='Error: Revset `description(substring:\"bump version to 2.3.0\")` didn\\'t resolve to any revisions\\n').returncode\n\n/tests/test_final_state.py:136: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_fix_login_bug_is_ancestor_of_add_api_endpoint",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.041409773053601384,
+                "start": 1773122711.22125,
+                "stop": 1773122711.2735493,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_fix_login_bug_is_ancestor_of_add_api_endpoint():\n        \"\"\"fix login bug should be the parent of add API endpoint.\"\"\"\n        result = run(\n            [\"log\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"',\n             \"-r\", 'description(substring:\"add API endpoint\") & description(substring:\"fix login bug\")+'],\n            cwd=REPO,\n        )\n        # If fix login bug is parent of add API endpoint, this intersection should be non-empty\n        # Actually let's verify differently: add API endpoint's parent should be fix login bug\n        result2 = run(\n            [\"log\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"',\n             \"-r\", 'description(substring:\"add API endpoint\")-'],\n            cwd=REPO,\n        )\n        assert result2.returncode == 0\n>       assert \"fix login bug\" in result2.stdout, \\\n            f\"Parent of 'add API endpoint' should be 'fix login bug', got: {result2.stdout}\"\nE       AssertionError: Parent of 'add API endpoint' should be 'fix login bug', got: initial project scaffold\nE         \nE         \nE       assert 'fix login bug' in 'initial project scaffold\\n\\n'\nE        +  where 'initial project scaffold\\n\\n' = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-T', 'description ++ \"\\\\n\"', '-r', 'description(substring:\"add API endpoint\")-'], returncode=0, stdout='initial project scaffold\\n\\n', stderr='').stdout\n\n/tests/test_final_state.py:155: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_bookmark_release_v23_points_to_bump_version",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02149577671661973,
+                "start": 1773122711.2738814,
+                "stop": 1773122711.299445,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_bookmark_release_v23_points_to_bump_version():\n        \"\"\"release/v2.3 bookmark must point to the 'bump version to 2.3.0' commit.\"\"\"\n        result = run(\n            [\"log\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"',\n             \"-r\", \"release/v2.3\"],\n            cwd=REPO,\n        )\n        assert result.returncode == 0, f\"Failed to resolve bookmark: {result.stderr}\"\n>       assert \"bump version to 2.3.0\" in result.stdout, \\\n            f\"release/v2.3 bookmark does not point to 'bump version to 2.3.0', got: {result.stdout}\"\nE       AssertionError: release/v2.3 bookmark does not point to 'bump version to 2.3.0', got: fixup: missing newline in release notes\nE         \nE         \nE       assert 'bump version to 2.3.0' in 'fixup: missing newline in release notes\\n\\n'\nE        +  where 'fixup: missing newline in release notes\\n\\n' = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-T', 'description ++ \"\\\\n\"', '-r', 'release/v2.3'], returncode=0, stdout='fixup: missing newline in release notes\\n\\n', stderr='').stdout\n\n/tests/test_final_state.py:167: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_linear_chain_has_five_meaningful_commits",
+                "status": "passed",
+                "duration": 0.026474549202248454,
+                "start": 1773122711.2998638,
+                "stop": 1773122711.3267124,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

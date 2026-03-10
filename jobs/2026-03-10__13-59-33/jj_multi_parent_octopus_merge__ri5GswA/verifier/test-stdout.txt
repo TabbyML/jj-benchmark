@@ -1,0 +1,53 @@
+FFFF                                                                     [100%]
+=================================== FAILURES ===================================
+_______________________ test_integration_bookmark_exists _______________________
+
+    def test_integration_bookmark_exists():
+        result = run_jj(["bookmark", "list"])
+        assert result.returncode == 0, f"jj bookmark list failed: {result.stderr}"
+>       assert "integration" in result.stdout, "Bookmark 'integration' does not exist."
+E       AssertionError: Bookmark 'integration' does not exist.
+E       assert 'integration' in 'base: uwoyzlpk e48bbb56 base commit\nfeature-a: rtkmxxxl fe9faf19 add a.txt\nfeature-b: syqlonxk 131aace4 add b.txt\nfeature-c: ykzqmxwr 69bbe6a9 add c.txt\n'
+E        +  where 'base: uwoyzlpk e48bbb56 base commit\nfeature-a: rtkmxxxl fe9faf19 add a.txt\nfeature-b: syqlonxk 131aace4 add b.txt\nfeature-c: ykzqmxwr 69bbe6a9 add c.txt\n' = CompletedProcess(args=['jj', 'bookmark', 'list'], returncode=0, stdout='base: uwoyzlpk e48bbb56 base commit\nfeature-a...mxxxl fe9faf19 add a.txt\nfeature-b: syqlonxk 131aace4 add b.txt\nfeature-c: ykzqmxwr 69bbe6a9 add c.txt\n', stderr='').stdout
+
+tests/test_final_state.py:14: AssertionError
+______________________ test_integration_has_three_parents ______________________
+
+    def test_integration_has_three_parents():
+        # Get the parents of the integration bookmark
+        result = run_jj(["log", "-r", "parents(integration)", "--no-graph", "-T", "bookmarks ++ '\n'"])
+>       assert result.returncode == 0, f"jj log failed: {result.stderr}"
+E       AssertionError: jj log failed: Error: Revision `integration` doesn't exist
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', 'log', '-r', 'parents(integration)', '--no-graph', '-T', "bookmarks ++ '\n'"], returncode=1, stdout='', stderr="Error: Revision `integration` doesn't exist\n").returncode
+
+tests/test_final_state.py:19: AssertionError
+_____________________ test_octopus_file_exists_and_content _____________________
+
+    def test_octopus_file_exists_and_content():
+        result = run_jj(["file", "show", "octopus.txt", "-r", "integration"])
+>       assert result.returncode == 0, f"Failed to read octopus.txt from integration revision: {result.stderr}"
+E       AssertionError: Failed to read octopus.txt from integration revision: Error: Revision `integration` doesn't exist
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', 'file', 'show', 'octopus.txt', '-r', 'integration'], returncode=1, stdout='', stderr="Error: Revision `integration` doesn't exist\n").returncode
+
+tests/test_final_state.py:35: AssertionError
+________________________ test_parents_log_file_correct _________________________
+
+    def test_parents_log_file_correct():
+>       assert os.path.isfile(LOG_FILE), f"Log file {LOG_FILE} does not exist."
+E       AssertionError: Log file /home/user/parents.log does not exist.
+E       assert False
+E        +  where False = <function isfile at 0x7deccdec9f30>('/home/user/parents.log')
+E        +    where <function isfile at 0x7deccdec9f30> = <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'>.isfile
+E        +      where <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'> = os.path
+
+tests/test_final_state.py:40: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_integration_bookmark_exists - Assertio...
+FAILED tests/test_final_state.py::test_integration_has_three_parents - Assert...
+FAILED tests/test_final_state.py::test_octopus_file_exists_and_content - Asse...
+FAILED tests/test_final_state.py::test_parents_log_file_correct - AssertionEr...
+4 failed in 0.12s

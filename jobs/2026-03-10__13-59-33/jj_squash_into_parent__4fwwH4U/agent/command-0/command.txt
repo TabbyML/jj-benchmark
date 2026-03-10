@@ -1,0 +1,22 @@
+pochi --model deepinfra/glm-4.7-flash --stream-json > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+'You are a platform engineer working in a `jj` (Jujutsu) repository at `/home/user/monorepo`.
+
+The repository has three commits above the root:
+1. `build: add base Makefile` — creates `Makefile` with content `all:\n\techo done`
+2. `build: add lint target` — appends `lint:\n\tpylint src/` to `Makefile`
+3. `wip: fixup lint flag` — modifies `Makefile` so the lint line becomes `lint:\n\tpylint --errors-only src/`
+
+The working copy is at `wip: fixup lint flag` (i.e., `@`).
+
+Your colleague has reviewed your work and says the fixup should be squashed into the `build: add lint target` commit, not left as a separate commit. Squash the current working copy (`@`) into its parent (`@-`), producing a single combined commit. The resulting combined commit description must be `build: add lint target with error-only flag`.
+
+After squashing, save the output of `jj log --no-graph -r '"'"'root()..@'"'"' -T '"'"'description ++ "\n"'"'"'` to `/home/user/monorepo/log.txt`.
+
+Your task is complete when:
+- There are exactly two commits above root (the fixup commit has been merged into its parent)
+- The commit that was `build: add lint target` now has description `build: add lint target with error-only flag`
+- `Makefile` contains `pylint --errors-only src/`
+- `wip: fixup lint flag` no longer appears in the log
+- `/home/user/monorepo/log.txt` exists and is non-empty
+'
+EOF

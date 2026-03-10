@@ -1,0 +1,132 @@
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 33ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 7 items
+
+tests/test_final_state.py FF.F.FF                                        [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_gitignore_file_exists __________________________
+
+    def test_gitignore_file_exists():
+        gitignore_path = os.path.join(REPO_DIR, ".gitignore")
+>       assert os.path.isfile(gitignore_path), (
+            f".gitignore does not exist at {gitignore_path}. "
+            "The user must create a .gitignore file with the build/ pattern."
+        )
+E       AssertionError: .gitignore does not exist at /home/user/myrepo/.gitignore. The user must create a .gitignore file with the build/ pattern.
+E       assert False
+E        +  where False = <function isfile at 0x7e1b5be09f30>('/home/user/myrepo/.gitignore')
+E        +    where <function isfile at 0x7e1b5be09f30> = <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'>.isfile
+E        +      where <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'> = os.path
+
+tests/test_final_state.py:22: AssertionError
+____________________ test_gitignore_contains_build_pattern _____________________
+
+    def test_gitignore_contains_build_pattern():
+        gitignore_path = os.path.join(REPO_DIR, ".gitignore")
+>       with open(gitignore_path) as fh:
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/myrepo/.gitignore'
+
+tests/test_final_state.py:30: FileNotFoundError
+______________________ test_build_output_bin_not_tracked _______________________
+
+    def test_build_output_bin_not_tracked():
+        result = _jj("file", "list", "-r", "@")
+        assert result.returncode == 0, (
+            f"jj file list failed with exit code {result.returncode}.\nstderr: {result.stderr}"
+        )
+>       assert "build/output.bin" not in result.stdout, (
+            f"build/output.bin should NOT be tracked in the working-copy commit. "
+            f"jj file list output: {result.stdout}"
+        )
+E       AssertionError: build/output.bin should NOT be tracked in the working-copy commit. jj file list output: build/output.bin
+E         src/main.py
+E         
+E       assert 'build/output.bin' not in 'build/outpu...rc/main.py\n'
+E         
+E         'build/output.bin' is contained here:
+E           build/output.bin
+E           src/main.py
+
+tests/test_final_state.py:52: AssertionError
+____________________________ test_gitignore_tracked ____________________________
+
+    def test_gitignore_tracked():
+        result = _jj("file", "list", "-r", "@")
+        assert result.returncode == 0, (
+            f"jj file list failed with exit code {result.returncode}.\nstderr: {result.stderr}"
+        )
+>       assert ".gitignore" in result.stdout, (
+            f".gitignore should be tracked in the working-copy commit. "
+            f"jj file list output: {result.stdout}"
+        )
+E       AssertionError: .gitignore should be tracked in the working-copy commit. jj file list output: build/output.bin
+E         src/main.py
+E         
+E       assert '.gitignore' in 'build/output.bin\nsrc/main.py\n'
+E        +  where 'build/output.bin\nsrc/main.py\n' = CompletedProcess(args=['jj', 'file', 'list', '-r', '@'], returncode=0, stdout='build/output.bin\nsrc/main.py\n', stderr='').stdout
+
+tests/test_final_state.py:78: AssertionError
+_________________ test_jj_status_does_not_show_build_artifact __________________
+
+    def test_jj_status_does_not_show_build_artifact():
+        result = _jj("status")
+        assert result.returncode == 0, (
+            f"jj status failed with exit code {result.returncode}.\nstderr: {result.stderr}"
+        )
+>       assert "build/output.bin" not in result.stdout, (
+            f"jj status must NOT show build/output.bin. "
+            f"jj status output: {result.stdout}"
+        )
+E       AssertionError: jj status must NOT show build/output.bin. jj status output: Working copy changes:
+E         A build/output.bin
+E         A src/main.py
+E         Working copy  (@) : loqxvsus 80b99382 initial files with build artifact
+E         Parent commit (@-): zzzzzzzz 00000000 (empty) (no description set)
+E         
+E       assert 'build/output.bin' not in 'Working cop...ption set)\n'
+E         
+E         'build/output.bin' is contained here:
+E           Working copy changes:
+E           A build/output.bin
+E           A src/main.py
+E           Working copy  (@) : loqxvsus 80b99382 initial files with build artifact
+E           Parent commit (@-): zzzzzzzz 00000000 (empty) (no description set)
+
+tests/test_final_state.py:89: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_build_output_bin_still_on_disk
+PASSED tests/test_final_state.py::test_src_main_py_still_tracked
+FAILED tests/test_final_state.py::test_gitignore_file_exists - AssertionError...
+FAILED tests/test_final_state.py::test_gitignore_contains_build_pattern - Fil...
+FAILED tests/test_final_state.py::test_build_output_bin_not_tracked - Asserti...
+FAILED tests/test_final_state.py::test_gitignore_tracked - AssertionError: .g...
+FAILED tests/test_final_state.py::test_jj_status_does_not_show_build_artifact
+========================= 5 failed, 2 passed in 0.14s ==========================

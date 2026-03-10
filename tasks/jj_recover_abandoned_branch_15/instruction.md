@@ -1,0 +1,1 @@
+You are an incident responder. A developer accidentally abandoned a commit that contained important work for the login page. The commit had the description `feat: implement login page`. Your task is to find the hidden abandoned commit in the repository at `/home/user/myrepo` and create a new bookmark named `recovered-login` pointing to it, effectively recovering the work.

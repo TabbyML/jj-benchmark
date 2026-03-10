@@ -1,0 +1,187 @@
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.5 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading cpython-3.12.12-linux-x86_64-gnu (download) (31.1MiB)
+ Downloading cpython-3.12.12-linux-x86_64-gnu (download)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 5 packages in 17ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.12, pytest-8.4.1, pluggy-1.6.0 -- /root/.cache/uv/archive-v0/u5QodmS1W2hNe1TYUreZZ/bin/python
+cachedir: .pytest_cache
+rootdir: /tests
+collecting ... collected 9 items
+
+../../tests/test_final_state.py::test_no_draft_revisions_remain FAILED   [ 11%]
+../../tests/test_final_state.py::test_exactly_four_named_revisions FAILED [ 22%]
+../../tests/test_final_state.py::test_revision_descriptions_in_order FAILED [ 33%]
+../../tests/test_final_state.py::test_audit_main_points_to_reporting_module PASSED [ 44%]
+../../tests/test_final_state.py::test_files_at_audit_main_are_correct PASSED [ 55%]
+../../tests/test_final_state.py::test_validate_wip_absent_at_audit_main FAILED [ 66%]
+../../tests/test_final_state.py::test_dedup_exp_absent_at_audit_main FAILED [ 77%]
+../../tests/test_final_state.py::test_working_copy_parent_is_reporting_module PASSED [ 88%]
+../../tests/test_final_state.py::test_audit_main_is_parent_of_working_copy PASSED [100%]
+
+=================================== FAILURES ===================================
+________________________ test_no_draft_revisions_remain ________________________
+
+    def test_no_draft_revisions_remain():
+        """After the task, no revision should have a description starting with 'draft:'."""
+        result = subprocess.run(
+            ["jj", "--no-pager", "log",
+             "-r", 'description(glob:"draft:*")',
+             "--no-graph", "-T", "description"],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+>       assert result.stdout.strip() == "", (
+            f"Draft revisions still exist: {result.stdout.strip()}"
+        )
+E       AssertionError: Draft revisions still exist: draft: experimental dedup pass
+E         draft: WIP validation logic (do not merge)
+E       assert 'draft: exper...do not merge)' == ''
+E         
+E         + draft: experimental dedup pass
+E         + draft: WIP validation logic (do not merge)
+
+/tests/test_final_state.py:19: AssertionError
+______________________ test_exactly_four_named_revisions _______________________
+
+    def test_exactly_four_named_revisions():
+        """After pruning, exactly 4 non-empty, non-working-copy revisions should exist."""
+        result = subprocess.run(
+            ["jj", "--no-pager", "log", "-r", "all()",
+             "--no-graph", "-T", 'description ++ "\\n"'],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+        # descriptions that are non-empty (skip empty working copy change)
+        descriptions = [line.strip() for line in result.stdout.splitlines() if line.strip()]
+        named = [d for d in descriptions if d != "(no description set)"]
+>       assert len(named) == 4, (
+            f"Expected exactly 4 named revisions, got {len(named)}: {named}"
+        )
+E       AssertionError: Expected exactly 4 named revisions, got 6: ['feat: add reporting module', 'draft: experimental dedup pass', 'draft: WIP validation logic (do not merge)', 'feat: add transformation step', 'feat: add ingestion pipeline', 'init: scaffold audit repo']
+E       assert 6 == 4
+E        +  where 6 = len(['feat: add reporting module', 'draft: experimental dedup pass', 'draft: WIP validation logic (do not merge)', 'feat: add transformation step', 'feat: add ingestion pipeline', 'init: scaffold audit repo'])
+
+/tests/test_final_state.py:37: AssertionError
+_____________________ test_revision_descriptions_in_order ______________________
+
+    def test_revision_descriptions_in_order():
+        """The 4 revisions must have specific descriptions, forming the cleaned audit trail."""
+        result = subprocess.run(
+            ["jj", "--no-pager", "log",
+             "-r", "roots(all())::audit-main",
+             "--no-graph", "--reversed", "-T", 'description ++ "\\n"'],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+        lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
+        expected = [
+            "init: scaffold audit repo",
+            "feat: add ingestion pipeline",
+            "feat: add transformation step",
+            "feat: add reporting module",
+        ]
+>       assert lines == expected, (
+            f"Revision descriptions don't match.\nExpected: {expected}\nGot: {lines}"
+        )
+E       AssertionError: Revision descriptions don't match.
+E         Expected: ['init: scaffold audit repo', 'feat: add ingestion pipeline', 'feat: add transformation step', 'feat: add reporting module']
+E         Got: ['init: scaffold audit repo', 'feat: add ingestion pipeline', 'feat: add transformation step', 'draft: WIP validation logic (do not merge)', 'draft: experimental dedup pass', 'feat: add reporting module']
+E       assert ['init: scaff...rting module'] == ['init: scaff...rting module']
+E         
+E         At index 3 diff: 'draft: WIP validation logic (do not merge)' != 'feat: add reporting module'
+E         Left contains 2 more items, first extra item: 'draft: experimental dedup pass'
+E         
+E         Full diff:
+E           [
+E               'init: scaffold audit repo',...
+E         
+E         ...Full output truncated (6 lines hidden), use '-vv' to show
+
+/tests/test_final_state.py:60: AssertionError
+____________________ test_validate_wip_absent_at_audit_main ____________________
+
+    def test_validate_wip_absent_at_audit_main():
+        """pipelines/validate_wip.py must NOT be present at the audit-main tip."""
+        result = subprocess.run(
+            ["jj", "--no-pager", "file", "list", "-r", "audit-main"],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj file list failed: {result.stderr}"
+>       assert "pipelines/validate_wip.py" not in result.stdout, (
+            "pipelines/validate_wip.py should not be present at audit-main"
+        )
+E       AssertionError: pipelines/validate_wip.py should not be present at audit-main
+E       assert 'pipelines/validate_wip.py' not in 'README.md\n...summary.py\n'
+E         
+E         'pipelines/validate_wip.py' is contained here:
+E           README.md
+E           pipelines/dedup_exp.py
+E           pipelines/ingest.py
+E           pipelines/transform.py
+E           pipelines/validate_wip.py
+E           reports/summary.py
+
+/tests/test_final_state.py:110: AssertionError
+_____________________ test_dedup_exp_absent_at_audit_main ______________________
+
+    def test_dedup_exp_absent_at_audit_main():
+        """pipelines/dedup_exp.py must NOT be present at the audit-main tip."""
+        result = subprocess.run(
+            ["jj", "--no-pager", "file", "list", "-r", "audit-main"],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj file list failed: {result.stderr}"
+>       assert "pipelines/dedup_exp.py" not in result.stdout, (
+            "pipelines/dedup_exp.py should not be present at audit-main"
+        )
+E       AssertionError: pipelines/dedup_exp.py should not be present at audit-main
+E       assert 'pipelines/dedup_exp.py' not in 'README.md\n...summary.py\n'
+E         
+E         'pipelines/dedup_exp.py' is contained here:
+E           README.md
+E           pipelines/dedup_exp.py
+E           pipelines/ingest.py
+E           pipelines/transform.py
+E           pipelines/validate_wip.py
+E           reports/summary.py
+
+/tests/test_final_state.py:124: AssertionError
+=========================== short test summary info ============================
+FAILED ../../tests/test_final_state.py::test_no_draft_revisions_remain - Asse...
+FAILED ../../tests/test_final_state.py::test_exactly_four_named_revisions - A...
+FAILED ../../tests/test_final_state.py::test_revision_descriptions_in_order
+FAILED ../../tests/test_final_state.py::test_validate_wip_absent_at_audit_main
+FAILED ../../tests/test_final_state.py::test_dedup_exp_absent_at_audit_main
+========================= 5 failed, 4 passed in 0.38s ==========================

@@ -1,0 +1,10 @@
+pochi --model deepinfra/glm-4.7-flash --stream-json > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+'You are in a training scenario exploring `jj` command options for templates and metadata fields.
+A `jj` repository is located at `/home/user/repo` with two existing commits (a base commit and a working copy commit).
+
+Your task is to:
+1. Modify the author of the current working copy commit to be exactly `Trainer <trainer@example.com>`.
+2. Add a template alias named `training_log` to your global `jj` configuration (`~/.jjconfig.toml`). The template must produce a string containing the short commit ID, the author'"'"'s email, and the first line of the description, separated by ` - ` (space, hyphen, space), followed by a newline.
+3. Generate a log of the current commit and its immediate parent (i.e., the revisions `@` and `@-`) using your new `training_log` template. Save this output to `/home/user/repo/formatted_log.txt`.
+'
+EOF

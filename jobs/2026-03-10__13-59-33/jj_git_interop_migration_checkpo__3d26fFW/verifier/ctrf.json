@@ -1,0 +1,80 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 0,
+            "failed": 5,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122615.5353954,
+            "stop": 1773122615.5954785
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_dot_jj_directory_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0009167508687824011,
+                "start": 1773122615.5478501,
+                "stop": 1773122615.5633116,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_dot_jj_directory_exists():\n        dot_jj = os.path.join(REPO_DIR, \".jj\")\n>       assert os.path.isdir(dot_jj), f\"{REPO_DIR} is not a valid jj repository (.jj directory missing).\"\nE       AssertionError: /home/user/project is not a valid jj repository (.jj directory missing).\nE       assert False\nE        +  where False = <function isdir at 0x7e6b876102c0>('/home/user/project/.jj')\nE        +    where <function isdir at 0x7e6b876102c0> = <module 'posixpath' (frozen)>.isdir\nE        +      where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:12: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_app_py_has_migrate_function",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.000640844227746129,
+                "start": 1773122615.563531,
+                "stop": 1773122615.5662973,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_app_py_has_migrate_function():\n        app_py_path = os.path.join(REPO_DIR, \"app.py\")\n        with open(app_py_path, \"r\") as f:\n            content = f.read()\n>       assert \"def migrate():\" in content, \"The 'migrate' function was not found in app.py.\"\nE       AssertionError: The 'migrate' function was not found in app.py.\nE       assert 'def migrate():' in 'def main():\\n    pass\\n'\n\ntests/test_final_state.py:18: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_jj_bookmark_exists_and_points_to_migrate",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.01566128502599895,
+                "start": 1773122615.5665112,
+                "stop": 1773122615.5844798,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_jj_bookmark_exists_and_points_to_migrate():\n        # Check if the bookmark exists\n        result = run_cmd([\"jj\", \"bookmark\", \"list\"])\n>       assert result.returncode == 0, f\"jj bookmark list failed: {result.stderr}\"\nE       AssertionError: jj bookmark list failed: Error: There is no jj repo in \".\"\nE         Hint: It looks like this is a git repo. You can create a jj repo backed by it by running this:\nE         jj git init\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'bookmark', 'list'], returncode=1, stdout='', stderr='Error: There is no jj repo in \".\"\\nHint: It looks like this is a git repo. You can create a jj repo backed by it by running this:\\njj git init\\n').returncode\n\ntests/test_final_state.py:23: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_git_branch_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0030232053250074387,
+                "start": 1773122615.5847023,
+                "stop": 1773122615.589947,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_git_branch_exists():\n        result = run_cmd([\"git\", \"branch\"])\n        assert result.returncode == 0, f\"git branch failed: {result.stderr}\"\n>       assert \"jj-migration\" in result.stdout, \"The Git branch 'jj-migration' does not exist.\"\nE       AssertionError: The Git branch 'jj-migration' does not exist.\nE       assert 'jj-migration' in '* main\\n'\nE        +  where '* main\\n' = CompletedProcess(args=['git', 'branch'], returncode=0, stdout='* main\\n', stderr='').stdout\n\ntests/test_final_state.py:35: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_git_branch_points_to_same_commit_as_jj_bookmark",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0024371319450438023,
+                "start": 1773122615.5901651,
+                "stop": 1773122615.5953054,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_git_branch_points_to_same_commit_as_jj_bookmark():\n        # Get the git commit hash for the branch\n        git_result = run_cmd([\"git\", \"rev-parse\", \"jj-migration\"])\n>       assert git_result.returncode == 0, f\"git rev-parse failed: {git_result.stderr}\"\nE       AssertionError: git rev-parse failed: fatal: ambiguous argument 'jj-migration': unknown revision or path not in the working tree.\nE         Use '--' to separate paths from revisions, like this:\nE         'git <command> [<revision>...] -- [<file>...]'\nE         \nE       assert 128 == 0\nE        +  where 128 = CompletedProcess(args=['git', 'rev-parse', 'jj-migration'], returncode=128, stdout='jj-migration\\n', stderr=\"fatal: am...orking tree.\\nUse '--' to separate paths from revisions, like this:\\n'git <command> [<revision>...] -- [<file>...]'\\n\").returncode\n\ntests/test_final_state.py:40: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

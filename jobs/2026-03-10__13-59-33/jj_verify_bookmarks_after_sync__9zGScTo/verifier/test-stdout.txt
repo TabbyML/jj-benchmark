@@ -1,0 +1,86 @@
+Hit:1 http://security.ubuntu.com/ubuntu noble-security InRelease
+Ign:2 http://archive.ubuntu.com/ubuntu noble InRelease
+Ign:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Ign:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Ign:2 http://archive.ubuntu.com/ubuntu noble InRelease
+Ign:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Ign:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Ign:2 http://archive.ubuntu.com/ubuntu noble InRelease
+Ign:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Ign:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Err:2 http://archive.ubuntu.com/ubuntu noble InRelease
+  Could not connect to archive.ubuntu.com:80 (198.18.2.57), connection timed out
+Err:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+  Unable to connect to archive.ubuntu.com:http:
+Err:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+  Unable to connect to archive.ubuntu.com:http:
+Reading package lists...
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble/InRelease  Could not connect to archive.ubuntu.com:80 (198.18.2.57), connection timed out
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble-updates/InRelease  Unable to connect to archive.ubuntu.com:http:
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/noble-backports/InRelease  Unable to connect to archive.ubuntu.com:http:
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (8.5.0-2ubuntu10.7).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.5 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 5 packages in 17ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0 -- /root/.cache/uv/archive-v0/H1AgCcSSPcS9iebfnOwIK/bin/python
+cachedir: .pytest_cache
+rootdir: /tests
+collecting ... collected 1 item
+
+../../tests/test_final_state.py::test_final_state FAILED                 [100%]
+
+=================================== FAILURES ===================================
+_______________________________ test_final_state _______________________________
+
+    def test_final_state():
+        repo_path = "/home/user/repo"
+    
+        # Check if we can get the bookmark feature-x
+        bookmarks = run_cmd("jj bookmark list feature-x", cwd=repo_path)
+        assert bookmarks.returncode == 0, f"Command failed: jj bookmark list feature-x\n{bookmarks.stderr}"
+    
+        # It should not have (diverged) in the output
+        assert "(diverged)" not in bookmarks.stdout, "Error: feature-x is still diverged."
+    
+        # Get the revision ID of feature-x
+        local_rev = run_cmd("jj log -r feature-x -T 'commit_id' --no-graph", cwd=repo_path)
+        assert local_rev.returncode == 0, f"Command failed: jj log -r feature-x\n{local_rev.stderr}"
+    
+        # Get the revision ID of feature-x@origin
+        remote_rev = run_cmd("jj log -r feature-x@origin -T 'commit_id' --no-graph", cwd=repo_path)
+        assert remote_rev.returncode == 0, f"Command failed: jj log -r feature-x@origin\n{remote_rev.stderr}"
+    
+        local_id = local_rev.stdout.strip()
+        remote_id = remote_rev.stdout.strip()
+    
+        assert local_id, "Error: Could not determine local revision ID."
+        assert remote_id, "Error: Could not determine remote revision ID."
+    
+>       assert local_id == remote_id, f"Error: feature-x ({local_id}) does not point to feature-x@origin ({remote_id})."
+E       AssertionError: Error: feature-x (dbfec241f0891bf8ea24b5362db5d87c36d01dbd) does not point to feature-x@origin (7ec3daa286b3451d9fd2cc823c3892b24820653c).
+E       assert 'dbfec241f089...5d87c36d01dbd' == '7ec3daa286b3...892b24820653c'
+E         
+E         - 7ec3daa286b3451d9fd2cc823c3892b24820653c
+E         + dbfec241f0891bf8ea24b5362db5d87c36d01dbd
+
+/tests/test_final_state.py:32: AssertionError
+=========================== short test summary info ============================
+FAILED ../../tests/test_final_state.py::test_final_state - AssertionError: Er...
+============================== 1 failed in 0.10s ===============================

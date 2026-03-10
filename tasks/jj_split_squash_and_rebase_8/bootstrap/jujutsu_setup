@@ -1,0 +1,39 @@
+#!/bin/bash
+set -e
+
+export EDITOR=true
+
+WORK_DIR="${BOOTSTRAP_WORK_DIR:-./.bootstrap_work/current}"
+WORK_HOME="${BOOTSTRAP_HOME:-$WORK_DIR/home/user}"
+
+rm -rf "$WORK_DIR"
+mkdir -p "$WORK_HOME"
+
+REPO_DIR="$WORK_HOME/repo"
+jj git init "$REPO_DIR"
+cd "$REPO_DIR"
+jj config set --repo user.name "Test User"
+jj config set --repo user.email "test@example.com"
+
+# Create main branch
+jj describe -m "Initial commit"
+jj bookmark create main
+jj new
+
+# Create feature branch commits
+jj describe -m "add utils.py"
+echo "def helper(): return True" > utils.py
+
+jj new
+jj describe -m "mixed changes"
+echo "def helper(): return False" > utils.py
+echo "def api_func(): return 'api'" > api.py
+
+jj new
+jj describe -m "add tests"
+echo "def test_api(): assert api_func() == 'api'" > test_api.py
+
+# Move feature bookmark to the last commit
+jj bookmark create feature -r @
+
+echo "Bootstrap complete: $REPO_DIR"

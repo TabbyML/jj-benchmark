@@ -1,0 +1,100 @@
+Hit:1 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.5 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading cpython-3.12.12-linux-x86_64-gnu (download) (31.1MiB)
+ Downloading cpython-3.12.12-linux-x86_64-gnu (download)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 5 packages in 18ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.12, pytest-8.4.1, pluggy-1.6.0 -- /root/.cache/uv/archive-v0/xT624Qivuq8vrOWqVLmWd/bin/python
+cachedir: .pytest_cache
+rootdir: /tests
+collecting ... collected 6 items
+
+../../tests/test_final_state.py::test_exactly_two_commits_above_root FAILED [ 16%]
+../../tests/test_final_state.py::test_combined_commit_description FAILED [ 33%]
+../../tests/test_final_state.py::test_fixup_commit_gone FAILED           [ 50%]
+../../tests/test_final_state.py::test_makefile_has_errors_only PASSED    [ 66%]
+../../tests/test_final_state.py::test_log_file_exists FAILED             [ 83%]
+../../tests/test_final_state.py::test_base_commit_still_present PASSED   [100%]
+
+=================================== FAILURES ===================================
+_____________________ test_exactly_two_commits_above_root ______________________
+
+    def test_exactly_two_commits_above_root():
+        result = run_jj(["log", "--no-graph", "-r", "root()..@", "-T", 'description ++ "\n"'])
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+        descs = [l.strip() for l in result.stdout.splitlines() if l.strip()]
+>       assert len(descs) == 2, f"Expected 2 commits above root, found {len(descs)}: {descs}"
+E       AssertionError: Expected 2 commits above root, found 3: ['wip: fixup lint flag', 'build: add lint target', 'build: add base Makefile']
+E       assert 3 == 2
+E        +  where 3 = len(['wip: fixup lint flag', 'build: add lint target', 'build: add base Makefile'])
+
+/tests/test_final_state.py:16: AssertionError
+_______________________ test_combined_commit_description _______________________
+
+    def test_combined_commit_description():
+        result = run_jj(["log", "--no-graph", "-r", "@", "-T", "description"])
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+>       assert "build: add lint target with error-only flag" in result.stdout, (
+            f"Expected 'build: add lint target with error-only flag', got: {result.stdout.strip()}"
+        )
+E       AssertionError: Expected 'build: add lint target with error-only flag', got: wip: fixup lint flag
+E       assert 'build: add lint target with error-only flag' in 'wip: fixup lint flag\n'
+E        +  where 'wip: fixup lint flag\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', '@', '-T', 'description'], returncode=0, stdout='wip: fixup lint flag\n', stderr='').stdout
+
+/tests/test_final_state.py:22: AssertionError
+____________________________ test_fixup_commit_gone ____________________________
+
+    def test_fixup_commit_gone():
+        result = run_jj(["log", "--no-graph", "-T", 'description ++ "\n"'])
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+>       assert "wip: fixup lint flag" not in result.stdout, "'wip: fixup lint flag' still present — squash not done."
+E       AssertionError: 'wip: fixup lint flag' still present — squash not done.
+E       assert 'wip: fixup lint flag' not in 'wip: fixup ...kefile\n\n\n'
+E         
+E         'wip: fixup lint flag' is contained here:
+E           wip: fixup lint flag
+E           
+E           build: add lint target
+E           
+E           build: add base Makefile
+
+/tests/test_final_state.py:30: AssertionError
+_____________________________ test_log_file_exists _____________________________
+
+    def test_log_file_exists():
+        log_path = os.path.join(REPO_DIR, "log.txt")
+>       assert os.path.isfile(log_path), f"log.txt not found at {log_path}."
+E       AssertionError: log.txt not found at /home/user/monorepo/log.txt.
+E       assert False
+E        +  where False = <function isfile at 0x74dafec64b80>('/home/user/monorepo/log.txt')
+E        +    where <function isfile at 0x74dafec64b80> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_final_state.py:41: AssertionError
+=========================== short test summary info ============================
+FAILED ../../tests/test_final_state.py::test_exactly_two_commits_above_root
+FAILED ../../tests/test_final_state.py::test_combined_commit_description - As...
+FAILED ../../tests/test_final_state.py::test_fixup_commit_gone - AssertionErr...
+FAILED ../../tests/test_final_state.py::test_log_file_exists - AssertionError...
+========================= 4 failed, 2 passed in 0.16s ==========================

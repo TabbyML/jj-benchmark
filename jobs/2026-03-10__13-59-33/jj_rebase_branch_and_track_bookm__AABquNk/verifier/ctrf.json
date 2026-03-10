@@ -1,0 +1,101 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 8,
+            "passed": 5,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122517.9208758,
+            "stop": 1773122518.2479663
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_bookmark_tip_description",
+                "status": "passed",
+                "duration": 0.0806635522749275,
+                "start": 1773122517.9417803,
+                "stop": 1773122518.02282,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_feature_bookmark_parent_description",
+                "status": "passed",
+                "duration": 0.029026355128735304,
+                "start": 1773122518.0231514,
+                "stop": 1773122518.0525951,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_feature_bookmark_grandparent_is_main",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.04439493105746806,
+                "start": 1773122518.0529163,
+                "stop": 1773122518.1171775,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_bookmark_grandparent_is_main():\n        \"\"\"The grandparent of feature/add-metrics tip must be the commit at main.\"\"\"\n        # Get the commit ID of main\n        result_main = subprocess.run(\n            [\"jj\", \"log\", \"-r\", \"main\", \"--no-graph\", \"-T\", 'commit_id ++ \"\\\\n\"'],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result_main.returncode == 0, f\"jj log main failed: {result_main.stderr}\"\n        main_commit_id = result_main.stdout.strip()\n    \n        # Get the commit ID of grandparent of feature/add-metrics\n        result_gp = subprocess.run(\n            [\"jj\", \"log\", \"-r\", \"feature/add-metrics--\", \"--no-graph\", \"-T\", 'commit_id ++ \"\\\\n\"'],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result_gp.returncode == 0, f\"jj log grandparent failed: {result_gp.stderr}\"\n        grandparent_commit_id = result_gp.stdout.strip()\n    \n>       assert main_commit_id == grandparent_commit_id, (\n            f\"Grandparent of feature/add-metrics ({grandparent_commit_id}) should equal main ({main_commit_id}). \"\n            \"The feature branch may not have been rebased onto main.\"\n        )\nE       AssertionError: Grandparent of feature/add-metrics (a6b7f8ccaa8ce04200063d42d75caa2af71c7999) should equal main (aad40cccbc4c3ab3c36d12c1938fd67d5d507f53). The feature branch may not have been rebased onto main.\nE       assert 'aad40cccbc4c...fd67d5d507f53' == 'a6b7f8ccaa8c...caa2af71c7999'\nE         \nE         - a6b7f8ccaa8ce04200063d42d75caa2af71c7999\nE         + aad40cccbc4c3ab3c36d12c1938fd67d5d507f53\n\n/tests/test_final_state.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_grandparent_description_is_deploy_sh_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.024562123930081725,
+                "start": 1773122518.1174495,
+                "stop": 1773122518.145142,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_grandparent_description_is_deploy_sh_commit():\n        \"\"\"The grandparent of feature/add-metrics tip must have description 'chore: add deploy.sh for CI pipeline'.\"\"\"\n        result = subprocess.run(\n            [\"jj\", \"log\", \"-r\", \"feature/add-metrics--\", \"--no-graph\", \"-T\", 'description ++ \"\\\\n\"'],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result.returncode == 0, f\"jj log grandparent failed: {result.stderr}\"\n>       assert \"chore: add deploy.sh for CI pipeline\" in result.stdout, (\n            f\"Expected grandparent description 'chore: add deploy.sh for CI pipeline', got: {result.stdout}\"\n        )\nE       AssertionError: Expected grandparent description 'chore: add deploy.sh for CI pipeline', got: chore: initial project scaffold\nE         \nE         \nE       assert 'chore: add deploy.sh for CI pipeline' in 'chore: initial project scaffold\\n\\n'\nE        +  where 'chore: initial project scaffold\\n\\n' = CompletedProcess(args=['jj', 'log', '-r', 'feature/add-metrics--', '--no-graph', '-T', 'description ++ \"\\\\n\"'], returncode=0, stdout='chore: initial project scaffold\\n\\n', stderr='').stdout\n\n/tests/test_final_state.py:73: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_deploy_sh_in_feature_branch",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.024487192975357175,
+                "start": 1773122518.145445,
+                "stop": 1773122518.173056,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_deploy_sh_in_feature_branch():\n        \"\"\"deploy.sh must be present in feature/add-metrics after rebase.\"\"\"\n        result = subprocess.run(\n            [\"jj\", \"file\", \"list\", \"-r\", \"feature/add-metrics\"],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result.returncode == 0, f\"jj file list failed: {result.stderr}\"\n>       assert \"deploy.sh\" in result.stdout, (\n            f\"deploy.sh should be in feature/add-metrics after rebase onto main. Got files: {result.stdout}\"\n        )\nE       AssertionError: deploy.sh should be in feature/add-metrics after rebase onto main. Got files: metrics/dashboard.py\nE         metrics/module.py\nE         scaffold.sh\nE         \nE       assert 'deploy.sh' in 'metrics/dashboard.py\\nmetrics/module.py\\nscaffold.sh\\n'\nE        +  where 'metrics/dashboard.py\\nmetrics/module.py\\nscaffold.sh\\n' = CompletedProcess(args=['jj', 'file', 'list', '-r', 'feature/add-metrics'], returncode=0, stdout='metrics/dashboard.py\\nmetrics/module.py\\nscaffold.sh\\n', stderr='').stdout\n\n/tests/test_final_state.py:87: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_metrics_module_in_feature_branch",
+                "status": "passed",
+                "duration": 0.02248917194083333,
+                "start": 1773122518.1734638,
+                "stop": 1773122518.196256,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_metrics_dashboard_in_feature_branch",
+                "status": "passed",
+                "duration": 0.02368566021323204,
+                "start": 1773122518.1965964,
+                "stop": 1773122518.2206197,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_scaffold_sh_in_feature_branch",
+                "status": "passed",
+                "duration": 0.026436232961714268,
+                "start": 1773122518.220953,
+                "stop": 1773122518.247713,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

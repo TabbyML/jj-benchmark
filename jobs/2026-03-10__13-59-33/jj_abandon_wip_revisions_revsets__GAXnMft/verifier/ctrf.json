@@ -1,0 +1,77 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 6,
+            "passed": 5,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122437.7672563,
+            "stop": 1773122437.9661
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_no_wip_revisions_remain",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02454708400182426,
+                "start": 1773122437.782934,
+                "stop": 1773122437.8292303,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_no_wip_revisions_remain():\n        \"\"\"After abandoning, the revset for WIP commits should return no results.\"\"\"\n        result = subprocess.run(\n            [\n                \"jj\", \"log\", \"--no-graph\",\n                \"-T\", 'change_id ++ \"\\\\n\"',\n                \"-r\", 'mutable() & description(\"\") & ~::bookmarks()',\n            ],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result.returncode == 0, (\n            f\"jj log revset query failed with rc={result.returncode}:\\n{result.stderr}\"\n        )\n        # Strip ANSI escape sequences and check there are no change IDs in the output\n        import re\n        clean = re.sub(r'\\x1b\\[[0-9;]*m', '', result.stdout)\n        lines = [line.strip() for line in clean.strip().splitlines() if line.strip()]\n>       assert len(lines) == 0, (\n            f\"Expected 0 WIP revisions after abandoning, but found {len(lines)}:\\n{result.stdout}\"\n        )\nE       AssertionError: Expected 0 WIP revisions after abandoning, but found 2:\nE         xurvrysrwstrupoxszvswnnsztvrryvn\nE         klqnwxqpmkkyrnynuswymxvkoznslwmy\nE         \nE       assert 2 == 0\nE        +  where 2 = len(['xurvrysrwstrupoxszvswnnsztvrryvn', 'klqnwxqpmkkyrnynuswymxvkoznslwmy'])\n\n/tests/test_final_state.py:28: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_bookmark_main_still_exists",
+                "status": "passed",
+                "duration": 0.030574806034564972,
+                "start": 1773122437.8294992,
+                "stop": 1773122437.8603935,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_bookmark_feature_core_still_exists",
+                "status": "passed",
+                "duration": 0.029843294993042946,
+                "start": 1773122437.860766,
+                "stop": 1773122437.8909335,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_readme_still_accessible",
+                "status": "passed",
+                "duration": 0.025322134140878916,
+                "start": 1773122437.8913422,
+                "stop": 1773122437.9170518,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_lib_rs_still_accessible",
+                "status": "passed",
+                "duration": 0.023179657058790326,
+                "start": 1773122437.917403,
+                "stop": 1773122437.9410145,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_feature_core_commit_still_has_correct_description",
+                "status": "passed",
+                "duration": 0.02415203908458352,
+                "start": 1773122437.941363,
+                "stop": 1773122437.9658248,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

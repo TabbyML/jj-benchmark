@@ -1,0 +1,98 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 2,
+            "failed": 5,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122948.4260366,
+            "stop": 1773122948.5686047
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_gitignore_file_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0011101891286671162,
+                "start": 1773122948.4409323,
+                "stop": 1773122948.4618208,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_gitignore_file_exists():\n        gitignore_path = os.path.join(REPO_DIR, \".gitignore\")\n>       assert os.path.isfile(gitignore_path), (\n            f\".gitignore does not exist at {gitignore_path}. \"\n            \"The user must create a .gitignore file with the build/ pattern.\"\n        )\nE       AssertionError: .gitignore does not exist at /home/user/myrepo/.gitignore. The user must create a .gitignore file with the build/ pattern.\nE       assert False\nE        +  where False = <function isfile at 0x7e1b5be09f30>('/home/user/myrepo/.gitignore')\nE        +    where <function isfile at 0x7e1b5be09f30> = <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'>.isfile\nE        +      where <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'> = os.path\n\ntests/test_final_state.py:22: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_gitignore_contains_build_pattern",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0005816689226776361,
+                "start": 1773122948.4620974,
+                "stop": 1773122948.4650664,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_gitignore_contains_build_pattern():\n        gitignore_path = os.path.join(REPO_DIR, \".gitignore\")\n>       with open(gitignore_path) as fh:\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/myrepo/.gitignore'\n\ntests/test_final_state.py:30: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_build_output_bin_still_on_disk",
+                "status": "passed",
+                "duration": 0.0006001987494528294,
+                "start": 1773122948.4653196,
+                "stop": 1773122948.4661062,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_build_output_bin_not_tracked",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022897976450622082,
+                "start": 1773122948.4663699,
+                "stop": 1773122948.4920595,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_build_output_bin_not_tracked():\n        result = _jj(\"file\", \"list\", \"-r\", \"@\")\n        assert result.returncode == 0, (\n            f\"jj file list failed with exit code {result.returncode}.\\nstderr: {result.stderr}\"\n        )\n>       assert \"build/output.bin\" not in result.stdout, (\n            f\"build/output.bin should NOT be tracked in the working-copy commit. \"\n            f\"jj file list output: {result.stdout}\"\n        )\nE       AssertionError: build/output.bin should NOT be tracked in the working-copy commit. jj file list output: build/output.bin\nE         src/main.py\nE         \nE       assert 'build/output.bin' not in 'build/outpu...rc/main.py\\n'\nE         \nE         'build/output.bin' is contained here:\nE           build/output.bin\nE           src/main.py\n\ntests/test_final_state.py:52: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_src_main_py_still_tracked",
+                "status": "passed",
+                "duration": 0.023718009935691953,
+                "start": 1773122948.492365,
+                "stop": 1773122948.5163722,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_gitignore_tracked",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022355661960318685,
+                "start": 1773122948.5167239,
+                "stop": 1773122948.541896,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_gitignore_tracked():\n        result = _jj(\"file\", \"list\", \"-r\", \"@\")\n        assert result.returncode == 0, (\n            f\"jj file list failed with exit code {result.returncode}.\\nstderr: {result.stderr}\"\n        )\n>       assert \".gitignore\" in result.stdout, (\n            f\".gitignore should be tracked in the working-copy commit. \"\n            f\"jj file list output: {result.stdout}\"\n        )\nE       AssertionError: .gitignore should be tracked in the working-copy commit. jj file list output: build/output.bin\nE         src/main.py\nE         \nE       assert '.gitignore' in 'build/output.bin\\nsrc/main.py\\n'\nE        +  where 'build/output.bin\\nsrc/main.py\\n' = CompletedProcess(args=['jj', 'file', 'list', '-r', '@'], returncode=0, stdout='build/output.bin\\nsrc/main.py\\n', stderr='').stdout\n\ntests/test_final_state.py:78: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_jj_status_does_not_show_build_artifact",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02328196680173278,
+                "start": 1773122948.5421634,
+                "stop": 1773122948.5683548,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_jj_status_does_not_show_build_artifact():\n        result = _jj(\"status\")\n        assert result.returncode == 0, (\n            f\"jj status failed with exit code {result.returncode}.\\nstderr: {result.stderr}\"\n        )\n>       assert \"build/output.bin\" not in result.stdout, (\n            f\"jj status must NOT show build/output.bin. \"\n            f\"jj status output: {result.stdout}\"\n        )\nE       AssertionError: jj status must NOT show build/output.bin. jj status output: Working copy changes:\nE         A build/output.bin\nE         A src/main.py\nE         Working copy  (@) : loqxvsus 80b99382 initial files with build artifact\nE         Parent commit (@-): zzzzzzzz 00000000 (empty) (no description set)\nE         \nE       assert 'build/output.bin' not in 'Working cop...ption set)\\n'\nE         \nE         'build/output.bin' is contained here:\nE           Working copy changes:\nE           A build/output.bin\nE           A src/main.py\nE           Working copy  (@) : loqxvsus 80b99382 initial files with build artifact\nE           Parent commit (@-): zzzzzzzz 00000000 (empty) (no description set)\n\ntests/test_final_state.py:89: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

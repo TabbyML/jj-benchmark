@@ -1,0 +1,56 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 0,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773123190.3269134,
+            "stop": 1773123190.4436102
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_watchdog_commit_is_visible_in_default_log",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.026652365224435925,
+                "start": 1773123190.3390877,
+                "stop": 1773123190.3865883,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_watchdog_commit_is_visible_in_default_log():\n        result = subprocess.run(\n            [\"jj\", \"log\", \"--no-graph\", \"-T\", \"description\"],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"feat: add watchdog timer support\" in result.stdout, (\n            \"Expected commit 'feat: add watchdog timer support' to be visible in default jj log, \"\n            \"but it was not found. The hidden commit must be restored into visible history.\"\n        )\nE       AssertionError: Expected commit 'feat: add watchdog timer support' to be visible in default jj log, but it was not found. The hidden commit must be restored into visible history.\nE       assert 'feat: add watchdog timer support' in 'refactor: clean up interrupt handler\\ninit: add initial Makefile\\n'\nE        +  where 'refactor: clean up interrupt handler\\ninit: add initial Makefile\\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description'], returncode=0, stdout='refactor: clean up interrupt handler\\ninit: add initial Makefile\\n', stderr='').stdout\n\n/tests/test_final_state.py:16: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_watchdog_commit_not_marked_hidden_in_log",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.024775233818218112,
+                "start": 1773123190.386925,
+                "stop": 1773123190.4153345,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_watchdog_commit_not_marked_hidden_in_log():\n        result = subprocess.run(\n            [\n                \"jj\", \"log\",\n                \"-r\", 'description(substring:\"watchdog\")',\n                \"--no-graph\",\n                \"-T\", 'description ++ \" hidden=\" ++ if(hidden, \"true\", \"false\")',\n            ],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result.returncode == 0, f\"jj log revset for watchdog commit failed: {result.stderr}\"\n>       assert \"feat: add watchdog timer support\" in result.stdout, (\n            \"Watchdog commit must be visible (not hidden)\"\n        )\nE       AssertionError: Watchdog commit must be visible (not hidden)\nE       assert 'feat: add watchdog timer support' in ''\nE        +  where '' = CompletedProcess(args=['jj', 'log', '-r', 'description(substring:\"watchdog\")', '--no-graph', '-T', 'description ++ \" hidden=\" ++ if(hidden, \"true\", \"false\")'], returncode=0, stdout='', stderr='').stdout\n\n/tests/test_final_state.py:35: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_watchdog_file_content_accessible",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.025162070291116834,
+                "start": 1773123190.415784,
+                "stop": 1773123190.4433231,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_watchdog_file_content_accessible():\n        result = subprocess.run(\n            [\n                \"jj\", \"file\", \"show\", \"watchdog.c\",\n                \"-r\", 'description(substring:\"watchdog\")',\n            ],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n>       assert result.returncode == 0, (\n            f\"jj file show watchdog.c failed: {result.stderr}. \"\n            \"The watchdog.c file must be accessible in the recovered commit.\"\n        )\nE       AssertionError: jj file show watchdog.c failed: Error: Revset `description(substring:\"watchdog\")` didn't resolve to any revisions\nE         . The watchdog.c file must be accessible in the recovered commit.\nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'file', 'show', 'watchdog.c', '-r', 'description(substring:\"watchdog\")'], returncode=1, stdout='', stderr='Error: Revset `description(substring:\"watchdog\")` didn\\'t resolve to any revisions\\n').returncode\n\n/tests/test_final_state.py:53: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

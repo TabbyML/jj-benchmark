@@ -1,0 +1,80 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 0,
+            "failed": 5,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773123098.2940128,
+            "stop": 1773123098.442247
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_recovered_commit_id_file_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0008295311126857996,
+                "start": 1773123098.3089106,
+                "stop": 1773123098.3258348,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_recovered_commit_id_file_exists():\n>       assert os.path.isfile(RECOVERED_ID_FILE), f\"Expected file {RECOVERED_ID_FILE} does not exist.\"\nE       AssertionError: Expected file /home/user/workspace/recovered_commit_id.txt does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x7d7e54bdc220>('/home/user/workspace/recovered_commit_id.txt')\nE        +    where <function isfile at 0x7d7e54bdc220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:12: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_bookmark_recovered_fix_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.05927797616459429,
+                "start": 1773123098.3260815,
+                "stop": 1773123098.387782,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_bookmark_recovered_fix_exists():\n        result = run_jj([\"bookmark\", \"list\"])\n        assert result.returncode == 0, f\"jj bookmark list failed: {result.stderr}\"\n>       assert \"recovered-fix\" in result.stdout, \"Bookmark 'recovered-fix' does not exist.\"\nE       AssertionError: Bookmark 'recovered-fix' does not exist.\nE       assert 'recovered-fix' in ''\nE        +  where '' = CompletedProcess(args=['jj', 'bookmark', 'list'], returncode=0, stdout='', stderr='').stdout\n\ntests/test_final_state.py:17: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_bookmark_points_to_correct_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022857898846268654,
+                "start": 1773123098.3880396,
+                "stop": 1773123098.413325,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_bookmark_points_to_correct_content():\n        # Verify the commit at recovered-fix has the expected file contents\n        result = run_jj([\"file\", \"show\", \"src/bugfix.py\", \"-r\", \"recovered-fix\"])\n>       assert result.returncode == 0, f\"jj file show failed or file missing at recovered-fix: {result.stderr}\"\nE       AssertionError: jj file show failed or file missing at recovered-fix: Error: Revision `recovered-fix` doesn't exist\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'file', 'show', 'src/bugfix.py', '-r', 'recovered-fix'], returncode=1, stdout='', stderr=\"Error: Revision `recovered-fix` doesn't exist\\n\").returncode\n\ntests/test_final_state.py:22: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_recovered_commit_id_matches_bookmark",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0006276292260736227,
+                "start": 1773123098.4135575,
+                "stop": 1773123098.4161851,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_recovered_commit_id_matches_bookmark():\n        # Verify the ID in the file matches the commit the bookmark points to\n>       with open(RECOVERED_ID_FILE, \"r\") as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/workspace/recovered_commit_id.txt'\n\ntests/test_final_state.py:29: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_recovered_commit_is_not_abandoned",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022505700821056962,
+                "start": 1773123098.4164312,
+                "stop": 1773123098.4420424,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_recovered_commit_is_not_abandoned():\n        # The recovered commit should be visible in default() (which means it's not abandoned)\n        # wait, default() is not a valid revset function, let's just check if `jj log -r <id>` works without --hidden\n        # Actually, jj log -r <id> might work for hidden commits if explicitly specified.\n        # To check if it's hidden, we can check if it's in `all()` but not in `visible_heads()`? No, `all()` is all visible commits.\n        # So if it's in `all()`, it's not hidden.\n        result = run_jj([\"log\", \"--no-graph\", \"-r\", \"recovered-fix\", \"-T\", \"commit_id\"])\n>       assert result.returncode == 0, \"The recovered-fix commit is not visible or doesn't exist.\"\nE       AssertionError: The recovered-fix commit is not visible or doesn't exist.\nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'recovered-fix', '-T', 'commit_id'], returncode=1, stdout='', stderr=\"Error: Revision `recovered-fix` doesn't exist\\n\").returncode\n\ntests/test_final_state.py:53: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

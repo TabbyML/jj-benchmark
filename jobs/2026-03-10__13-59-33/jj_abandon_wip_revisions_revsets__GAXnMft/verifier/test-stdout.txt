@@ -1,0 +1,74 @@
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 25ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 6 items
+
+../../../tests/test_final_state.py F.....                                [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_no_wip_revisions_remain _________________________
+
+    def test_no_wip_revisions_remain():
+        """After abandoning, the revset for WIP commits should return no results."""
+        result = subprocess.run(
+            [
+                "jj", "log", "--no-graph",
+                "-T", 'change_id ++ "\\n"',
+                "-r", 'mutable() & description("") & ~::bookmarks()',
+            ],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, (
+            f"jj log revset query failed with rc={result.returncode}:\n{result.stderr}"
+        )
+        # Strip ANSI escape sequences and check there are no change IDs in the output
+        import re
+        clean = re.sub(r'\x1b\[[0-9;]*m', '', result.stdout)
+        lines = [line.strip() for line in clean.strip().splitlines() if line.strip()]
+>       assert len(lines) == 0, (
+            f"Expected 0 WIP revisions after abandoning, but found {len(lines)}:\n{result.stdout}"
+        )
+E       AssertionError: Expected 0 WIP revisions after abandoning, but found 2:
+E         xurvrysrwstrupoxszvswnnsztvrryvn
+E         klqnwxqpmkkyrnynuswymxvkoznslwmy
+E         
+E       assert 2 == 0
+E        +  where 2 = len(['xurvrysrwstrupoxszvswnnsztvrryvn', 'klqnwxqpmkkyrnynuswymxvkoznslwmy'])
+
+/tests/test_final_state.py:28: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../../../tests/test_final_state.py::test_bookmark_main_still_exists
+PASSED ../../../tests/test_final_state.py::test_bookmark_feature_core_still_exists
+PASSED ../../../tests/test_final_state.py::test_readme_still_accessible
+PASSED ../../../tests/test_final_state.py::test_lib_rs_still_accessible
+PASSED ../../../tests/test_final_state.py::test_feature_core_commit_still_has_correct_description
+FAILED ../../../tests/test_final_state.py::test_no_wip_revisions_remain - Ass...
+========================= 1 failed, 5 passed in 0.20s ==========================

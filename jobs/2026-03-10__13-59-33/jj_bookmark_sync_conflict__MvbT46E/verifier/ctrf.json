@@ -1,0 +1,62 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 2,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122639.991779,
+            "stop": 1773122640.2007113
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_login_bookmark_exists_and_not_conflicted",
+                "status": "passed",
+                "duration": 0.039284732891246676,
+                "start": 1773122640.0074713,
+                "stop": 1773122640.0471408,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_feature_login_points_to_my_local_commit",
+                "status": "passed",
+                "duration": 0.023329929914325476,
+                "start": 1773122640.0474696,
+                "stop": 1773122640.071152,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_feature_login_parent_is_coworker_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02321592904627323,
+                "start": 1773122640.071402,
+                "stop": 1773122640.1114228,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_login_parent_is_coworker_commit():\n        result = run_jj([\"log\", \"--no-graph\", \"-r\", \"feature-login-\", \"-T\", 'description'])\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"Coworker commit\" in result.stdout, \\\n            f\"Expected parent of 'feature-login' to be 'Coworker commit', got: {result.stdout.strip()}\"\nE       AssertionError: Expected parent of 'feature-login' to be 'Coworker commit', got: Base feature commit\nE       assert 'Coworker commit' in 'Base feature commit\\n'\nE        +  where 'Base feature commit\\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'feature-login-', '-T', 'description'], returncode=0, stdout='Base feature commit\\n', stderr='').stdout\n\ntests/test_final_state.py:25: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_login_pushed_to_origin",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.08607722702436149,
+                "start": 1773122640.111646,
+                "stop": 1773122640.2002544,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_login_pushed_to_origin():\n        # Fetch first to ensure we see the latest from remote\n        fetch_result = run_jj([\"git\", \"fetch\"])\n        assert fetch_result.returncode == 0, f\"jj git fetch failed: {fetch_result.stderr}\"\n    \n        # Check if feature-login and feature-login@origin point to the same commit\n        local_rev = run_jj([\"log\", \"--no-graph\", \"-r\", \"feature-login\", \"-T\", 'commit_id'])\n>       assert local_rev.returncode == 0, f\"jj log failed: {local_rev.stderr}\"\nE       AssertionError: jj log failed: Error: Name `feature-login` is conflicted\nE         Hint: Use commit ID to select single revision from: ff7e60178422, bd7df0982af3\nE         Hint: Use `bookmarks(feature-login)` to select all revisions\nE         Hint: To set which revision the bookmark points to, run `jj bookmark set feature-login -r <REVISION>`\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'feature-login', '-T', 'commit_id'], returncode=1, stdout='', ...ll revisions\\nHint: To set which revision the bookmark points to, run `jj bookmark set feature-login -r <REVISION>`\\n').returncode\n\ntests/test_final_state.py:35: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

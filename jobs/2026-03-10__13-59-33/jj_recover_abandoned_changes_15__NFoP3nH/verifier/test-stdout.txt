@@ -1,0 +1,98 @@
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (8.5.0-2ubuntu10.7).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 6 packages in 18ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 5 items
+
+tests/test_final_state.py FFFFF                                          [100%]
+
+=================================== FAILURES ===================================
+_____________________ test_recovered_commit_id_file_exists _____________________
+
+    def test_recovered_commit_id_file_exists():
+>       assert os.path.isfile(RECOVERED_ID_FILE), f"Expected file {RECOVERED_ID_FILE} does not exist."
+E       AssertionError: Expected file /home/user/workspace/recovered_commit_id.txt does not exist.
+E       assert False
+E        +  where False = <function isfile at 0x7d7e54bdc220>('/home/user/workspace/recovered_commit_id.txt')
+E        +    where <function isfile at 0x7d7e54bdc220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+tests/test_final_state.py:12: AssertionError
+______________________ test_bookmark_recovered_fix_exists ______________________
+
+    def test_bookmark_recovered_fix_exists():
+        result = run_jj(["bookmark", "list"])
+        assert result.returncode == 0, f"jj bookmark list failed: {result.stderr}"
+>       assert "recovered-fix" in result.stdout, "Bookmark 'recovered-fix' does not exist."
+E       AssertionError: Bookmark 'recovered-fix' does not exist.
+E       assert 'recovered-fix' in ''
+E        +  where '' = CompletedProcess(args=['jj', 'bookmark', 'list'], returncode=0, stdout='', stderr='').stdout
+
+tests/test_final_state.py:17: AssertionError
+___________________ test_bookmark_points_to_correct_content ____________________
+
+    def test_bookmark_points_to_correct_content():
+        # Verify the commit at recovered-fix has the expected file contents
+        result = run_jj(["file", "show", "src/bugfix.py", "-r", "recovered-fix"])
+>       assert result.returncode == 0, f"jj file show failed or file missing at recovered-fix: {result.stderr}"
+E       AssertionError: jj file show failed or file missing at recovered-fix: Error: Revision `recovered-fix` doesn't exist
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', 'file', 'show', 'src/bugfix.py', '-r', 'recovered-fix'], returncode=1, stdout='', stderr="Error: Revision `recovered-fix` doesn't exist\n").returncode
+
+tests/test_final_state.py:22: AssertionError
+__________________ test_recovered_commit_id_matches_bookmark ___________________
+
+    def test_recovered_commit_id_matches_bookmark():
+        # Verify the ID in the file matches the commit the bookmark points to
+>       with open(RECOVERED_ID_FILE, "r") as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/workspace/recovered_commit_id.txt'
+
+tests/test_final_state.py:29: FileNotFoundError
+____________________ test_recovered_commit_is_not_abandoned ____________________
+
+    def test_recovered_commit_is_not_abandoned():
+        # The recovered commit should be visible in default() (which means it's not abandoned)
+        # wait, default() is not a valid revset function, let's just check if `jj log -r <id>` works without --hidden
+        # Actually, jj log -r <id> might work for hidden commits if explicitly specified.
+        # To check if it's hidden, we can check if it's in `all()` but not in `visible_heads()`? No, `all()` is all visible commits.
+        # So if it's in `all()`, it's not hidden.
+        result = run_jj(["log", "--no-graph", "-r", "recovered-fix", "-T", "commit_id"])
+>       assert result.returncode == 0, "The recovered-fix commit is not visible or doesn't exist."
+E       AssertionError: The recovered-fix commit is not visible or doesn't exist.
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'recovered-fix', '-T', 'commit_id'], returncode=1, stdout='', stderr="Error: Revision `recovered-fix` doesn't exist\n").returncode
+
+tests/test_final_state.py:53: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_recovered_commit_id_file_exists - Asse...
+FAILED tests/test_final_state.py::test_bookmark_recovered_fix_exists - Assert...
+FAILED tests/test_final_state.py::test_bookmark_points_to_correct_content - A...
+FAILED tests/test_final_state.py::test_recovered_commit_id_matches_bookmark
+FAILED tests/test_final_state.py::test_recovered_commit_is_not_abandoned - As...
+============================== 5 failed in 0.15s ===============================

@@ -1,0 +1,134 @@
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:3 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 35ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 10 items
+
+tests/test_final_state.py .....FFFF.                                     [100%]
+
+=================================== FAILURES ===================================
+__________________ test_refactor_squash_target_commit_visible __________________
+
+    def test_refactor_squash_target_commit_visible():
+        result = subprocess.run(
+            ["jj", "log", "--no-graph", "-T", "description ++ '\\n'", "-r", "::@"],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+>       assert "refactor: squash target" in result.stdout, (
+            f"'refactor: squash target' commit should be visible as a separate commit after recovery: "
+            f"{result.stdout}"
+        )
+E       AssertionError: 'refactor: squash target' commit should be visible as a separate commit after recovery: \nadd base module
+E         \n\n
+E       assert 'refactor: squash target' in '\\nadd base module\n\\n\\n'
+E        +  where '\\nadd base module\n\\n\\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', "description ++ '\\n'", '-r', '::@'], returncode=0, stdout='\\nadd base module\n\\n\\n', stderr='').stdout
+
+tests/test_final_state.py:62: AssertionError
+________________________ test_both_commits_are_separate ________________________
+
+    def test_both_commits_are_separate():
+        # Verify that "add base module" and "refactor: squash target" are separate commits
+        # by checking their descriptions appear in separate revisions
+        result = subprocess.run(
+            [
+                "jj", "log", "--no-graph", "-T", "description ++ '\\n'",
+                "-r", "::@ ~ root()",
+            ],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+        # Count commits with the known descriptions
+        lines = result.stdout.splitlines()
+        descriptions = [ln.strip() for ln in lines if ln.strip()]
+        has_base = any("add base module" in d and "refactor" not in d for d in descriptions)
+        has_refactor = any("refactor: squash target" in d for d in descriptions)
+>       assert has_base and has_refactor, (
+            f"Both 'add base module' and 'refactor: squash target' should be separate commits. "
+            f"Got descriptions: {descriptions}"
+        )
+E       AssertionError: Both 'add base module' and 'refactor: squash target' should be separate commits. Got descriptions: ['\\nadd base module', '\\n']
+E       assert (True and False)
+
+tests/test_final_state.py:86: AssertionError
+______________________ test_op_log_has_restore_operation _______________________
+
+    def test_op_log_has_restore_operation():
+        result = subprocess.run(
+            ["jj", "op", "log", "--no-graph", "-T", "description ++ '\\n'"],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj op log failed: {result.stderr}"
+>       assert "restore" in result.stdout.lower(), (
+            f"Expected a 'restore' operation in op log, got: {result.stdout}"
+        )
+E       AssertionError: Expected a 'restore' operation in op log, got: squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\nnew empty commit\ndescribe commit fa0fc05b8fc3716f945cfd0f722c53e936e7ada0\nsnapshot working copy\nnew empty commit\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\nsnapshot working copy\nadd workspace 'default'\n\n
+E       assert 'restore' in "squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\\nnew empty...mit\\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\nsnapshot working copy\\nadd workspace 'default'\\n\\n"
+E        +  where "squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\\nnew empty...mit\\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\nsnapshot working copy\\nadd workspace 'default'\\n\\n" = <built-in method lower of str object at 0x70d053be10b0>()
+E        +    where <built-in method lower of str object at 0x70d053be10b0> = "squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\\nnew empty...mit\\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\nsnapshot working copy\\nadd workspace 'default'\\n\\n".lower
+E        +      where "squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\\nnew empty...mit\\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\nsnapshot working copy\\nadd workspace 'default'\\n\\n" = CompletedProcess(args=['jj', 'op', 'log', '--no-graph', '-T', "description ++ '\\n'"], returncode=0, stdout="squash co...be commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\nsnapshot working copy\\nadd workspace 'default'\\n\\n", stderr='').stdout
+
+tests/test_final_state.py:100: AssertionError
+______________________ test_op_log_most_recent_is_restore ______________________
+
+    def test_op_log_most_recent_is_restore():
+        result = subprocess.run(
+            ["jj", "op", "log", "--no-graph", "-T", "description ++ '\\n'", "-n", "1"],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj op log failed: {result.stderr}"
+>       assert "restore" in result.stdout.lower(), (
+            f"Most recent operation should be a 'restore', got: {result.stdout}"
+        )
+E       AssertionError: Most recent operation should be a 'restore', got: squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\n
+E       assert 'restore' in 'squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\n'
+E        +  where 'squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\n' = <built-in method lower of str object at 0x70d0537d5ed0>()
+E        +    where <built-in method lower of str object at 0x70d0537d5ed0> = 'squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\n'.lower
+E        +      where 'squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\n' = CompletedProcess(args=['jj', 'op', 'log', '--no-graph', '-T', "description ++ '\\n'", '-n', '1'], returncode=0, stdout='squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\n', stderr='').stdout
+
+tests/test_final_state.py:113: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_refactor_py_exists
+PASSED tests/test_final_state.py::test_refactor_py_content
+PASSED tests/test_final_state.py::test_base_py_exists
+PASSED tests/test_final_state.py::test_base_py_content
+PASSED tests/test_final_state.py::test_add_base_module_commit_visible
+PASSED tests/test_final_state.py::test_jj_status_succeeds
+FAILED tests/test_final_state.py::test_refactor_squash_target_commit_visible
+FAILED tests/test_final_state.py::test_both_commits_are_separate - AssertionE...
+FAILED tests/test_final_state.py::test_op_log_has_restore_operation - Asserti...
+FAILED tests/test_final_state.py::test_op_log_most_recent_is_restore - Assert...
+========================= 4 failed, 6 passed in 0.19s ==========================

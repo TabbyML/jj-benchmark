@@ -1,0 +1,107 @@
+Get:1 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+Hit:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Get:5 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [62.6 kB]
+Get:6 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3780 kB]
+Get:7 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [6652 kB]
+Get:8 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1301 kB]
+Fetched 11.9 MB in 4s (2714 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 612ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+../../../tests/test_final_state.py FFF                                   [100%]
+
+=================================== FAILURES ===================================
+________________ test_watchdog_commit_is_visible_in_default_log ________________
+
+    def test_watchdog_commit_is_visible_in_default_log():
+        result = subprocess.run(
+            ["jj", "log", "--no-graph", "-T", "description"],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+>       assert "feat: add watchdog timer support" in result.stdout, (
+            "Expected commit 'feat: add watchdog timer support' to be visible in default jj log, "
+            "but it was not found. The hidden commit must be restored into visible history."
+        )
+E       AssertionError: Expected commit 'feat: add watchdog timer support' to be visible in default jj log, but it was not found. The hidden commit must be restored into visible history.
+E       assert 'feat: add watchdog timer support' in 'refactor: clean up interrupt handler\ninit: add initial Makefile\n'
+E        +  where 'refactor: clean up interrupt handler\ninit: add initial Makefile\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description'], returncode=0, stdout='refactor: clean up interrupt handler\ninit: add initial Makefile\n', stderr='').stdout
+
+/tests/test_final_state.py:16: AssertionError
+________________ test_watchdog_commit_not_marked_hidden_in_log _________________
+
+    def test_watchdog_commit_not_marked_hidden_in_log():
+        result = subprocess.run(
+            [
+                "jj", "log",
+                "-r", 'description(substring:"watchdog")',
+                "--no-graph",
+                "-T", 'description ++ " hidden=" ++ if(hidden, "true", "false")',
+            ],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj log revset for watchdog commit failed: {result.stderr}"
+>       assert "feat: add watchdog timer support" in result.stdout, (
+            "Watchdog commit must be visible (not hidden)"
+        )
+E       AssertionError: Watchdog commit must be visible (not hidden)
+E       assert 'feat: add watchdog timer support' in ''
+E        +  where '' = CompletedProcess(args=['jj', 'log', '-r', 'description(substring:"watchdog")', '--no-graph', '-T', 'description ++ " hidden=" ++ if(hidden, "true", "false")'], returncode=0, stdout='', stderr='').stdout
+
+/tests/test_final_state.py:35: AssertionError
+____________________ test_watchdog_file_content_accessible _____________________
+
+    def test_watchdog_file_content_accessible():
+        result = subprocess.run(
+            [
+                "jj", "file", "show", "watchdog.c",
+                "-r", 'description(substring:"watchdog")',
+            ],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+>       assert result.returncode == 0, (
+            f"jj file show watchdog.c failed: {result.stderr}. "
+            "The watchdog.c file must be accessible in the recovered commit."
+        )
+E       AssertionError: jj file show watchdog.c failed: Error: Revset `description(substring:"watchdog")` didn't resolve to any revisions
+E         . The watchdog.c file must be accessible in the recovered commit.
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', 'file', 'show', 'watchdog.c', '-r', 'description(substring:"watchdog")'], returncode=1, stdout='', stderr='Error: Revset `description(substring:"watchdog")` didn\'t resolve to any revisions\n').returncode
+
+/tests/test_final_state.py:53: AssertionError
+=========================== short test summary info ============================
+FAILED ../../../tests/test_final_state.py::test_watchdog_commit_is_visible_in_default_log
+FAILED ../../../tests/test_final_state.py::test_watchdog_commit_not_marked_hidden_in_log
+FAILED ../../../tests/test_final_state.py::test_watchdog_file_content_accessible
+============================== 3 failed in 0.12s ===============================

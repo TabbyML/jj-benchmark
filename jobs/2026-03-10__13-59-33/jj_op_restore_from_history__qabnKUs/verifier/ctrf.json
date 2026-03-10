@@ -1,0 +1,122 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 10,
+            "passed": 6,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122846.3218827,
+            "stop": 1773122846.511037
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_refactor_py_exists",
+                "status": "passed",
+                "duration": 0.0009775611106306314,
+                "start": 1773122846.3402236,
+                "stop": 1773122846.341501,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_refactor_py_content",
+                "status": "passed",
+                "duration": 0.0006315747741609812,
+                "start": 1773122846.3418028,
+                "stop": 1773122846.342673,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_base_py_exists",
+                "status": "passed",
+                "duration": 0.0005443068221211433,
+                "start": 1773122846.3429363,
+                "stop": 1773122846.3436694,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_base_py_content",
+                "status": "passed",
+                "duration": 0.0005770071875303984,
+                "start": 1773122846.3439267,
+                "stop": 1773122846.3446977,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_add_base_module_commit_visible",
+                "status": "passed",
+                "duration": 0.028775727842003107,
+                "start": 1773122846.3449304,
+                "stop": 1773122846.3739502,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_refactor_squash_target_commit_visible",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.021895374869927764,
+                "start": 1773122846.3742645,
+                "stop": 1773122846.4151702,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_refactor_squash_target_commit_visible():\n        result = subprocess.run(\n            [\"jj\", \"log\", \"--no-graph\", \"-T\", \"description ++ '\\\\n'\", \"-r\", \"::@\"],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"refactor: squash target\" in result.stdout, (\n            f\"'refactor: squash target' commit should be visible as a separate commit after recovery: \"\n            f\"{result.stdout}\"\n        )\nE       AssertionError: 'refactor: squash target' commit should be visible as a separate commit after recovery: \\nadd base module\nE         \\n\\n\nE       assert 'refactor: squash target' in '\\\\nadd base module\\n\\\\n\\\\n'\nE        +  where '\\\\nadd base module\\n\\\\n\\\\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', \"description ++ '\\\\n'\", '-r', '::@'], returncode=0, stdout='\\\\nadd base module\\n\\\\n\\\\n', stderr='').stdout\n\ntests/test_final_state.py:62: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_both_commits_are_separate",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.020772134186699986,
+                "start": 1773122846.4154353,
+                "stop": 1773122846.439508,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_both_commits_are_separate():\n        # Verify that \"add base module\" and \"refactor: squash target\" are separate commits\n        # by checking their descriptions appear in separate revisions\n        result = subprocess.run(\n            [\n                \"jj\", \"log\", \"--no-graph\", \"-T\", \"description ++ '\\\\n'\",\n                \"-r\", \"::@ ~ root()\",\n            ],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n        # Count commits with the known descriptions\n        lines = result.stdout.splitlines()\n        descriptions = [ln.strip() for ln in lines if ln.strip()]\n        has_base = any(\"add base module\" in d and \"refactor\" not in d for d in descriptions)\n        has_refactor = any(\"refactor: squash target\" in d for d in descriptions)\n>       assert has_base and has_refactor, (\n            f\"Both 'add base module' and 'refactor: squash target' should be separate commits. \"\n            f\"Got descriptions: {descriptions}\"\n        )\nE       AssertionError: Both 'add base module' and 'refactor: squash target' should be separate commits. Got descriptions: ['\\\\nadd base module', '\\\\n']\nE       assert (True and False)\n\ntests/test_final_state.py:86: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_op_log_has_restore_operation",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.021463186014443636,
+                "start": 1773122846.4398077,
+                "stop": 1773122846.4643204,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_op_log_has_restore_operation():\n        result = subprocess.run(\n            [\"jj\", \"op\", \"log\", \"--no-graph\", \"-T\", \"description ++ '\\\\n'\"],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result.returncode == 0, f\"jj op log failed: {result.stderr}\"\n>       assert \"restore\" in result.stdout.lower(), (\n            f\"Expected a 'restore' operation in op log, got: {result.stdout}\"\n        )\nE       AssertionError: Expected a 'restore' operation in op log, got: squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\\nnew empty commit\\ndescribe commit fa0fc05b8fc3716f945cfd0f722c53e936e7ada0\\nsnapshot working copy\\nnew empty commit\\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\nsnapshot working copy\\nadd workspace 'default'\\n\\n\nE       assert 'restore' in \"squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\\\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\\\\nnew empty...mit\\\\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\\\nsnapshot working copy\\\\nadd workspace 'default'\\\\n\\\\n\"\nE        +  where \"squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\\\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\\\\nnew empty...mit\\\\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\\\nsnapshot working copy\\\\nadd workspace 'default'\\\\n\\\\n\" = <built-in method lower of str object at 0x70d053be10b0>()\nE        +    where <built-in method lower of str object at 0x70d053be10b0> = \"squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\\\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\\\\nnew empty...mit\\\\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\\\nsnapshot working copy\\\\nadd workspace 'default'\\\\n\\\\n\".lower\nE        +      where \"squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\\\nprev: 4a5fd12735d5 -> editing a7e5d6ad2690\\\\nnew empty...mit\\\\ndescribe commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\\\nsnapshot working copy\\\\nadd workspace 'default'\\\\n\\\\n\" = CompletedProcess(args=['jj', 'op', 'log', '--no-graph', '-T', \"description ++ '\\\\n'\"], returncode=0, stdout=\"squash co...be commit e35e99b8b46cefed9cc41e4579be9a0c8462752f\\\\nsnapshot working copy\\\\nadd workspace 'default'\\\\n\\\\n\", stderr='').stdout\n\ntests/test_final_state.py:100: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_op_log_most_recent_is_restore",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.021176283014938235,
+                "start": 1773122846.464587,
+                "stop": 1773122846.4888422,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_op_log_most_recent_is_restore():\n        result = subprocess.run(\n            [\"jj\", \"op\", \"log\", \"--no-graph\", \"-T\", \"description ++ '\\\\n'\", \"-n\", \"1\"],\n            capture_output=True,\n            text=True,\n            cwd=REPO_DIR,\n        )\n        assert result.returncode == 0, f\"jj op log failed: {result.stderr}\"\n>       assert \"restore\" in result.stdout.lower(), (\n            f\"Most recent operation should be a 'restore', got: {result.stdout}\"\n        )\nE       AssertionError: Most recent operation should be a 'restore', got: squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\n\nE       assert 'restore' in 'squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\\\n'\nE        +  where 'squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\\\n' = <built-in method lower of str object at 0x70d0537d5ed0>()\nE        +    where <built-in method lower of str object at 0x70d0537d5ed0> = 'squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\\\n'.lower\nE        +      where 'squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\\\n' = CompletedProcess(args=['jj', 'op', 'log', '--no-graph', '-T', \"description ++ '\\\\n'\", '-n', '1'], returncode=0, stdout='squash commits into cce5ec37e025d77767b73cdce2928535d2679a4f\\\\n', stderr='').stdout\n\ntests/test_final_state.py:113: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_jj_status_succeeds",
+                "status": "passed",
+                "duration": 0.021377538330852985,
+                "start": 1773122846.4890974,
+                "stop": 1773122846.510724,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

@@ -1,0 +1,165 @@
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 21ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 7 items
+
+../../../tests/test_final_state.py FFFFFFF                               [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_feature_bookmark_exists _________________________
+
+    def test_feature_bookmark_exists():
+        """The 'feature' bookmark must be present after recovery."""
+        result = run_jj("bookmark", "list")
+        assert result.returncode == 0, f"jj bookmark list failed: {result.stderr}"
+>       assert "feature" in result.stdout, (
+            f"'feature' bookmark not found in bookmark list.\nOutput:\n{result.stdout}"
+        )
+E       AssertionError: 'feature' bookmark not found in bookmark list.
+E         Output:
+E         
+E       assert 'feature' in ''
+E        +  where '' = CompletedProcess(args=['jj', '--no-pager', 'bookmark', 'list'], returncode=0, stdout='', stderr='').stdout
+
+/tests/test_final_state.py:24: AssertionError
+_____________________ test_implement_feature_commit_exists _____________________
+
+    def test_implement_feature_commit_exists():
+        """The commit 'implement feature' must be visible in jj log."""
+        result = run_jj("log", "--no-graph", "-r", 'description(substring:"implement feature")')
+        assert result.returncode == 0, (
+            f"jj log failed to find 'implement feature' commit.\nStderr: {result.stderr}"
+        )
+>       assert "implement feature" in result.stdout, (
+            f"'implement feature' commit not found in log output.\nOutput:\n{result.stdout}"
+        )
+E       AssertionError: 'implement feature' commit not found in log output.
+E         Output:
+E         
+E       assert 'implement feature' in ''
+E        +  where '' = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-r', 'description(substring:"implement feature")'], returncode=0, stdout='', stderr='').stdout
+
+/tests/test_final_state.py:35: AssertionError
+___________ test_feature_bookmark_points_to_implement_feature_commit ___________
+
+    def test_feature_bookmark_points_to_implement_feature_commit():
+        """The 'feature' bookmark must point to the 'implement feature' commit."""
+        # Get the description of the commit 'feature' bookmark points to
+        result_bm = run_jj(
+            "log", "--no-graph", "-r", "feature",
+            "--template", 'description ++ "\n"'
+        )
+>       assert result_bm.returncode == 0, (
+            f"Failed to resolve 'feature' bookmark: {result_bm.stderr}"
+        )
+E       AssertionError: Failed to resolve 'feature' bookmark: Error: Revision `feature` doesn't exist
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-r', 'feature', '--template', 'description ++ "\n"'], returncode=1, stdout='', stderr="Error: Revision `feature` doesn't exist\n").returncode
+
+/tests/test_final_state.py:47: AssertionError
+___________________________ test_feature_file_exists ___________________________
+
+    def test_feature_file_exists():
+        """The file feature.txt must exist at /home/user/project/feature.txt."""
+>       assert os.path.isfile(FEATURE_FILE), (
+            f"feature.txt does not exist at {FEATURE_FILE}"
+        )
+E       AssertionError: feature.txt does not exist at /home/user/project/feature.txt
+E       assert False
+E        +  where False = <function isfile at 0x71b774e6df30>('/home/user/project/feature.txt')
+E        +    where <function isfile at 0x71b774e6df30> = <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'>.isfile
+E        +      where <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'> = os.path
+
+/tests/test_final_state.py:58: AssertionError
+__________________________ test_feature_file_content ___________________________
+
+    def test_feature_file_content():
+        """feature.txt must contain 'feature work'."""
+>       assert os.path.isfile(FEATURE_FILE), f"feature.txt not found at {FEATURE_FILE}"
+E       AssertionError: feature.txt not found at /home/user/project/feature.txt
+E       assert False
+E        +  where False = <function isfile at 0x71b774e6df30>('/home/user/project/feature.txt')
+E        +    where <function isfile at 0x71b774e6df30> = <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'>.isfile
+E        +      where <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'> = os.path
+
+/tests/test_final_state.py:65: AssertionError
+________________________ test_op_log_has_undo_operation ________________________
+
+    def test_op_log_has_undo_operation():
+        """The operation log must contain an undo/restore operation as evidence of recovery."""
+        result = run_jj("op", "log", "--no-graph", "--limit", "3")
+        assert result.returncode == 0, f"jj op log failed: {result.stderr}"
+        output_lower = result.stdout.lower()
+        # The most recent ops should include one of these recovery patterns
+>       assert any(keyword in output_lower for keyword in ["undo", "restore"]), (
+            f"No undo or restore operation found in recent operation log.\n"
+            f"Operation log:\n{result.stdout}"
+        )
+E       AssertionError: No undo or restore operation found in recent operation log.
+E         Operation log:
+E         fcff01074917 root@d14fdecad686 3 days ago, lasted 20 milliseconds
+E         abandon commit def842de0ebd66183ec04812699f4b0a71724dc4
+E         args: jj --repository /home/user/project abandon feature
+E         04f88562253c root@a6bb2c02e392 3 days ago, lasted 20 milliseconds
+E         new empty commit
+E         args: jj --repository /home/user/project new
+E         9681941c8846 root@a6bb2c02e392 3 days ago, lasted 24 milliseconds
+E         describe commit 3f1f78c5a6d6acfd66c8e296e0009cabcae8b402
+E         args: jj --repository /home/user/project describe -m 'main follow-up work'
+E         
+E       assert False
+E        +  where False = any(<generator object test_op_log_has_undo_operation.<locals>.<genexpr> at 0x71b77420e500>)
+
+/tests/test_final_state.py:79: AssertionError
+________________ test_implement_feature_commit_has_feature_file ________________
+
+    def test_implement_feature_commit_has_feature_file():
+        """Verify feature.txt is part of the 'implement feature' commit in jj history."""
+        result = run_jj(
+            "file", "show", "-r", 'description(substring:"implement feature")', "feature.txt"
+        )
+>       assert result.returncode == 0, (
+            f"Failed to show feature.txt in 'implement feature' commit.\nStderr: {result.stderr}"
+        )
+E       AssertionError: Failed to show feature.txt in 'implement feature' commit.
+E         Stderr: Error: Revset `description(substring:"implement feature")` didn't resolve to any revisions
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', '--no-pager', 'file', 'show', '-r', 'description(substring:"implement feature")', 'featur...e=1, stdout='', stderr='Error: Revset `description(substring:"implement feature")` didn\'t resolve to any revisions\n').returncode
+
+/tests/test_final_state.py:90: AssertionError
+=========================== short test summary info ============================
+FAILED ../../../tests/test_final_state.py::test_feature_bookmark_exists - Ass...
+FAILED ../../../tests/test_final_state.py::test_implement_feature_commit_exists
+FAILED ../../../tests/test_final_state.py::test_feature_bookmark_points_to_implement_feature_commit
+FAILED ../../../tests/test_final_state.py::test_feature_file_exists - Asserti...
+FAILED ../../../tests/test_final_state.py::test_feature_file_content - Assert...
+FAILED ../../../tests/test_final_state.py::test_op_log_has_undo_operation - A...
+FAILED ../../../tests/test_final_state.py::test_implement_feature_commit_has_feature_file
+============================== 7 failed in 0.18s ===============================

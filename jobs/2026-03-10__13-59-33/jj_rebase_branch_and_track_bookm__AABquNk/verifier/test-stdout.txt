@@ -1,0 +1,122 @@
+Hit:1 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 19ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 8 items
+
+../../tests/test_final_state.py ..FFF...                                 [100%]
+
+=================================== FAILURES ===================================
+__________________ test_feature_bookmark_grandparent_is_main ___________________
+
+    def test_feature_bookmark_grandparent_is_main():
+        """The grandparent of feature/add-metrics tip must be the commit at main."""
+        # Get the commit ID of main
+        result_main = subprocess.run(
+            ["jj", "log", "-r", "main", "--no-graph", "-T", 'commit_id ++ "\\n"'],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result_main.returncode == 0, f"jj log main failed: {result_main.stderr}"
+        main_commit_id = result_main.stdout.strip()
+    
+        # Get the commit ID of grandparent of feature/add-metrics
+        result_gp = subprocess.run(
+            ["jj", "log", "-r", "feature/add-metrics--", "--no-graph", "-T", 'commit_id ++ "\\n"'],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result_gp.returncode == 0, f"jj log grandparent failed: {result_gp.stderr}"
+        grandparent_commit_id = result_gp.stdout.strip()
+    
+>       assert main_commit_id == grandparent_commit_id, (
+            f"Grandparent of feature/add-metrics ({grandparent_commit_id}) should equal main ({main_commit_id}). "
+            "The feature branch may not have been rebased onto main."
+        )
+E       AssertionError: Grandparent of feature/add-metrics (a6b7f8ccaa8ce04200063d42d75caa2af71c7999) should equal main (aad40cccbc4c3ab3c36d12c1938fd67d5d507f53). The feature branch may not have been rebased onto main.
+E       assert 'aad40cccbc4c...fd67d5d507f53' == 'a6b7f8ccaa8c...caa2af71c7999'
+E         
+E         - a6b7f8ccaa8ce04200063d42d75caa2af71c7999
+E         + aad40cccbc4c3ab3c36d12c1938fd67d5d507f53
+
+/tests/test_final_state.py:58: AssertionError
+_______________ test_grandparent_description_is_deploy_sh_commit _______________
+
+    def test_grandparent_description_is_deploy_sh_commit():
+        """The grandparent of feature/add-metrics tip must have description 'chore: add deploy.sh for CI pipeline'."""
+        result = subprocess.run(
+            ["jj", "log", "-r", "feature/add-metrics--", "--no-graph", "-T", 'description ++ "\\n"'],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj log grandparent failed: {result.stderr}"
+>       assert "chore: add deploy.sh for CI pipeline" in result.stdout, (
+            f"Expected grandparent description 'chore: add deploy.sh for CI pipeline', got: {result.stdout}"
+        )
+E       AssertionError: Expected grandparent description 'chore: add deploy.sh for CI pipeline', got: chore: initial project scaffold
+E         
+E         
+E       assert 'chore: add deploy.sh for CI pipeline' in 'chore: initial project scaffold\n\n'
+E        +  where 'chore: initial project scaffold\n\n' = CompletedProcess(args=['jj', 'log', '-r', 'feature/add-metrics--', '--no-graph', '-T', 'description ++ "\\n"'], returncode=0, stdout='chore: initial project scaffold\n\n', stderr='').stdout
+
+/tests/test_final_state.py:73: AssertionError
+_______________________ test_deploy_sh_in_feature_branch _______________________
+
+    def test_deploy_sh_in_feature_branch():
+        """deploy.sh must be present in feature/add-metrics after rebase."""
+        result = subprocess.run(
+            ["jj", "file", "list", "-r", "feature/add-metrics"],
+            capture_output=True,
+            text=True,
+            cwd=REPO_DIR,
+        )
+        assert result.returncode == 0, f"jj file list failed: {result.stderr}"
+>       assert "deploy.sh" in result.stdout, (
+            f"deploy.sh should be in feature/add-metrics after rebase onto main. Got files: {result.stdout}"
+        )
+E       AssertionError: deploy.sh should be in feature/add-metrics after rebase onto main. Got files: metrics/dashboard.py
+E         metrics/module.py
+E         scaffold.sh
+E         
+E       assert 'deploy.sh' in 'metrics/dashboard.py\nmetrics/module.py\nscaffold.sh\n'
+E        +  where 'metrics/dashboard.py\nmetrics/module.py\nscaffold.sh\n' = CompletedProcess(args=['jj', 'file', 'list', '-r', 'feature/add-metrics'], returncode=0, stdout='metrics/dashboard.py\nmetrics/module.py\nscaffold.sh\n', stderr='').stdout
+
+/tests/test_final_state.py:87: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../../tests/test_final_state.py::test_feature_bookmark_tip_description
+PASSED ../../tests/test_final_state.py::test_feature_bookmark_parent_description
+PASSED ../../tests/test_final_state.py::test_metrics_module_in_feature_branch
+PASSED ../../tests/test_final_state.py::test_metrics_dashboard_in_feature_branch
+PASSED ../../tests/test_final_state.py::test_scaffold_sh_in_feature_branch
+FAILED ../../tests/test_final_state.py::test_feature_bookmark_grandparent_is_main
+FAILED ../../tests/test_final_state.py::test_grandparent_description_is_deploy_sh_commit
+FAILED ../../tests/test_final_state.py::test_deploy_sh_in_feature_branch - As...
+========================= 3 failed, 5 passed in 0.33s ==========================

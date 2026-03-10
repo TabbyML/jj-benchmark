@@ -1,0 +1,68 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 0,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122507.5845618,
+            "stop": 1773122507.6552684
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_new_feature_file_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0009170728735625744,
+                "start": 1773122507.5949898,
+                "stop": 1773122507.6096468,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_new_feature_file_exists():\n        file_path = os.path.join(REPO_DIR, \"new_feature.txt\")\n>       assert os.path.isfile(file_path), f\"File {file_path} does not exist.\"\nE       AssertionError: File /home/user/my-project/new_feature.txt does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x7724e7b54220>('/home/user/my-project/new_feature.txt')\nE        +    where <function isfile at 0x7724e7b54220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:12: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_jj_bookmark_created",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.03401740011759102,
+                "start": 1773122507.6098614,
+                "stop": 1773122507.6461527,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_jj_bookmark_created():\n        result = run_cmd([\"jj\", \"bookmark\", \"list\"])\n        assert result.returncode == 0, f\"jj bookmark list failed: {result.stderr}\"\n>       assert \"jj-feature-y\" in result.stdout, \"jj bookmark 'jj-feature-y' was not created.\"\nE       AssertionError: jj bookmark 'jj-feature-y' was not created.\nE       assert 'jj-feature-y' in 'feature-x: tzulokop fb17ec12 Work on feature-x\\nmaster: kwlouyyp 2d3b98ef Initial commit\\n'\nE        +  where 'feature-x: tzulokop fb17ec12 Work on feature-x\\nmaster: kwlouyyp 2d3b98ef Initial commit\\n' = CompletedProcess(args=['jj', 'bookmark', 'list'], returncode=0, stdout='feature-x: tzulokop fb17ec12 Work on feature-x\\nmaster: kwlouyyp 2d3b98ef Initial commit\\n', stderr='').stdout\n\ntests/test_final_state.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_git_branches_log_contains_bookmark",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0006297410000115633,
+                "start": 1773122507.6463895,
+                "stop": 1773122507.6490207,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_git_branches_log_contains_bookmark():\n        log_path = os.path.join(REPO_DIR, \"git_branches.log\")\n>       assert os.path.isfile(log_path), f\"File {log_path} does not exist.\"\nE       AssertionError: File /home/user/my-project/git_branches.log does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x7724e7b54220>('/home/user/my-project/git_branches.log')\nE        +    where <function isfile at 0x7724e7b54220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:24: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_git_branch_actually_exported",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0031414921395480633,
+                "start": 1773122507.6492379,
+                "stop": 1773122507.65504,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_git_branch_actually_exported():\n        result = run_cmd([\"git\", \"branch\"])\n        assert result.returncode == 0, f\"git branch failed: {result.stderr}\"\n>       assert \"jj-feature-y\" in result.stdout, \"Git does not see 'jj-feature-y' branch. Export may have failed.\"\nE       AssertionError: Git does not see 'jj-feature-y' branch. Export may have failed.\nE       assert 'jj-feature-y' in '* feature-x\\n  master\\n'\nE        +  where '* feature-x\\n  master\\n' = CompletedProcess(args=['git', 'branch'], returncode=0, stdout='* feature-x\\n  master\\n', stderr='').stdout\n\ntests/test_final_state.py:32: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

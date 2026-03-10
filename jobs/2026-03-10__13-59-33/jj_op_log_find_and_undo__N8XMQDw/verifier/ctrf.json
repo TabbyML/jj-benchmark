@@ -1,0 +1,104 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 0,
+            "failed": 7,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122650.1232755,
+            "stop": 1773122650.3083339
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_bookmark_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.03042650339193642,
+                "start": 1773122650.138762,
+                "stop": 1773122650.1892073,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_bookmark_exists():\n        \"\"\"The 'feature' bookmark must be present after recovery.\"\"\"\n        result = run_jj(\"bookmark\", \"list\")\n        assert result.returncode == 0, f\"jj bookmark list failed: {result.stderr}\"\n>       assert \"feature\" in result.stdout, (\n            f\"'feature' bookmark not found in bookmark list.\\nOutput:\\n{result.stdout}\"\n        )\nE       AssertionError: 'feature' bookmark not found in bookmark list.\nE         Output:\nE         \nE       assert 'feature' in ''\nE        +  where '' = CompletedProcess(args=['jj', '--no-pager', 'bookmark', 'list'], returncode=0, stdout='', stderr='').stdout\n\n/tests/test_final_state.py:24: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_implement_feature_commit_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02669466519728303,
+                "start": 1773122650.1894927,
+                "stop": 1773122650.2193384,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_implement_feature_commit_exists():\n        \"\"\"The commit 'implement feature' must be visible in jj log.\"\"\"\n        result = run_jj(\"log\", \"--no-graph\", \"-r\", 'description(substring:\"implement feature\")')\n        assert result.returncode == 0, (\n            f\"jj log failed to find 'implement feature' commit.\\nStderr: {result.stderr}\"\n        )\n>       assert \"implement feature\" in result.stdout, (\n            f\"'implement feature' commit not found in log output.\\nOutput:\\n{result.stdout}\"\n        )\nE       AssertionError: 'implement feature' commit not found in log output.\nE         Output:\nE         \nE       assert 'implement feature' in ''\nE        +  where '' = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-r', 'description(substring:\"implement feature\")'], returncode=0, stdout='', stderr='').stdout\n\n/tests/test_final_state.py:35: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_bookmark_points_to_implement_feature_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023706401931121945,
+                "start": 1773122650.2196443,
+                "stop": 1773122650.2462723,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_bookmark_points_to_implement_feature_commit():\n        \"\"\"The 'feature' bookmark must point to the 'implement feature' commit.\"\"\"\n        # Get the description of the commit 'feature' bookmark points to\n        result_bm = run_jj(\n            \"log\", \"--no-graph\", \"-r\", \"feature\",\n            \"--template\", 'description ++ \"\\n\"'\n        )\n>       assert result_bm.returncode == 0, (\n            f\"Failed to resolve 'feature' bookmark: {result_bm.stderr}\"\n        )\nE       AssertionError: Failed to resolve 'feature' bookmark: Error: Revision `feature` doesn't exist\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-r', 'feature', '--template', 'description ++ \"\\n\"'], returncode=1, stdout='', stderr=\"Error: Revision `feature` doesn't exist\\n\").returncode\n\n/tests/test_final_state.py:47: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_file_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0009444330353289843,
+                "start": 1773122650.2466018,
+                "stop": 1773122650.2502942,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_file_exists():\n        \"\"\"The file feature.txt must exist at /home/user/project/feature.txt.\"\"\"\n>       assert os.path.isfile(FEATURE_FILE), (\n            f\"feature.txt does not exist at {FEATURE_FILE}\"\n        )\nE       AssertionError: feature.txt does not exist at /home/user/project/feature.txt\nE       assert False\nE        +  where False = <function isfile at 0x71b774e6df30>('/home/user/project/feature.txt')\nE        +    where <function isfile at 0x71b774e6df30> = <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'>.isfile\nE        +      where <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'> = os.path\n\n/tests/test_final_state.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_file_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0008157892152667046,
+                "start": 1773122650.2506013,
+                "stop": 1773122650.2540495,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_file_content():\n        \"\"\"feature.txt must contain 'feature work'.\"\"\"\n>       assert os.path.isfile(FEATURE_FILE), f\"feature.txt not found at {FEATURE_FILE}\"\nE       AssertionError: feature.txt not found at /home/user/project/feature.txt\nE       assert False\nE        +  where False = <function isfile at 0x71b774e6df30>('/home/user/project/feature.txt')\nE        +    where <function isfile at 0x71b774e6df30> = <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'>.isfile\nE        +      where <module 'posixpath' from '/usr/lib/python3.10/posixpath.py'> = os.path\n\n/tests/test_final_state.py:65: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_op_log_has_undo_operation",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023640513885766268,
+                "start": 1773122650.2543828,
+                "stop": 1773122650.2813673,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_op_log_has_undo_operation():\n        \"\"\"The operation log must contain an undo/restore operation as evidence of recovery.\"\"\"\n        result = run_jj(\"op\", \"log\", \"--no-graph\", \"--limit\", \"3\")\n        assert result.returncode == 0, f\"jj op log failed: {result.stderr}\"\n        output_lower = result.stdout.lower()\n        # The most recent ops should include one of these recovery patterns\n>       assert any(keyword in output_lower for keyword in [\"undo\", \"restore\"]), (\n            f\"No undo or restore operation found in recent operation log.\\n\"\n            f\"Operation log:\\n{result.stdout}\"\n        )\nE       AssertionError: No undo or restore operation found in recent operation log.\nE         Operation log:\nE         fcff01074917 root@d14fdecad686 3 days ago, lasted 20 milliseconds\nE         abandon commit def842de0ebd66183ec04812699f4b0a71724dc4\nE         args: jj --repository /home/user/project abandon feature\nE         04f88562253c root@a6bb2c02e392 3 days ago, lasted 20 milliseconds\nE         new empty commit\nE         args: jj --repository /home/user/project new\nE         9681941c8846 root@a6bb2c02e392 3 days ago, lasted 24 milliseconds\nE         describe commit 3f1f78c5a6d6acfd66c8e296e0009cabcae8b402\nE         args: jj --repository /home/user/project describe -m 'main follow-up work'\nE         \nE       assert False\nE        +  where False = any(<generator object test_op_log_has_undo_operation.<locals>.<genexpr> at 0x71b77420e500>)\n\n/tests/test_final_state.py:79: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_implement_feature_commit_has_feature_file",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023590459255501628,
+                "start": 1773122650.281686,
+                "stop": 1773122650.308032,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_implement_feature_commit_has_feature_file():\n        \"\"\"Verify feature.txt is part of the 'implement feature' commit in jj history.\"\"\"\n        result = run_jj(\n            \"file\", \"show\", \"-r\", 'description(substring:\"implement feature\")', \"feature.txt\"\n        )\n>       assert result.returncode == 0, (\n            f\"Failed to show feature.txt in 'implement feature' commit.\\nStderr: {result.stderr}\"\n        )\nE       AssertionError: Failed to show feature.txt in 'implement feature' commit.\nE         Stderr: Error: Revset `description(substring:\"implement feature\")` didn't resolve to any revisions\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', '--no-pager', 'file', 'show', '-r', 'description(substring:\"implement feature\")', 'featur...e=1, stdout='', stderr='Error: Revset `description(substring:\"implement feature\")` didn\\'t resolve to any revisions\\n').returncode\n\n/tests/test_final_state.py:90: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

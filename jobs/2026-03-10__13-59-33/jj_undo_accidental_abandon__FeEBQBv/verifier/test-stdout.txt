@@ -1,0 +1,160 @@
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 29ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 7 items
+
+../../../tests/test_final_state.py FFFF..F                               [100%]
+
+=================================== FAILURES ===================================
+_______________________ test_auth_module_commit_visible ________________________
+
+    def test_auth_module_commit_visible():
+        # The "add user authentication module" commit must exist and be visible (not abandoned)
+        result = subprocess.run(
+            ["jj", "log", "--no-graph", "-T", "description",
+             "-r", 'description(substring:"add user authentication module")'],
+            cwd=REPO_DIR,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, (
+            f"jj log failed when querying for 'add user authentication module': {result.stderr}"
+        )
+>       assert "add user authentication module" in result.stdout, (
+            "The 'add user authentication module' commit is not visible in the revision log. "
+            "It may still be abandoned. Use 'jj op log' and 'jj undo' or 'jj op restore' to recover it."
+        )
+E       AssertionError: The 'add user authentication module' commit is not visible in the revision log. It may still be abandoned. Use 'jj op log' and 'jj undo' or 'jj op restore' to recover it.
+E       assert 'add user authentication module' in ''
+E        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description', '-r', 'description(substring:"add user authentication module")'], returncode=0, stdout='', stderr='').stdout
+
+/tests/test_final_state.py:20: AssertionError
+___________________ test_src_auth_py_content_in_auth_commit ____________________
+
+    def test_src_auth_py_content_in_auth_commit():
+        # src/auth.py must exist with correct content in the auth module commit
+        result = subprocess.run(
+            ["jj", "file", "show",
+             "-r", 'description(substring:"add user authentication module")',
+             "src/auth.py"],
+            cwd=REPO_DIR,
+            capture_output=True,
+            text=True,
+        )
+>       assert result.returncode == 0, (
+            f"src/auth.py not found in 'add user authentication module' commit: {result.stderr}"
+        )
+E       AssertionError: src/auth.py not found in 'add user authentication module' commit: Error: Revset `description(substring:"add user authentication module")` didn't resolve to any revisions
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', 'file', 'show', '-r', 'description(substring:"add user authentication module")', 'src/aut...', stderr='Error: Revset `description(substring:"add user authentication module")` didn\'t resolve to any revisions\n').returncode
+
+/tests/test_final_state.py:36: AssertionError
+___________________ test_update_readme_parent_is_auth_module ___________________
+
+    def test_update_readme_parent_is_auth_module():
+        # The "update README with usage instructions" commit must have
+        # "add user authentication module" as its parent
+        result = subprocess.run(
+            ["jj", "log", "--no-graph", "-T", "description",
+             "-r", 'parents(description(substring:"update README with usage instructions"))'],
+            cwd=REPO_DIR,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, (
+            f"Failed to query parents of 'update README with usage instructions': {result.stderr}"
+        )
+>       assert "add user authentication module" in result.stdout, (
+            "The parent of 'update README with usage instructions' is not 'add user authentication module'. "
+            f"Got parents: {result.stdout!r}. The ancestry chain was not fully restored."
+        )
+E       AssertionError: The parent of 'update README with usage instructions' is not 'add user authentication module'. Got parents: 'initial project scaffold\n'. The ancestry chain was not fully restored.
+E       assert 'add user authentication module' in 'initial project scaffold\n'
+E        +  where 'initial project scaffold\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description', '-r', 'parents(description(substring:"update README with usage instructions"))'], returncode=0, stdout='initial project scaffold\n', stderr='').stdout
+
+/tests/test_final_state.py:58: AssertionError
+_________________ test_auth_module_parent_is_initial_scaffold __________________
+
+    def test_auth_module_parent_is_initial_scaffold():
+        # The "add user authentication module" commit must have
+        # "initial project scaffold" as its parent
+        result = subprocess.run(
+            ["jj", "log", "--no-graph", "-T", "description",
+             "-r", 'parents(description(substring:"add user authentication module"))'],
+            cwd=REPO_DIR,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, (
+            f"Failed to query parents of 'add user authentication module': {result.stderr}"
+        )
+>       assert "initial project scaffold" in result.stdout, (
+            "The parent of 'add user authentication module' is not 'initial project scaffold'. "
+            f"Got parents: {result.stdout!r}. The ancestry chain was not fully restored."
+        )
+E       AssertionError: The parent of 'add user authentication module' is not 'initial project scaffold'. Got parents: ''. The ancestry chain was not fully restored.
+E       assert 'initial project scaffold' in ''
+E        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description', '-r', 'parents(description(substring:"add user authentication module"))'], returncode=0, stdout='', stderr='').stdout
+
+/tests/test_final_state.py:77: AssertionError
+____________________ test_operation_log_has_undo_or_restore ____________________
+
+    def test_operation_log_has_undo_or_restore():
+        # The operation log must contain an undo/restore/revert operation,
+        # confirming the recovery was performed via the operation log.
+        result = subprocess.run(
+            ["jj", "op", "log", "--no-graph", "-T", "description"],
+            cwd=REPO_DIR,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, f"jj op log failed: {result.stderr}"
+        op_log = result.stdout.lower()
+        has_undo = "undo" in op_log
+        has_restore = "restore" in op_log
+        has_revert = "revert" in op_log
+>       assert has_undo or has_restore or has_revert, (
+            "No undo, restore, or revert operation found in the operation log. "
+            "The recovery must be performed via the jj operation log (jj undo or jj op restore), "
+            f"not by manually recreating the commit. Op log: {result.stdout!r}"
+        )
+E       AssertionError: No undo, restore, or revert operation found in the operation log. The recovery must be performed via the jj operation log (jj undo or jj op restore), not by manually recreating the commit. Op log: "abandon commit 91d5ec77d0b66d3e6207a33105d13945e3b93defnew empty commitcreate bookmark main pointing to commit 225c00b77d26671c08a03d13429d74253ba89255describe commit 4a4804e73acae53f3d50020fa1c14d97c3c6acd8snapshot working copynew empty commitdescribe commit 49893c55f03fb7bae8d7d17aa7ae95815ec88412snapshot working copynew empty commitdescribe commit 6be7c18747fd6777f010fd11523d964bcda0d716snapshot working copyadd workspace 'default'"
+E       assert (False or False or False)
+
+/tests/test_final_state.py:147: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../../../tests/test_final_state.py::test_main_bookmark_points_to_update_readme
+PASSED ../../../tests/test_final_state.py::test_working_copy_is_empty_on_top_of_main
+FAILED ../../../tests/test_final_state.py::test_auth_module_commit_visible - ...
+FAILED ../../../tests/test_final_state.py::test_src_auth_py_content_in_auth_commit
+FAILED ../../../tests/test_final_state.py::test_update_readme_parent_is_auth_module
+FAILED ../../../tests/test_final_state.py::test_auth_module_parent_is_initial_scaffold
+FAILED ../../../tests/test_final_state.py::test_operation_log_has_undo_or_restore
+========================= 5 failed, 2 passed in 0.23s ==========================

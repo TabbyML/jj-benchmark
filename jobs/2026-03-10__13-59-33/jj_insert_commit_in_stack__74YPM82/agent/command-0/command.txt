@@ -1,0 +1,15 @@
+pochi --model deepinfra/glm-4.7-flash --stream-json > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+'You are a developer migrating from Git, maintaining a stacked set of features.
+You have a repository at `/home/user/repo` with a linear history of commits: `A` -> `B` -> `C` (where `C` is the commit with description '"'"'C'"'"').
+You realize you forgot to add a configuration file that commit `B` depends on. You need to insert a new commit between `A` and `B` without breaking the stack.
+
+Your task:
+1. Insert a new commit before `B` (and after `A`).
+2. Add a file `config.txt` with the exact content `base=true` to this new commit.
+3. Set the description of this new commit to `Add config`.
+4. Ensure the history remains linear (A -> Add config -> B -> C).
+5. Finally, create a new empty commit on top of the newly rebased `C` and make it your current working copy.
+
+Note: You should use `jj` commands to insert the commit and rebase the descendants automatically. Do not manually rebase `B` and `C`.
+'
+EOF

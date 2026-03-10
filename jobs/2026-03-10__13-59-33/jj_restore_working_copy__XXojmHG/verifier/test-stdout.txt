@@ -1,0 +1,73 @@
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.5 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading cpython-3.12.12-linux-x86_64-gnu (download) (31.1MiB)
+ Downloading cpython-3.12.12-linux-x86_64-gnu (download)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 5 packages in 102ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.12, pytest-8.4.1, pluggy-1.6.0 -- /root/.cache/uv/archive-v0/-wMSA4lu3WPz7dClnIFMl/bin/python
+cachedir: .pytest_cache
+rootdir: /tests
+collecting ... collected 6 items
+
+../../tests/test_final_state.py::test_parser_py_restored_to_strip FAILED [ 16%]
+../../tests/test_final_state.py::test_config_toml_unchanged PASSED       [ 33%]
+../../tests/test_final_state.py::test_status_log_exists FAILED           [ 50%]
+../../tests/test_final_state.py::test_working_copy_description_unchanged PASSED [ 66%]
+../../tests/test_final_state.py::test_all_three_commits_still_present PASSED [ 83%]
+../../tests/test_final_state.py::test_working_copy_not_abandoned PASSED  [100%]
+
+=================================== FAILURES ===================================
+_______________________ test_parser_py_restored_to_strip _______________________
+
+    def test_parser_py_restored_to_strip():
+        parser_path = os.path.join(REPO_DIR, "parser.py")
+        assert os.path.isfile(parser_path), f"parser.py not found at {parser_path}."
+        content = open(parser_path).read()
+>       assert "return text.strip()" in content, (
+            f"parser.py should contain 'return text.strip()' after restore, got:\n{content}"
+        )
+E       AssertionError: parser.py should contain 'return text.strip()' after restore, got:
+E         # parser module
+E         def parse(text):
+E             return text.upper()
+E         
+E       assert 'return text.strip()' in '# parser module\ndef parse(text):\n    return text.upper()\n'
+
+/tests/test_final_state.py:16: AssertionError
+____________________________ test_status_log_exists ____________________________
+
+    def test_status_log_exists():
+        log_path = os.path.join(REPO_DIR, "status.log")
+>       assert os.path.isfile(log_path), f"status.log not found at {log_path}."
+E       AssertionError: status.log not found at /home/user/project/status.log.
+E       assert False
+E        +  where False = <function isfile at 0x7db2d743cb80>('/home/user/project/status.log')
+E        +    where <function isfile at 0x7db2d743cb80> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_final_state.py:34: AssertionError
+=========================== short test summary info ============================
+FAILED ../../tests/test_final_state.py::test_parser_py_restored_to_strip - As...
+FAILED ../../tests/test_final_state.py::test_status_log_exists - AssertionErr...
+========================= 2 failed, 4 passed in 0.16s ==========================

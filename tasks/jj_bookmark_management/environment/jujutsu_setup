@@ -1,0 +1,40 @@
+#!/bin/bash
+set -e
+
+export EDITOR=true
+
+WORK_DIR="${BOOTSTRAP_WORK_DIR:-./.bootstrap_work/current}"
+WORK_HOME="${BOOTSTRAP_HOME:-$WORK_DIR/home/user}"
+
+rm -rf "$WORK_DIR"
+mkdir -p "$WORK_HOME"
+
+REPO_DIR="$WORK_HOME/repo"
+mkdir -p "$REPO_DIR"
+cd "$REPO_DIR"
+
+# Initialize jj repo
+jj git init .
+
+# Configure user
+jj config set --repo user.name 'Test User'
+jj config set --repo user.email 'test@example.com'
+
+# Initial commit
+echo 'initial content' > main.py
+jj describe -m 'initial commit'
+jj bookmark create main
+
+# First feature commit
+jj new
+echo 'auth logic v1' > auth.py
+jj describe -m 'feat: basic auth'
+jj bookmark create auth-feature
+
+# Working copy changes
+jj new
+echo 'auth logic v2' > auth.py
+
+# No description set yet for the working copy
+
+echo "Bootstrap complete: $REPO_DIR"

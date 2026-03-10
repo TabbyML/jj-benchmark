@@ -1,0 +1,100 @@
+Hit:1 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Ign:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Ign:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Ign:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Ign:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Ign:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Ign:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Ign:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Ign:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Ign:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Err:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+  Could not connect to archive.ubuntu.com:80 (198.18.2.57), connection timed out
+Err:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+  Unable to connect to archive.ubuntu.com:80:
+Err:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+  Unable to connect to archive.ubuntu.com:80:
+Reading package lists...
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy/InRelease  Could not connect to archive.ubuntu.com:80 (198.18.2.57), connection timed out
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy-updates/InRelease  Unable to connect to archive.ubuntu.com:80:
+W: Failed to fetch http://archive.ubuntu.com/ubuntu/dists/jammy-backports/InRelease  Unable to connect to archive.ubuntu.com:80:
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.5 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading cpython-3.12.12-linux-x86_64-gnu (download) (31.1MiB)
+ Downloading cpython-3.12.12-linux-x86_64-gnu (download)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 5 packages in 31ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.12, pytest-8.4.1, pluggy-1.6.0 -- /root/.cache/uv/archive-v0/cwC3rhM-01CeIF-p3zM2e/bin/python
+cachedir: .pytest_cache
+rootdir: /tests
+collecting ... collected 5 items
+
+../../tests/test_final_state.py::test_working_copy_description_amended FAILED [ 20%]
+../../tests/test_final_state.py::test_wip_description_gone FAILED        [ 40%]
+../../tests/test_final_state.py::test_feature_py_unchanged PASSED        [ 60%]
+../../tests/test_final_state.py::test_desc_log_exists_and_correct FAILED [ 80%]
+../../tests/test_final_state.py::test_exactly_two_commits_above_root PASSED [100%]
+
+=================================== FAILURES ===================================
+____________________ test_working_copy_description_amended _____________________
+
+    def test_working_copy_description_amended():
+        result = run_jj(["log", "--no-graph", "-r", "@", "-T", "description"])
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+>       assert "feat: implement hello function" in result.stdout, (
+            f"Expected 'feat: implement hello function', got: {result.stdout.strip()}"
+        )
+E       AssertionError: Expected 'feat: implement hello function', got: wip: add feature
+E       assert 'feat: implement hello function' in 'wip: add feature\n'
+E        +  where 'wip: add feature\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', '@', '-T', 'description'], returncode=0, stdout='wip: add feature\n', stderr='').stdout
+
+/tests/test_final_state.py:15: AssertionError
+__________________________ test_wip_description_gone ___________________________
+
+    def test_wip_description_gone():
+        result = run_jj(["log", "--no-graph", "-T", 'description ++ "\n"'])
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+>       assert "wip: add feature" not in result.stdout, "'wip: add feature' still present — amend was not applied."
+E       AssertionError: 'wip: add feature' still present — amend was not applied.
+E       assert 'wip: add feature' not in 'wip: add fe... setup\n\n\n'
+E         
+E         'wip: add feature' is contained here:
+E           wip: add feature
+E           
+E           chore: initial setup
+
+/tests/test_final_state.py:23: AssertionError
+_______________________ test_desc_log_exists_and_correct _______________________
+
+    def test_desc_log_exists_and_correct():
+        log_path = os.path.join(REPO_DIR, "desc.log")
+>       assert os.path.isfile(log_path), f"desc.log not found at {log_path}."
+E       AssertionError: desc.log not found at /home/user/repo/desc.log.
+E       assert False
+E        +  where False = <function isfile at 0x7e4e07850b80>('/home/user/repo/desc.log')
+E        +    where <function isfile at 0x7e4e07850b80> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_final_state.py:35: AssertionError
+=========================== short test summary info ============================
+FAILED ../../tests/test_final_state.py::test_working_copy_description_amended
+FAILED ../../tests/test_final_state.py::test_wip_description_gone - Assertion...
+FAILED ../../tests/test_final_state.py::test_desc_log_exists_and_correct - As...
+========================= 3 failed, 2 passed in 0.14s ==========================

@@ -1,0 +1,77 @@
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (8.5.0-2ubuntu10.7).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 6 packages in 40ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+../../tests/test_final_state.py FFF                                      [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_no_divergent_commits ___________________________
+
+    def test_no_divergent_commits():
+        # If a commit is divergent, jj log -r 'bookmarks(exact:feature)' will show multiple commits,
+        # or the bookmark itself will be conflicted and error out when referenced as `feature`.
+        # We can check if 'feature' resolves to exactly one commit.
+        result = run_jj(["log", "-r", "feature", "--no-graph", "-T", "commit_id ++ \"\\n\""])
+>       assert result.returncode == 0, f"jj log failed, 'feature' bookmark might still be conflicted: {result.stderr}"
+E       AssertionError: jj log failed, 'feature' bookmark might still be conflicted: Error: Name `feature` is conflicted
+E         Hint: Use commit ID to select single revision from: 2e97f23c3fe0, 8f36dcec7cf8
+E         Hint: Use `bookmarks(exact:feature)` to select all revisions
+E         Hint: To set which revision the bookmark points to, run `jj bookmark set feature -r <REVISION>`
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', 'log', '-r', 'feature', '--no-graph', '-T', 'commit_id ++ "\\n"'], returncode=1, stdout='...lect all revisions\nHint: To set which revision the bookmark points to, run `jj bookmark set feature -r <REVISION>`\n').returncode
+
+/tests/test_final_state.py:17: AssertionError
+_________________________ test_resolved_change_id_file _________________________
+
+    def test_resolved_change_id_file():
+>       assert os.path.isfile(RESOLVED_CHANGE_ID_FILE), f"{RESOLVED_CHANGE_ID_FILE} does not exist."
+E       AssertionError: /home/user/resolved_change_id.txt does not exist.
+E       assert False
+E        +  where False = <function isfile at 0x7f329fac4220>('/home/user/resolved_change_id.txt')
+E        +    where <function isfile at 0x7f329fac4220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_final_state.py:22: AssertionError
+____________________________ test_main_content_file ____________________________
+
+    def test_main_content_file():
+>       assert os.path.isfile(MAIN_CONTENT_FILE), f"{MAIN_CONTENT_FILE} does not exist."
+E       AssertionError: /home/user/main_content.txt does not exist.
+E       assert False
+E        +  where False = <function isfile at 0x7f329fac4220>('/home/user/main_content.txt')
+E        +    where <function isfile at 0x7f329fac4220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_final_state.py:34: AssertionError
+=========================== short test summary info ============================
+FAILED ../../tests/test_final_state.py::test_no_divergent_commits - Assertion...
+FAILED ../../tests/test_final_state.py::test_resolved_change_id_file - Assert...
+FAILED ../../tests/test_final_state.py::test_main_content_file - AssertionErr...
+============================== 3 failed in 0.06s ===============================

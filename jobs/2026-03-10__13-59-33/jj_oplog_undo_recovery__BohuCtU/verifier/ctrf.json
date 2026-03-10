@@ -1,0 +1,104 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 0,
+            "failed": 7,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122444.9949014,
+            "stop": 1773122445.2194984
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_implement_core_feature_commit_restored",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02223522891290486,
+                "start": 1773122445.0137575,
+                "stop": 1773122445.0557957,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_implement_core_feature_commit_restored():\n        \"\"\"The commit with description 'implement core feature' must be visible.\"\"\"\n        rc, out, err = _jj(\"log\", \"--no-pager\", \"-r\", \"description(substring:'implement core feature')\")\n        assert rc == 0, f\"jj log failed: {err}\"\n>       assert \"implement core feature\" in out, (\n            f\"'implement core feature' not found in log output: {out}\"\n        )\nE       AssertionError: 'implement core feature' not found in log output: \nE       assert 'implement core feature' in ''\n\ntests/test_final_state.py:21: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_bad_description_not_present",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023836650885641575,
+                "start": 1773122445.0561001,
+                "stop": 1773122445.0829408,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_bad_description_not_present():\n        \"\"\"The bad description 'WIP: bad description do not merge' must NOT be visible in jj log.\"\"\"\n        rc, out, err = _jj(\"log\", \"--no-pager\", \"-r\", \"description(substring:'WIP: bad description do not merge')\")\n        # Command should succeed but return no revisions (empty output)\n        assert rc == 0, f\"jj log command failed unexpectedly: {err}\"\n>       assert \"WIP: bad description do not merge\" not in out, (\n            f\"Bad description commit still present after recovery. Output: {out}\"\n        )\nE       AssertionError: Bad description commit still present after recovery. Output: \u25cb  lquvlrlz support@example.com 2026-03-06 18:04:41 18c5a370\nE         \u2502  WIP: bad description do not merge\nE         ~\nE         \nE       assert 'WIP: bad de...do not merge' not in '\u25cb  lquvlrlz...t merge\\n~\\n'\nE         \nE         'WIP: bad description do not merge' is contained here:\nE           c5a370\nE           \u2502  WIP: bad description do not merge\nE           ~\n\ntests/test_final_state.py:31: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_add_tests_commit_restored",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02389812981709838,
+                "start": 1773122445.0832107,
+                "stop": 1773122445.1100936,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_add_tests_commit_restored():\n        \"\"\"The commit with description 'add tests for core feature' must be visible.\"\"\"\n        rc, out, err = _jj(\"log\", \"--no-pager\", \"-r\", \"description(substring:'add tests for core feature')\")\n        assert rc == 0, f\"jj log failed: {err}\"\n>       assert \"add tests for core feature\" in out, (\n            f\"'add tests for core feature' not found in log output: {out}\"\n        )\nE       AssertionError: 'add tests for core feature' not found in log output: \nE       assert 'add tests for core feature' in ''\n\ntests/test_final_state.py:40: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_all_three_commits_in_history",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.024728347081691027,
+                "start": 1773122445.1104054,
+                "stop": 1773122445.1401703,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_all_three_commits_in_history():\n        \"\"\"All three original commits must appear in the full jj log.\"\"\"\n        rc, out, err = _jj(\"log\", \"--no-pager\")\n        assert rc == 0, f\"jj log failed: {err}\"\n        assert \"add initial readme\" in out, (\n            f\"'add initial readme' not found in full log: {out}\"\n        )\n>       assert \"implement core feature\" in out, (\n            f\"'implement core feature' not found in full log: {out}\"\n        )\nE       AssertionError: 'implement core feature' not found in full log: @  nzuwnlnx support@example.com 2026-03-06 18:04:44 3b1fccec\nE         \u2502  (empty) (no description set)\nE         \u25cb  lquvlrlz support@example.com 2026-03-06 18:04:41 18c5a370\nE         \u2502  WIP: bad description do not merge\nE         \u25cb  szwnsnwl support@example.com 2026-03-06 18:04:34 dd158fdf\nE         \u2502  add initial readme\nE         \u25c6  zzzzzzzz root() 00000000\nE         \nE       assert 'implement core feature' in '@  nzuwnlnx support@example.com 2026-03-06 18:04:44 3b1fccec\\n\u2502  (empty) (no description set)\\n\u25cb  lquvlrlz support@ex...ge\\n\u25cb  szwnsnwl support@example.com 2026-03-06 18:04:34 dd158fdf\\n\u2502  add initial readme\\n\u25c6  zzzzzzzz root() 00000000\\n'\n\ntests/test_final_state.py:52: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_undo_operations_in_oplog",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0233813407830894,
+                "start": 1773122445.140543,
+                "stop": 1773122445.1673987,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_undo_operations_in_oplog():\n        \"\"\"At least one undo operation must appear in jj op log (shown as 'undo:').\"\"\"\n        rc, out, err = _jj(\"op\", \"log\", \"--no-pager\")\n        assert rc == 0, f\"jj op log failed: {err}\"\n        # jj op log shows undo entries with \"undo: restore to operation ...\"\n>       assert \"undo:\" in out, (\n            f\"No undo operation found in op log. Output: {out}\"\n        )\nE       AssertionError: No undo operation found in op log. Output: @  b86d4ee6a81b root@7d740a1b7476 3 days ago, lasted 11 milliseconds\nE         \u2502  abandon commit 1d48cf6c7145faf67c831fdd4c2882fefa81b816\nE         \u2502  args: jj abandon 'description(substring:\\'add tests for core feature\\')'\nE         \u25cb  314b98138521 root@fc53181df0b7 3 days ago, lasted 23 milliseconds\nE         \u2502  describe commit a1d56c8f45c92bb56f4b652e3046c64185f2baf8\nE         \u2502  args: jj describe -m 'WIP: bad description do not merge' -r 'description(substring:\\'implement core feature\\')'\nE         \u25cb  02f5de8c2f8f root@bfa1719701b5 3 days ago, lasted 9 milliseconds\nE         \u2502  new empty commit\nE         \u2502  args: jj new\nE         \u25cb  8e7d2082c0ce root@bfa1719701b5 3 days ago, lasted 8 milliseconds\nE         \u2502  describe commit b425a106d751112340d000559b092682caad4ccd\nE         \u2502  args: jj describe -m 'add tests for core feature'\nE         \u25cb  25bbf958a27d root@bfa1719701b5 3 days ago, lasted 8 milliseconds\nE         \u2502  snapshot working copy\nE         \u2502  args: jj describe -m 'add tests for core feature'\nE         \u25cb  06984dd93c74 root@7c59649cb83c 3 days ago, lasted 7 milliseconds\nE         \u2502  new empty commit\nE         \u2502  args: jj new\nE         \u25cb  a766abc35631 root@7c59649cb83c 3 days ago, lasted 11 milliseconds\nE         \u2502  describe commit dafb60fbe605b3656a4b44f5017cbdd9c01f3126\nE         \u2502  args: jj describe -m 'implement core feature'\nE         \u25cb  815db95cd2ee root@7c59649cb83c 3 days ago, lasted 14 milliseconds\nE         \u2502  snapshot working copy\nE         \u2502  args: jj describe -m 'implement core feature'\nE         \u25cb  2e33ef8c1616 root@065e59b6c4d7 3 days ago, lasted 8 milliseconds\nE         \u2502  new empty commit\nE         \u2502  args: jj new\nE         \u25cb  d3bcebe10da7 root@065e59b6c4d7 3 days ago, lasted 12 milliseconds\nE         \u2502  describe commit 6ccc51c2fd491f3c2c2d2700036dbd5734c2e540\nE         \u2502  args: jj describe -m 'add initial readme'\nE         \u25cb  1e2947ef34f3 root@065e59b6c4d7 3 days ago, lasted 12 milliseconds\nE         \u2502  snapshot working copy\nE         \u2502  args: jj describe -m 'add initial readme'\nE         \u25cb  0ed195537de8 root@236e9aa3704b 3 days ago, lasted 13 milliseconds\nE         \u2502  add workspace 'default'\nE         \u25cb  000000000000 root()\nE         \nE       assert 'undo:' in \"@  b86d4ee6a81b root@7d740a1b7476 3 days ago, lasted 11 milliseconds\\n\u2502  abandon commit 1d48cf6c7145faf67c831fdd4c288...ed195537de8 root@236e9aa3704b 3 days ago, lasted 13 milliseconds\\n\u2502  add workspace 'default'\\n\u25cb  000000000000 root()\\n\"\n\ntests/test_final_state.py:65: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_tests_py_file_accessible",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02405407978221774,
+                "start": 1773122445.1677012,
+                "stop": 1773122445.1942804,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_tests_py_file_accessible():\n        \"\"\"tests.py must be accessible in the 'add tests for core feature' commit.\"\"\"\n        rc, out, err = _jj(\n            \"file\", \"list\", \"--no-pager\",\n            \"-r\", \"description(substring:'add tests for core feature')\"\n        )\n>       assert rc == 0, f\"jj file list failed: {err}\"\nE       AssertionError: jj file list failed: Error: Revset `description(substring:'add tests for core feature')` didn't resolve to any revisions\nE         \nE       assert 1 == 0\n\ntests/test_final_state.py:76: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_core_py_file_accessible",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.021984477061778307,
+                "start": 1773122445.1945503,
+                "stop": 1773122445.219216,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_core_py_file_accessible():\n        \"\"\"core.py must be accessible in the 'implement core feature' commit.\"\"\"\n        rc, out, err = _jj(\n            \"file\", \"list\", \"--no-pager\",\n            \"-r\", \"description(substring:'implement core feature')\"\n        )\n>       assert rc == 0, f\"jj file list failed: {err}\"\nE       AssertionError: jj file list failed: Error: Revset `description(substring:'implement core feature')` didn't resolve to any revisions\nE         \nE       assert 1 == 0\n\ntests/test_final_state.py:88: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

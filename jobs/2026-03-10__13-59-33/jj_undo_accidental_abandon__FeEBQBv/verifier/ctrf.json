@@ -1,0 +1,98 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 2,
+            "failed": 5,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773122614.2673478,
+            "stop": 1773122614.501908
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_auth_module_commit_visible",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.024000582983717322,
+                "start": 1773122614.2840867,
+                "stop": 1773122614.327538,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_auth_module_commit_visible():\n        # The \"add user authentication module\" commit must exist and be visible (not abandoned)\n        result = subprocess.run(\n            [\"jj\", \"log\", \"--no-graph\", \"-T\", \"description\",\n             \"-r\", 'description(substring:\"add user authentication module\")'],\n            cwd=REPO_DIR,\n            capture_output=True,\n            text=True,\n        )\n        assert result.returncode == 0, (\n            f\"jj log failed when querying for 'add user authentication module': {result.stderr}\"\n        )\n>       assert \"add user authentication module\" in result.stdout, (\n            \"The 'add user authentication module' commit is not visible in the revision log. \"\n            \"It may still be abandoned. Use 'jj op log' and 'jj undo' or 'jj op restore' to recover it.\"\n        )\nE       AssertionError: The 'add user authentication module' commit is not visible in the revision log. It may still be abandoned. Use 'jj op log' and 'jj undo' or 'jj op restore' to recover it.\nE       assert 'add user authentication module' in ''\nE        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description', '-r', 'description(substring:\"add user authentication module\")'], returncode=0, stdout='', stderr='').stdout\n\n/tests/test_final_state.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_src_auth_py_content_in_auth_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022314419969916344,
+                "start": 1773122614.3279173,
+                "stop": 1773122614.3532538,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_src_auth_py_content_in_auth_commit():\n        # src/auth.py must exist with correct content in the auth module commit\n        result = subprocess.run(\n            [\"jj\", \"file\", \"show\",\n             \"-r\", 'description(substring:\"add user authentication module\")',\n             \"src/auth.py\"],\n            cwd=REPO_DIR,\n            capture_output=True,\n            text=True,\n        )\n>       assert result.returncode == 0, (\n            f\"src/auth.py not found in 'add user authentication module' commit: {result.stderr}\"\n        )\nE       AssertionError: src/auth.py not found in 'add user authentication module' commit: Error: Revset `description(substring:\"add user authentication module\")` didn't resolve to any revisions\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'file', 'show', '-r', 'description(substring:\"add user authentication module\")', 'src/aut...', stderr='Error: Revset `description(substring:\"add user authentication module\")` didn\\'t resolve to any revisions\\n').returncode\n\n/tests/test_final_state.py:36: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_update_readme_parent_is_auth_module",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023472036002203822,
+                "start": 1773122614.353514,
+                "stop": 1773122614.38059,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_update_readme_parent_is_auth_module():\n        # The \"update README with usage instructions\" commit must have\n        # \"add user authentication module\" as its parent\n        result = subprocess.run(\n            [\"jj\", \"log\", \"--no-graph\", \"-T\", \"description\",\n             \"-r\", 'parents(description(substring:\"update README with usage instructions\"))'],\n            cwd=REPO_DIR,\n            capture_output=True,\n            text=True,\n        )\n        assert result.returncode == 0, (\n            f\"Failed to query parents of 'update README with usage instructions': {result.stderr}\"\n        )\n>       assert \"add user authentication module\" in result.stdout, (\n            \"The parent of 'update README with usage instructions' is not 'add user authentication module'. \"\n            f\"Got parents: {result.stdout!r}. The ancestry chain was not fully restored.\"\n        )\nE       AssertionError: The parent of 'update README with usage instructions' is not 'add user authentication module'. Got parents: 'initial project scaffold\\n'. The ancestry chain was not fully restored.\nE       assert 'add user authentication module' in 'initial project scaffold\\n'\nE        +  where 'initial project scaffold\\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description', '-r', 'parents(description(substring:\"update README with usage instructions\"))'], returncode=0, stdout='initial project scaffold\\n', stderr='').stdout\n\n/tests/test_final_state.py:58: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_auth_module_parent_is_initial_scaffold",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022399825742468238,
+                "start": 1773122614.3810112,
+                "stop": 1773122614.4070632,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_auth_module_parent_is_initial_scaffold():\n        # The \"add user authentication module\" commit must have\n        # \"initial project scaffold\" as its parent\n        result = subprocess.run(\n            [\"jj\", \"log\", \"--no-graph\", \"-T\", \"description\",\n             \"-r\", 'parents(description(substring:\"add user authentication module\"))'],\n            cwd=REPO_DIR,\n            capture_output=True,\n            text=True,\n        )\n        assert result.returncode == 0, (\n            f\"Failed to query parents of 'add user authentication module': {result.stderr}\"\n        )\n>       assert \"initial project scaffold\" in result.stdout, (\n            \"The parent of 'add user authentication module' is not 'initial project scaffold'. \"\n            f\"Got parents: {result.stdout!r}. The ancestry chain was not fully restored.\"\n        )\nE       AssertionError: The parent of 'add user authentication module' is not 'initial project scaffold'. Got parents: ''. The ancestry chain was not fully restored.\nE       assert 'initial project scaffold' in ''\nE        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description', '-r', 'parents(description(substring:\"add user authentication module\"))'], returncode=0, stdout='', stderr='').stdout\n\n/tests/test_final_state.py:77: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_main_bookmark_points_to_update_readme",
+                "status": "passed",
+                "duration": 0.02338260691612959,
+                "start": 1773122614.4073756,
+                "stop": 1773122614.4311054,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_working_copy_is_empty_on_top_of_main",
+                "status": "passed",
+                "duration": 0.043387775076553226,
+                "start": 1773122614.4314096,
+                "stop": 1773122614.4750981,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_operation_log_has_undo_or_restore",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023106630891561508,
+                "start": 1773122614.4753861,
+                "stop": 1773122614.5016243,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_operation_log_has_undo_or_restore():\n        # The operation log must contain an undo/restore/revert operation,\n        # confirming the recovery was performed via the operation log.\n        result = subprocess.run(\n            [\"jj\", \"op\", \"log\", \"--no-graph\", \"-T\", \"description\"],\n            cwd=REPO_DIR,\n            capture_output=True,\n            text=True,\n        )\n        assert result.returncode == 0, f\"jj op log failed: {result.stderr}\"\n        op_log = result.stdout.lower()\n        has_undo = \"undo\" in op_log\n        has_restore = \"restore\" in op_log\n        has_revert = \"revert\" in op_log\n>       assert has_undo or has_restore or has_revert, (\n            \"No undo, restore, or revert operation found in the operation log. \"\n            \"The recovery must be performed via the jj operation log (jj undo or jj op restore), \"\n            f\"not by manually recreating the commit. Op log: {result.stdout!r}\"\n        )\nE       AssertionError: No undo, restore, or revert operation found in the operation log. The recovery must be performed via the jj operation log (jj undo or jj op restore), not by manually recreating the commit. Op log: \"abandon commit 91d5ec77d0b66d3e6207a33105d13945e3b93defnew empty commitcreate bookmark main pointing to commit 225c00b77d26671c08a03d13429d74253ba89255describe commit 4a4804e73acae53f3d50020fa1c14d97c3c6acd8snapshot working copynew empty commitdescribe commit 49893c55f03fb7bae8d7d17aa7ae95815ec88412snapshot working copynew empty commitdescribe commit 6be7c18747fd6777f010fd11523d964bcda0d716snapshot working copyadd workspace 'default'\"\nE       assert (False or False or False)\n\n/tests/test_final_state.py:147: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

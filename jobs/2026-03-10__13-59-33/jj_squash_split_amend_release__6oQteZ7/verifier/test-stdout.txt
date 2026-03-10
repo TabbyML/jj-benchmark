@@ -1,0 +1,234 @@
+Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:3 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 19ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 13 items
+
+../../../tests/test_final_state.py FFF.FFFF.FFF.                         [100%]
+
+=================================== FAILURES ===================================
+_______________________ test_no_mixed_commit_in_history ________________________
+
+    def test_no_mixed_commit_in_history():
+        """The 'add API endpoint and fix login bug' commit must not exist."""
+        result = run(
+            ["log", "--no-graph", "-T", 'description ++ "\\n"',
+             "-r", 'description(substring:"add API endpoint and fix login bug")'],
+            cwd=REPO,
+        )
+        assert result.returncode == 0
+>       assert "add API endpoint and fix login bug" not in result.stdout
+E       AssertionError: assert 'add API end...ix login bug' not in 'add API end...ogin bug\n\n'
+E         
+E         'add API endpoint and fix login bug' is contained here:
+E         Strings contain only whitespace, escaping them using repr()
+E           'add API endpoint and fix login bug\n\n'
+
+/tests/test_final_state.py:21: AssertionError
+_____________________ test_no_wip_bump_version_in_history ______________________
+
+    def test_no_wip_bump_version_in_history():
+        """The 'wip: bump version' commit must not exist."""
+        result = run(
+            ["log", "--no-graph", "-T", 'description ++ "\\n"',
+             "-r", 'description(substring:"wip: bump version")'],
+            cwd=REPO,
+        )
+        assert result.returncode == 0
+>       assert "wip: bump version" not in result.stdout
+E       AssertionError: assert 'wip: bump version' not in 'wip: bump version\n\n'
+E         
+E         'wip: bump version' is contained here:
+E         Strings contain only whitespace, escaping them using repr()
+E           'wip: bump version\n\n'
+
+/tests/test_final_state.py:32: AssertionError
+_______________________ test_no_fixup_commit_in_history ________________________
+
+    def test_no_fixup_commit_in_history():
+        """The fixup commit must not exist."""
+        result = run(
+            ["log", "--no-graph", "-T", 'description ++ "\\n"',
+             "-r", 'description(substring:"fixup: missing newline in release notes")'],
+            cwd=REPO,
+        )
+        assert result.returncode == 0
+>       assert "fixup: missing newline in release notes" not in result.stdout
+E       AssertionError: assert 'fixup: miss...elease notes' not in 'fixup: miss...se notes\n\n'
+E         
+E         'fixup: missing newline in release notes' is contained here:
+E         Strings contain only whitespace, escaping them using repr()
+E           'fixup: missing newline in release notes\n\n'
+
+/tests/test_final_state.py:43: AssertionError
+_____________________ test_add_api_endpoint_commit_exists ______________________
+
+    def test_add_api_endpoint_commit_exists():
+        result = run(
+            ["log", "--no-graph", "-T", 'description ++ "\\n"',
+             "-r", 'description(substring:"add API endpoint")'],
+            cwd=REPO,
+        )
+        assert result.returncode == 0
+        # Must match exactly "add API endpoint" — not "add API endpoint and fix login bug"
+        lines = result.stdout.strip().splitlines()
+        descs = [l.strip() for l in lines if l.strip()]
+>       assert any(d.rstrip() == "add API endpoint" for d in descs), \
+            f"Expected 'add API endpoint' commit, got: {descs}"
+E       AssertionError: Expected 'add API endpoint' commit, got: ['add API endpoint and fix login bug']
+E       assert False
+E        +  where False = any(<generator object test_add_api_endpoint_commit_exists.<locals>.<genexpr> at 0x7c1865ef6f10>)
+
+/tests/test_final_state.py:66: AssertionError
+____________________ test_bump_version_description_correct _____________________
+
+    def test_bump_version_description_correct():
+        result = run(
+            ["log", "--no-graph", "-T", 'description ++ "\\n"',
+             "-r", 'description(substring:"bump version to 2.3.0")'],
+            cwd=REPO,
+        )
+        assert result.returncode == 0
+>       assert "bump version to 2.3.0" in result.stdout
+E       assert 'bump version to 2.3.0' in ''
+E        +  where '' = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-T', 'description ++ "\\n"', '-r', 'description(substring:"bump version to 2.3.0")'], returncode=0, stdout='', stderr='').stdout
+
+/tests/test_final_state.py:77: AssertionError
+___________________ test_fix_login_bug_contains_only_auth_py ___________________
+
+    def test_fix_login_bug_contains_only_auth_py():
+        result = run(
+            ["show", "--name-only",
+             "-r", 'description(substring:"fix login bug")'],
+            cwd=REPO,
+        )
+        assert result.returncode == 0, f"jj show failed: {result.stderr}"
+        assert "src/auth.py" in result.stdout
+>       assert "src/api.py" not in result.stdout
+E       AssertionError: assert 'src/api.py' not in 'Commit ID: ...rc/auth.py\n'
+E         
+E         'src/api.py' is contained here:
+E           ogin bug
+E           
+E           src/api.py
+E           src/auth.py
+
+/tests/test_final_state.py:88: AssertionError
+__________________ test_add_api_endpoint_contains_only_api_py __________________
+
+    def test_add_api_endpoint_contains_only_api_py():
+        result = run(
+            ["log", "--no-graph", "-T", 'description ++ "\\n"',
+             "-r", 'description(substring:"add API endpoint")'],
+            cwd=REPO,
+        )
+        assert result.returncode == 0
+        lines = [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]
+        # Find the exact "add API endpoint" commit
+        exact_commits = [l for l in lines if l.rstrip() == "add API endpoint"]
+>       assert len(exact_commits) == 1, f"Expected exactly 1 'add API endpoint' commit, got: {lines}"
+E       AssertionError: Expected exactly 1 'add API endpoint' commit, got: ['add API endpoint and fix login bug']
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+/tests/test_final_state.py:101: AssertionError
+________________ test_bump_version_commit_contains_version_txt _________________
+
+    def test_bump_version_commit_contains_version_txt():
+        result = run(
+            ["show", "--name-only",
+             "-r", 'description(substring:"bump version to 2.3.0")'],
+            cwd=REPO,
+        )
+>       assert result.returncode == 0, f"jj show failed: {result.stderr}"
+E       AssertionError: jj show failed: Error: Revset `description(substring:"bump version to 2.3.0")` didn't resolve to any revisions
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['jj', '--no-pager', 'show', '--name-only', '-r', 'description(substring:"bump version to 2.3.0"... stdout='', stderr='Error: Revset `description(substring:"bump version to 2.3.0")` didn\'t resolve to any revisions\n').returncode
+
+/tests/test_final_state.py:136: AssertionError
+______________ test_fix_login_bug_is_ancestor_of_add_api_endpoint ______________
+
+    def test_fix_login_bug_is_ancestor_of_add_api_endpoint():
+        """fix login bug should be the parent of add API endpoint."""
+        result = run(
+            ["log", "--no-graph", "-T", 'description ++ "\\n"',
+             "-r", 'description(substring:"add API endpoint") & description(substring:"fix login bug")+'],
+            cwd=REPO,
+        )
+        # If fix login bug is parent of add API endpoint, this intersection should be non-empty
+        # Actually let's verify differently: add API endpoint's parent should be fix login bug
+        result2 = run(
+            ["log", "--no-graph", "-T", 'description ++ "\\n"',
+             "-r", 'description(substring:"add API endpoint")-'],
+            cwd=REPO,
+        )
+        assert result2.returncode == 0
+>       assert "fix login bug" in result2.stdout, \
+            f"Parent of 'add API endpoint' should be 'fix login bug', got: {result2.stdout}"
+E       AssertionError: Parent of 'add API endpoint' should be 'fix login bug', got: initial project scaffold
+E         
+E         
+E       assert 'fix login bug' in 'initial project scaffold\n\n'
+E        +  where 'initial project scaffold\n\n' = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-T', 'description ++ "\\n"', '-r', 'description(substring:"add API endpoint")-'], returncode=0, stdout='initial project scaffold\n\n', stderr='').stdout
+
+/tests/test_final_state.py:155: AssertionError
+_______________ test_bookmark_release_v23_points_to_bump_version _______________
+
+    def test_bookmark_release_v23_points_to_bump_version():
+        """release/v2.3 bookmark must point to the 'bump version to 2.3.0' commit."""
+        result = run(
+            ["log", "--no-graph", "-T", 'description ++ "\\n"',
+             "-r", "release/v2.3"],
+            cwd=REPO,
+        )
+        assert result.returncode == 0, f"Failed to resolve bookmark: {result.stderr}"
+>       assert "bump version to 2.3.0" in result.stdout, \
+            f"release/v2.3 bookmark does not point to 'bump version to 2.3.0', got: {result.stdout}"
+E       AssertionError: release/v2.3 bookmark does not point to 'bump version to 2.3.0', got: fixup: missing newline in release notes
+E         
+E         
+E       assert 'bump version to 2.3.0' in 'fixup: missing newline in release notes\n\n'
+E        +  where 'fixup: missing newline in release notes\n\n' = CompletedProcess(args=['jj', '--no-pager', 'log', '--no-graph', '-T', 'description ++ "\\n"', '-r', 'release/v2.3'], returncode=0, stdout='fixup: missing newline in release notes\n\n', stderr='').stdout
+
+/tests/test_final_state.py:167: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../../../tests/test_final_state.py::test_fix_login_bug_commit_exists
+PASSED ../../../tests/test_final_state.py::test_add_release_notes_contains_release_notes_md
+PASSED ../../../tests/test_final_state.py::test_linear_chain_has_five_meaningful_commits
+FAILED ../../../tests/test_final_state.py::test_no_mixed_commit_in_history - ...
+FAILED ../../../tests/test_final_state.py::test_no_wip_bump_version_in_history
+FAILED ../../../tests/test_final_state.py::test_no_fixup_commit_in_history - ...
+FAILED ../../../tests/test_final_state.py::test_add_api_endpoint_commit_exists
+FAILED ../../../tests/test_final_state.py::test_bump_version_description_correct
+FAILED ../../../tests/test_final_state.py::test_fix_login_bug_contains_only_auth_py
+FAILED ../../../tests/test_final_state.py::test_add_api_endpoint_contains_only_api_py
+FAILED ../../../tests/test_final_state.py::test_bump_version_commit_contains_version_txt
+FAILED ../../../tests/test_final_state.py::test_fix_login_bug_is_ancestor_of_add_api_endpoint
+FAILED ../../../tests/test_final_state.py::test_bookmark_release_v23_points_to_bump_version
+========================= 10 failed, 3 passed in 0.41s =========================
