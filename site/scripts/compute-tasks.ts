@@ -27,7 +27,7 @@ async function getResultFiles(dir: string): Promise<string[]> {
 }
 
 async function main() {
-  const jobsDir = path.join(process.cwd(), 'jobs');
+  const jobsDir = path.join(process.cwd(), '..', 'jobs');
   const resultFiles = await getResultFiles(jobsDir);
 
   const tasks: Record<string, any[]> = {};
@@ -100,10 +100,10 @@ async function main() {
     });
   }
 
-  const outputPath = path.join(process.cwd(), 'jobs', 'aggregated-tasks.json');
+  const outputPath = path.join(process.cwd(), 'tasks.json');
   
   await fs.writeFile(outputPath, JSON.stringify(tasks, null, 2));
-  console.log(`Aggregated ${Object.keys(tasks).length} tasks into ${outputPath}`);
+  console.log(`Computed ${Object.keys(tasks).length} tasks into ${outputPath}`);
 }
 
 main().catch(console.error);

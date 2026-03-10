@@ -2,7 +2,7 @@ import { Github, ChevronDown, Trophy, Search, Filter, ArrowUpRight, Terminal, Li
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import Link from "next/link";
-import resultData from "./result-data";
+import tasksData from "../tasks.json";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -55,29 +55,58 @@ function ScoreCell({ value }: { value: number }) {
 }
 
 export default async function Home() {
-  const data = Object.entries(resultData.evals)
-    .map(([key, val], index) => {
-      let parts = key.split("__");
-      let agentRaw = parts[0] || "Unknown";
-      let model = parts[1] || "Unknown";
+  // Process tasks.json to compute leaderboard stats
+  const statsMap = new Map<string, {
+    passed: number;
+    total: number;
+    model: string;
+    agent: string;
+  }>();
 
-      if (parts.length === 2) {
-        agentRaw = "Codex";
-        model = parts[0];
+  Object.values(tasksData).forEach((trials: any[]) => {
+    trials.forEach(trial => {
+      // Simplify model name
+      const modelName = trial.model.split('/').pop() || trial.model;
+      const agentName = trial.agent.charAt(0).toUpperCase() + trial.agent.slice(1);
+      
+      const key = `${modelName}-${agentName}`;
+      
+      if (!statsMap.has(key)) {
+        statsMap.set(key, {
+          passed: 0,
+          total: 0,
+          model: modelName,
+          agent: agentName
+        });
       }
+      
+      const stats = statsMap.get(key)!;
+      stats.total += 1;
+      if (trial.passed) {
+        stats.passed += 1;
+      }
+    });
+  });
 
-      const agent = agentRaw.charAt(0).toUpperCase() + agentRaw.slice(1);
-
+  const data = Array.from(statsMap.values())
+    .map((stats, index) => {
+      const successRate = stats.total > 0 ? Math.round((stats.passed / stats.total) * 100) : 0;
       return {
         id: String(index + 1),
-        model: model,
-        agent: agent,
-        passedEvals: Math.round(val.metrics[0].mean * val.n_trials),
-        successRate: Math.round(val.metrics[0].mean * 100),
-        isNew: index === 0,
+        model: stats.model,
+        agent: stats.agent,
+        passedEvals: stats.passed,
+        successRate: successRate,
+        isNew: index === 0, // This logic might need updating if 'isNew' has a specific meaning
       };
     })
     .sort((a, b) => b.successRate - a.successRate);
+
+  // Re-assign IDs based on sorted order and adjust isNew
+  data.forEach((item, index) => {
+    item.id = String(index + 1);
+    item.isNew = index === 0; // Keeping the original visual effect for the top item
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20">
@@ -109,7 +138,7 @@ export default async function Home() {
             <div className="h-4 w-px bg-border"></div>
             <span className="flex items-center gap-2">
               <Terminal className="w-4 h-4" />
-              <span>Last run: {new Date(resultData.startedAt).toLocaleDateString()}</span>
+              <span>Last run: {new Date().toLocaleDateString()}</span>
             </span>
           </div>
         </div>
@@ -122,7 +151,7 @@ export default async function Home() {
 
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
             <Link 
-              href="/tasks" 
+              href="./tasks" 
               className="flex items-center justify-center gap-2 px-4 py-2 border border-border bg-card/50 hover:bg-secondary/50 text-foreground rounded-lg text-sm font-medium transition-colors shadow-sm backdrop-blur-sm whitespace-nowrap"
             >
               <ListTree className="w-4 h-4" />
