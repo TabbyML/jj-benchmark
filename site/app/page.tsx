@@ -1,7 +1,8 @@
-import { Github, ChevronDown, Trophy, Search, Filter, ArrowUpRight, Terminal } from "lucide-react";
+import { Github, ChevronDown, Trophy, Search, Filter, ArrowUpRight, Terminal, ListTree } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import resultData from "./result-data";
+import Link from "next/link";
+import tasksData from "../tasks.json";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -54,29 +55,68 @@ function ScoreCell({ value }: { value: number }) {
 }
 
 export default async function Home() {
-  const data = Object.entries(resultData.evals)
-    .map(([key, val], index) => {
-      let parts = key.split("__");
-      let agentRaw = parts[0] || "Unknown";
-      let model = parts[1] || "Unknown";
+  // Process tasks.json to compute leaderboard stats
+  const statsMap = new Map<string, {
+    passed: number;
+    total: number;
+    totalLatency: number;
+    latencyCount: number;
+    model: string;
+    agent: string;
+  }>();
 
-      if (parts.length === 2) {
-        agentRaw = "Codex";
-        model = parts[0];
+  Object.values(tasksData).forEach((trials: any[]) => {
+    trials.forEach(trial => {
+      // Simplify model name
+      const modelName = trial.model.split('/').pop() || trial.model;
+      const agentName = trial.agent.charAt(0).toUpperCase() + trial.agent.slice(1);
+      
+      const key = `${modelName}-${agentName}`;
+      
+      if (!statsMap.has(key)) {
+        statsMap.set(key, {
+          passed: 0,
+          total: 0,
+          totalLatency: 0,
+          latencyCount: 0,
+          model: modelName,
+          agent: agentName
+        });
       }
+      
+      const stats = statsMap.get(key)!;
+      stats.total += 1;
+      if (trial.passed) {
+        stats.passed += 1;
+      }
+      if (trial.latency_sec) {
+        stats.totalLatency += trial.latency_sec;
+        stats.latencyCount += 1;
+      }
+    });
+  });
 
-      const agent = agentRaw.charAt(0).toUpperCase() + agentRaw.slice(1);
-
+  const data = Array.from(statsMap.values())
+    .map((stats, index) => {
+      const successRate = stats.total > 0 ? Math.round((stats.passed / stats.total) * 100) : 0;
+      const avgLatency = stats.latencyCount > 0 ? stats.totalLatency / stats.latencyCount : 0;
       return {
         id: String(index + 1),
-        model: model,
-        agent: agent,
-        passedEvals: Math.round(val.metrics[0].mean * val.n_trials),
-        successRate: Math.round(val.metrics[0].mean * 100),
-        isNew: index === 0,
+        model: stats.model,
+        agent: stats.agent,
+        passedEvals: stats.passed,
+        successRate: successRate,
+        avgLatency: avgLatency,
+        isNew: index === 0, // This logic might need updating if 'isNew' has a specific meaning
       };
     })
     .sort((a, b) => b.successRate - a.successRate);
+
+  // Re-assign IDs based on sorted order and adjust isNew
+  data.forEach((item, index) => {
+    item.id = String(index + 1);
+    item.isNew = index === 0; // Keeping the original visual effect for the top item
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20">
@@ -108,24 +148,32 @@ export default async function Home() {
             <div className="h-4 w-px bg-border"></div>
             <span className="flex items-center gap-2">
               <Terminal className="w-4 h-4" />
-              <span>Last run: {new Date(resultData.startedAt).toLocaleDateString()}</span>
+              <span>Last run: {new Date().toLocaleDateString()}</span>
             </span>
           </div>
         </div>
 
         {/* Controls & Filters */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <h2 className="text-2xl font-semibold flex items-center gap-2">
             Agent Performance
           </h2>
 
-          <div className="flex items-center gap-3">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
+            <Link 
+              href="./tasks" 
+              className="flex items-center justify-center gap-2 px-4 py-2 border border-border bg-card/50 hover:bg-secondary/50 text-foreground rounded-lg text-sm font-medium transition-colors shadow-sm backdrop-blur-sm whitespace-nowrap"
+            >
+              <ListTree className="w-4 h-4" />
+              View Tasks
+            </Link>
+            
+            <div className="relative w-full sm:w-auto">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search agents..."
-                className="pl-9 pr-4 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-64"
+                className="pl-9 pr-4 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-64 transition-all"
               />
             </div>
           </div>
@@ -137,10 +185,11 @@ export default async function Home() {
             <table className="w-full text-sm text-left">
               <thead className="bg-secondary/50 text-muted-foreground font-medium border-b border-border">
                 <tr>
-                  <th className="px-6 py-4 w-[30%]">Model</th>
-                  <th className="px-6 py-4 w-[20%]">Agent</th>
+                  <th className="px-6 py-4 w-[25%]">Model</th>
+                  <th className="px-6 py-4 w-[15%]">Agent</th>
                   <th className="px-6 py-4 w-[15%] text-center">Passed</th>
-                  <th className="px-6 py-4 w-[35%]">Success Rate</th>
+                  <th className="px-6 py-4 w-[15%] text-right">Avg Latency</th>
+                  <th className="px-6 py-4 w-[30%]">Success Rate</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
@@ -174,8 +223,13 @@ export default async function Home() {
                     <td className="px-6 py-4 text-center text-muted-foreground font-mono">
                       {row.passedEvals}
                     </td>
+                    <td className="px-6 py-4 text-right text-muted-foreground font-mono">
+                      {row.avgLatency > 0 ? `${row.avgLatency.toFixed(1)}s` : '-'}
+                    </td>
                     <td className="px-6 py-4">
-                      <ScoreCell value={row.successRate} />
+                      <Link href={`./tasks?model=${encodeURIComponent(row.model)}&agent=${encodeURIComponent(row.agent.toLowerCase())}`} className="block w-full hover:opacity-80 transition-opacity">
+                        <ScoreCell value={row.successRate} />
+                      </Link>
                     </td>
                   </tr>
                 ))}
