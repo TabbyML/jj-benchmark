@@ -188,7 +188,7 @@ export default async function Home() {
                   <th className="px-6 py-4 w-[25%]">Model</th>
                   <th className="px-6 py-4 w-[15%]">Agent</th>
                   <th className="px-6 py-4 w-[15%] text-center">Passed</th>
-                  <th className="px-6 py-4 w-[15%] text-right">Avg Latency</th>
+                  <th className="px-6 py-4 w-[15%] text-right">Avg Duration</th>
                   <th className="px-6 py-4 w-[30%]">Success Rate</th>
                 </tr>
               </thead>

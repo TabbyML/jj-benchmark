@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect, Suspense } from "react";
-import { CheckCircle2, XCircle, Search, AlertTriangle, ArrowUpDown, ArrowUp, ArrowDown, Filter, X } from "lucide-react";
+import { CheckCircle2, XCircle, Search, AlertTriangle, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { clsx, type ClassValue } from "clsx";
@@ -256,7 +256,16 @@ function TasksContent() {
               <div className="px-4 sm:px-6 py-4 bg-secondary/30 border-b border-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
                 <h3 className="text-lg font-semibold font-mono text-foreground flex items-center gap-2 w-full sm:w-auto">
                   <span className="text-muted-foreground/50 text-sm shrink-0">#{index + 1}</span>
-                  <span className="truncate" title={task.taskName}>{task.taskName}</span>
+                  <a 
+                    href={`https://github.com/TabbyML/jj-benchmark/tree/main/tasks/${task.taskName}/instruction.md`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="truncate hover:underline hover:text-primary transition-colors flex items-center gap-1.5"
+                    title={`View ${task.taskName} on GitHub`}
+                  >
+                    {task.taskName}
+                    <ExternalLink className="w-4 h-4 opacity-50" />
+                  </a>
                 </h3>
                 <div className="text-sm text-muted-foreground shrink-0">
                   {task.trials.length} trials
@@ -274,7 +283,7 @@ function TasksContent() {
                         onClick={() => toggleSort("latency")}
                       >
                         <div className="flex items-center justify-end gap-1 sm:gap-2">
-                          Latency
+                          Duration
                           {renderSortIcon("latency")}
                         </div>
                       </th>
