@@ -1,0 +1,119 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 9,
+            "passed": 3,
+            "failed": 6,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773236300.6480005,
+            "stop": 1773236300.9230359
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_auth_bookmark_exists",
+                "status": "passed",
+                "duration": 0.024578145006671548,
+                "start": 1773236300.6598134,
+                "stop": 1773236300.6846702,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_feature_password_reset_bookmark_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.024214114295318723,
+                "start": 1773236300.684895,
+                "stop": 1773236300.7234685,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_password_reset_bookmark_exists():\n        \"\"\"Bookmark 'feature/password-reset' was created.\"\"\"\n        result = run(\"jj bookmark list\")\n        assert result.returncode == 0, f\"jj bookmark list failed: {result.stderr}\"\n>       assert \"feature/password-reset\" in result.stdout, (\n            f\"Bookmark 'feature/password-reset' not found. Got: {result.stdout!r}\"\n        )\nE       AssertionError: Bookmark 'feature/password-reset' not found. Got: 'feature/auth: umkopntp 361f10fd feat: implement user login\\n'\nE       assert 'feature/password-reset' in 'feature/auth: umkopntp 361f10fd feat: implement user login\\n'\nE        +  where 'feature/auth: umkopntp 361f10fd feat: implement user login\\n' = CompletedProcess(args='jj bookmark list', returncode=0, stdout='feature/auth: umkopntp 361f10fd feat: implement user login\\n', stderr='').stdout\n\n/tests/test_final_state.py:31: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_auth_points_to_password_reset_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02237114799208939,
+                "start": 1773236300.7236435,
+                "stop": 1773236300.7483416,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_auth_points_to_password_reset_commit():\n        \"\"\"Bookmark 'feature/auth' now points to the 'feat: implement password reset' commit.\"\"\"\n        result = run(\n            \"jj log --no-graph -r 'bookmarks(\\\"feature/auth\\\")' \"\n            \"-T 'description ++ \\\"\\\\n\\\"'\"\n        )\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"feat: implement password reset\" in result.stdout, (\n            f\"Bookmark 'feature/auth' should point to password reset commit. Got: {result.stdout!r}\"\n        )\nE       AssertionError: Bookmark 'feature/auth' should point to password reset commit. Got: 'feat: implement user login\\n\\n'\nE       assert 'feat: implement password reset' in 'feat: implement user login\\n\\n'\nE        +  where 'feat: implement user login\\n\\n' = CompletedProcess(args='jj log --no-graph -r \\'bookmarks(\"feature/auth\")\\' -T \\'description ++ \"\\\\n\"\\'', returncode=0, stdout='feat: implement user login\\n\\n', stderr='').stdout\n\n/tests/test_final_state.py:43: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_password_reset_points_to_password_reset_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.020909354090690613,
+                "start": 1773236300.748559,
+                "stop": 1773236300.7713995,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_password_reset_points_to_password_reset_commit():\n        \"\"\"Bookmark 'feature/password-reset' points to the 'feat: implement password reset' commit.\"\"\"\n        result = run(\n            \"jj log --no-graph -r 'bookmarks(\\\"feature/password-reset\\\")' \"\n            \"-T 'description ++ \\\"\\\\n\\\"'\"\n        )\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"feat: implement password reset\" in result.stdout, (\n            f\"Bookmark 'feature/password-reset' should point to password reset commit. \"\n            f\"Got: {result.stdout!r}\"\n        )\nE       AssertionError: Bookmark 'feature/password-reset' should point to password reset commit. Got: ''\nE       assert 'feat: implement password reset' in ''\nE        +  where '' = CompletedProcess(args='jj log --no-graph -r \\'bookmarks(\"feature/password-reset\")\\' -T \\'description ++ \"\\\\n\"\\'', returncode=0, stdout='', stderr='').stdout\n\n/tests/test_final_state.py:55: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_both_bookmarks_point_to_same_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.030154201900586486,
+                "start": 1773236300.7715526,
+                "stop": 1773236300.8037093,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_both_bookmarks_point_to_same_commit():\n        \"\"\"Both bookmarks resolve to the same commit.\"\"\"\n        result = run(\n            \"jj log --no-graph \"\n            \"-r 'bookmarks(\\\"feature/auth\\\") & bookmarks(\\\"feature/password-reset\\\")' \"\n            \"-T 'change_id ++ \\\"\\\\n\\\"'\"\n        )\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n        lines = [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]\n>       assert len(lines) == 1, (\n            f\"Expected both bookmarks to point to the same commit (1 result), \"\n            f\"got {len(lines)}: {result.stdout!r}\"\n        )\nE       AssertionError: Expected both bookmarks to point to the same commit (1 result), got 0: ''\nE       assert 0 == 1\nE        +  where 0 = len([])\n\n/tests/test_final_state.py:70: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_auth_points_to_wc_parent",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022608330007642508,
+                "start": 1773236300.8038676,
+                "stop": 1773236300.8284059,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_auth_points_to_wc_parent():\n        \"\"\"Bookmark 'feature/auth' points to @- (the parent of the working copy).\"\"\"\n        result = run(\n            \"jj log --no-graph -r 'bookmarks(\\\"feature/auth\\\") & @-' \"\n            \"-T 'change_id ++ \\\"\\\\n\\\"'\"\n        )\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n        lines = [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]\n>       assert len(lines) == 1, (\n            f\"Bookmark 'feature/auth' is not pointing at @-. Got: {result.stdout!r}\"\n        )\nE       AssertionError: Bookmark 'feature/auth' is not pointing at @-. Got: ''\nE       assert 0 == 1\nE        +  where 0 = len([])\n\n/tests/test_final_state.py:84: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_password_reset_points_to_wc_parent",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0202007619664073,
+                "start": 1773236300.828559,
+                "stop": 1773236300.8508282,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_password_reset_points_to_wc_parent():\n        \"\"\"Bookmark 'feature/password-reset' points to @- (the parent of the working copy).\"\"\"\n        result = run(\n            \"jj log --no-graph -r 'bookmarks(\\\"feature/password-reset\\\") & @-' \"\n            \"-T 'change_id ++ \\\"\\\\n\\\"'\"\n        )\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n        lines = [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]\n>       assert len(lines) == 1, (\n            f\"Bookmark 'feature/password-reset' is not pointing at @-. Got: {result.stdout!r}\"\n        )\nE       AssertionError: Bookmark 'feature/password-reset' is not pointing at @-. Got: ''\nE       assert 0 == 1\nE        +  where 0 = len([])\n\n/tests/test_final_state.py:97: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_commit_history_intact",
+                "status": "passed",
+                "duration": 0.04873494803905487,
+                "start": 1773236300.8510141,
+                "stop": 1773236300.900123,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_working_copy_is_still_empty",
+                "status": "passed",
+                "duration": 0.021908495808020234,
+                "start": 1773236300.9005468,
+                "stop": 1773236300.9227433,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

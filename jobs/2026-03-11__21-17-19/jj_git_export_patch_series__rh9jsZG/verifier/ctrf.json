@@ -1,0 +1,176 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 13,
+            "passed": 0,
+            "failed": 13,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773236951.8450875,
+            "stop": 1773236951.8977096
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_patches_directory_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0004081409424543381,
+                "start": 1773236951.8605595,
+                "stop": 1773236951.8713906,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patches_directory_exists():\n>       assert os.path.isdir(PATCHES_DIR), f\"Patches directory {PATCHES_DIR} does not exist\"\nE       AssertionError: Patches directory /home/user/patches does not exist\nE       assert False\nE        +  where False = <function isdir at 0x77e3719302c0>('/home/user/patches')\nE        +    where <function isdir at 0x77e3719302c0> = <module 'posixpath' (frozen)>.isdir\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:28: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_patches_directory_has_six_files",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00025859102606773376,
+                "start": 1773236951.8715267,
+                "stop": 1773236951.8736541,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patches_directory_has_six_files():\n>       files = [f for f in os.listdir(PATCHES_DIR) if f.endswith(\".patch\")]\n                            ^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'\n\n/tests/test_outputs.py:32: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_cover_letter_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002311419229954481,
+                "start": 1773236951.8737652,
+                "stop": 1773236951.8759234,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_cover_letter_exists():\n        cover = next(\n>           (f for f in os.listdir(PATCHES_DIR) if f.startswith(\"0000\") and f.endswith(\".patch\")),\n                        ^^^^^^^^^^^^^^^^^^^^^^^\n            None\n        )\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'\n\n/tests/test_outputs.py:39: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_cover_letter_subject",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00022408983204513788,
+                "start": 1773236951.8760333,
+                "stop": 1773236951.8780804,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_cover_letter_subject():\n>       cover_files = [f for f in os.listdir(PATCHES_DIR) if f.startswith(\"0000\")]\n                                  ^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'\n\n/tests/test_outputs.py:46: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_patch_0001_exists_and_valid",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002256208099424839,
+                "start": 1773236951.8781888,
+                "stop": 1773236951.8802102,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patch_0001_exists_and_valid():\n>       files = sorted(os.listdir(PATCHES_DIR))\n                       ^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'\n\n/tests/test_outputs.py:56: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_patch_0002_exists_and_valid",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00022833014372736216,
+                "start": 1773236951.8803163,
+                "stop": 1773236951.882335,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patch_0002_exists_and_valid():\n>       files = sorted(os.listdir(PATCHES_DIR))\n                       ^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'\n\n/tests/test_outputs.py:71: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_patch_0003_exists_and_valid",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002338220365345478,
+                "start": 1773236951.8824418,
+                "stop": 1773236951.8845983,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patch_0003_exists_and_valid():\n>       files = sorted(os.listdir(PATCHES_DIR))\n                       ^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'\n\n/tests/test_outputs.py:83: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_patch_0004_exists_and_valid",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002320101484656334,
+                "start": 1773236951.8847058,
+                "stop": 1773236951.8867633,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patch_0004_exists_and_valid():\n>       files = sorted(os.listdir(PATCHES_DIR))\n                       ^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'\n\n/tests/test_outputs.py:93: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_patch_0005_exists_and_valid",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00024103198666125536,
+                "start": 1773236951.8868778,
+                "stop": 1773236951.888932,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patch_0005_exists_and_valid():\n>       files = sorted(os.listdir(PATCHES_DIR))\n                       ^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'\n\n/tests/test_outputs.py:103: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_all_patches_have_from_header",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00022404990158975124,
+                "start": 1773236951.8890412,
+                "stop": 1773236951.891056,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_all_patches_have_from_header():\n>       for fname in os.listdir(PATCHES_DIR):\n                     ^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'\n\n/tests/test_outputs.py:115: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_log_file_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00028339994605630636,
+                "start": 1773236951.891163,
+                "stop": 1773236951.8933444,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_file_exists():\n>       assert os.path.isfile(LOG_FILE), f\"Log file {LOG_FILE} not found\"\nE       AssertionError: Log file /home/user/patch_export_log.txt not found\nE       assert False\nE        +  where False = <function isfile at 0x77e371930220>('/home/user/patch_export_log.txt')\nE        +    where <function isfile at 0x77e371930220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:125: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_log_file_has_five_lines",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002417911309748888,
+                "start": 1773236951.8934543,
+                "stop": 1773236951.895472,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_file_has_five_lines():\n>       with open(LOG_FILE) as f:\n             ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patch_export_log.txt'\n\n/tests/test_outputs.py:129: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_log_file_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00022946193348616362,
+                "start": 1773236951.8955863,
+                "stop": 1773236951.8976004,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_file_content():\n>       with open(LOG_FILE) as f:\n             ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patch_export_log.txt'\n\n/tests/test_outputs.py:135: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

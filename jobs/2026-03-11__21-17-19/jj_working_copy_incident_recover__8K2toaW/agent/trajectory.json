@@ -1,0 +1,22 @@
+{
+  "schema_version": "ATIF-v1.6",
+  "session_id": "efe4ece7-9927-4d07-b0b0-3d9cd9e51e1f",
+  "agent": {
+    "name": "pochi",
+    "version": "unknown",
+    "model_name": "google/gemini-3.1-pro"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "user",
+      "message": "<system-reminder># System Information\n\nOperating System: linux\nDefault Shell: \nHome Directory: /root\nCurrent Working Directory: /root\nCurrent Time: Wed Mar 11 2026 13:32:59 GMT+0000 (Coordinated Universal Time)\n\n# Current Working Directory (/root) Files\n.bashrc\n.profile\n.daytona\n.bash_profile\n.pochi\n.config\n.daytona/sessions\n.pochi/bin\n.pochi/config.jsonc\n.config/jj\n.daytona/sessions/960faf0a-b675-40fc-90c2-388c31ff2d65\n.daytona/sessions/4a5f9870-9d4a-4d70-8eea-bd742fb41e44\n.daytona/sessions/67fa19d5-f685-4a54-9398-994b3ce4cf7d\n.daytona/sessions/f920dd32-34e4-4d61-8ad8-a6570d85780d\n.daytona/sessions/4d1a3323-a984-4df1-a6f1-499b05baa079\n.pochi/bin/pochi\n.config/jj/repos\n.daytona/sessions/960faf0a-b675-40fc-90c2-388c31ff2d65/4a2790fb-1f07-4bef-8362-9e83d583f607\n.daytona/sessions/4a5f9870-9d4a-4d70-8eea-bd742fb41e44/7cce4e72-a378-4f98-8263-cba18aaf6a78\n.daytona/sessions/67fa19d5-f685-4a54-9398-994b3ce4cf7d/7aaa5fee-b270-4cd9-83e4-78ddc5948e3f\n.daytona/sessions/f920dd32-34e4-4d61-8ad8-a6570d85780d/c0f5035c-c1fa-49e8-8183-8561580284a6\n.daytona/sessions/4d1a3323-a984-4df1-a6f1-499b05baa079/244a7c1d-9b11-490a-a7c2-902269cdc3b1\n.config/jj/repos/fb3084490338e3e3669c\n.daytona/sessions/960faf0a-b675-40fc-90c2-388c31ff2d65/4a2790fb-1f07-4bef-8362-9e83d583f607/output.log\n.daytona/sessions/960faf0a-b675-40fc-90c2-388c31ff2d65/4a2790fb-1f07-4bef-8362-9e83d583f607/exit_code\n.daytona/sessions/4a5f9870-9d4a-4d70-8eea-bd742fb41e44/7cce4e72-a378-4f98-8263-cba18aaf6a78/output.log\n.daytona/sessions/4a5f9870-9d4a-4d70-8eea-bd742fb41e44/7cce4e72-a378-4f98-8263-cba18aaf6a78/exit_code\n.daytona/sessions/67fa19d5-f685-4a54-9398-994b3ce4cf7d/7aaa5fee-b270-4cd9-83e4-78ddc5948e3f/output.log\n.daytona/sessions/67fa19d5-f685-4a54-9398-994b3ce4cf7d/7aaa5fee-b270-4cd9-83e4-78ddc5948e3f/exit_code\n.daytona/sessions/f920dd32-34e4-4d61-8ad8-a6570d85780d/c0f5035c-c1fa-49e8-8183-8561580284a6/output.log\n.daytona/sessions/f920dd32-34e4-4d61-8ad8-a6570d85780d/c0f5035c-c1fa-49e8-8183-8561580284a6/exit_code\n.daytona/sessions/4d1a3323-a984-4df1-a6f1-499b05baa079/244a7c1d-9b11-490a-a7c2-902269cdc3b1/output.log\n.config/jj/repos/fb3084490338e3e3669c/config.toml\n.config/jj/repos/fb3084490338e3e3669c/metadata.binpb\n\n# GIT STATUS\nCurrent branch: \nMain branch (you will usually use this for PRs): \n\nRecent commits:\n\n\n# TODOs\nNo TODOs yet, if you are working on tasks that would benefit from a todo list please use the todoWrite tool to create one.</system-reminder>\n'You are an incident responder recovering interrupted history edits in a repository using `jj`. \n\nA developer was editing a critical configuration file (`config/settings.yaml`) and a deployment script (`scripts/deploy.sh`) when their terminal crashed. They had also accidentally deleted an important file (`data/cache.bin`) which was tracked.\n\nYour task is to:\n1. Use `jj` to inspect the working-copy state and operation log to find the state just before the crash.\n2. Restore the deleted file `data/cache.bin` from the history using `jj restore`.\n3. Discard the incomplete edits to `scripts/deploy.sh` so it matches the pristine state of the parent commit.\n4. Keep the edits to `config/settings.yaml` but commit them with the description \"chore: update settings for incident recovery\".\n5. Create a file `/home/user/recovery_status.txt` containing the exact commit ID of the new commit you created.\n\nDo not use Git commands. Use only `jj` commands to achieve this.\n'"
+    }
+  ],
+  "final_metrics": {
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_cached_tokens": 0,
+    "total_steps": 1
+  }
+}

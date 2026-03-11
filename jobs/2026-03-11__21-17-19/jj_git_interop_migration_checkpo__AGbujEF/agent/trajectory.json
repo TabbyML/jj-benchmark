@@ -1,0 +1,42 @@
+{
+  "schema_version": "ATIF-v1.6",
+  "session_id": "1d1eef0a-ca25-4173-ae2b-2564d0b2eca1",
+  "agent": {
+    "name": "pochi",
+    "version": "unknown",
+    "model_name": "google/gemini-3.1-pro"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "user",
+      "message": "<system-reminder># System Information\n\nOperating System: linux\nDefault Shell: \nHome Directory: /root\nCurrent Working Directory: /app\nCurrent Time: Wed Mar 11 2026 13:17:50 GMT+0000 (Coordinated Universal Time)\n\n# Current Working Directory (/app) Files\n\n\n# GIT STATUS\nCurrent branch: \nMain branch (you will usually use this for PRs): \n\nRecent commits:\n\n\n# TODOs\nNo TODOs yet, if you are working on tasks that would benefit from a todo list please use the todoWrite tool to create one.</system-reminder>\n''"
+    },
+    {
+      "step_id": 2,
+      "source": "agent",
+      "model_name": "google/gemini-3.1-pro",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "4SFCXgAQN4yopQoI",
+          "function_name": "askFollowupQuestion",
+          "arguments": {
+            "question": "How can I help you today?",
+            "followUp": [
+              "I have a new project I want to build.",
+              "I need help debugging an issue.",
+              "Can you explain how Pochi works?"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "final_metrics": {
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 10137,
+    "total_cached_tokens": 0,
+    "total_steps": 2
+  }
+}

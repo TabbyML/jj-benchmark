@@ -1,0 +1,89 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 5,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773236792.2646694,
+            "stop": 1773236792.4397924
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_squash_log_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0004028887487947941,
+                "start": 1773236792.273753,
+                "stop": 1773236792.2840307,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_squash_log_exists():\n>       assert os.path.exists(SQUASH_LOG), f\"squash_log.txt must exist at {SQUASH_LOG}\"\nE       AssertionError: squash_log.txt must exist at /home/user/squash_log.txt\nE       assert False\nE        +  where False = <function exists at 0x77f14eb63560>('/home/user/squash_log.txt')\nE        +    where <function exists at 0x77f14eb63560> = <module 'posixpath' (frozen)>.exists\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_fewer_bot_commits",
+                "status": "passed",
+                "duration": 0.02520810440182686,
+                "start": 1773236792.2841556,
+                "stop": 1773236792.3095758,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_human_commits_preserved",
+                "status": "passed",
+                "duration": 0.025357883423566818,
+                "start": 1773236792.3097656,
+                "stop": 1773236792.3352904,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_squashed_bot_commits_have_correct_format",
+                "status": "passed",
+                "duration": 0.027399870101362467,
+                "start": 1773236792.3355582,
+                "stop": 1773236792.3631527,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_squash_log_mentions_merged_commits",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002843504771590233,
+                "start": 1773236792.3633406,
+                "stop": 1773236792.3652277,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_squash_log_mentions_merged_commits():\n>       with open(SQUASH_LOG) as f:\n             ^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/squash_log.txt'\n\n/tests/test_outputs.py:53: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_main_bookmark_still_valid",
+                "status": "passed",
+                "duration": 0.028666749130934477,
+                "start": 1773236792.3653705,
+                "stop": 1773236792.3941913,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_data_and_main_py_intact",
+                "status": "passed",
+                "duration": 0.04497759649530053,
+                "start": 1773236792.394378,
+                "stop": 1773236792.4395711,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}

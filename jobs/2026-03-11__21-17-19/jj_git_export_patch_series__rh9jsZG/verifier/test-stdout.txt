@@ -1,0 +1,161 @@
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (8.5.0-2ubuntu10.7).
+0 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 6 packages in 14ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 13 items
+
+../tests/test_outputs.py FFFFFFFFFFFFF                                   [100%]
+
+=================================== FAILURES ===================================
+________________________ test_patches_directory_exists _________________________
+
+    def test_patches_directory_exists():
+>       assert os.path.isdir(PATCHES_DIR), f"Patches directory {PATCHES_DIR} does not exist"
+E       AssertionError: Patches directory /home/user/patches does not exist
+E       assert False
+E        +  where False = <function isdir at 0x77e3719302c0>('/home/user/patches')
+E        +    where <function isdir at 0x77e3719302c0> = <module 'posixpath' (frozen)>.isdir
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_outputs.py:28: AssertionError
+_____________________ test_patches_directory_has_six_files _____________________
+
+    def test_patches_directory_has_six_files():
+>       files = [f for f in os.listdir(PATCHES_DIR) if f.endswith(".patch")]
+                            ^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'
+
+/tests/test_outputs.py:32: FileNotFoundError
+___________________________ test_cover_letter_exists ___________________________
+
+    def test_cover_letter_exists():
+        cover = next(
+>           (f for f in os.listdir(PATCHES_DIR) if f.startswith("0000") and f.endswith(".patch")),
+                        ^^^^^^^^^^^^^^^^^^^^^^^
+            None
+        )
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'
+
+/tests/test_outputs.py:39: FileNotFoundError
+__________________________ test_cover_letter_subject ___________________________
+
+    def test_cover_letter_subject():
+>       cover_files = [f for f in os.listdir(PATCHES_DIR) if f.startswith("0000")]
+                                  ^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'
+
+/tests/test_outputs.py:46: FileNotFoundError
+_______________________ test_patch_0001_exists_and_valid _______________________
+
+    def test_patch_0001_exists_and_valid():
+>       files = sorted(os.listdir(PATCHES_DIR))
+                       ^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'
+
+/tests/test_outputs.py:56: FileNotFoundError
+_______________________ test_patch_0002_exists_and_valid _______________________
+
+    def test_patch_0002_exists_and_valid():
+>       files = sorted(os.listdir(PATCHES_DIR))
+                       ^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'
+
+/tests/test_outputs.py:71: FileNotFoundError
+_______________________ test_patch_0003_exists_and_valid _______________________
+
+    def test_patch_0003_exists_and_valid():
+>       files = sorted(os.listdir(PATCHES_DIR))
+                       ^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'
+
+/tests/test_outputs.py:83: FileNotFoundError
+_______________________ test_patch_0004_exists_and_valid _______________________
+
+    def test_patch_0004_exists_and_valid():
+>       files = sorted(os.listdir(PATCHES_DIR))
+                       ^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'
+
+/tests/test_outputs.py:93: FileNotFoundError
+_______________________ test_patch_0005_exists_and_valid _______________________
+
+    def test_patch_0005_exists_and_valid():
+>       files = sorted(os.listdir(PATCHES_DIR))
+                       ^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'
+
+/tests/test_outputs.py:103: FileNotFoundError
+______________________ test_all_patches_have_from_header _______________________
+
+    def test_all_patches_have_from_header():
+>       for fname in os.listdir(PATCHES_DIR):
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patches'
+
+/tests/test_outputs.py:115: FileNotFoundError
+_____________________________ test_log_file_exists _____________________________
+
+    def test_log_file_exists():
+>       assert os.path.isfile(LOG_FILE), f"Log file {LOG_FILE} not found"
+E       AssertionError: Log file /home/user/patch_export_log.txt not found
+E       assert False
+E        +  where False = <function isfile at 0x77e371930220>('/home/user/patch_export_log.txt')
+E        +    where <function isfile at 0x77e371930220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_outputs.py:125: AssertionError
+_________________________ test_log_file_has_five_lines _________________________
+
+    def test_log_file_has_five_lines():
+>       with open(LOG_FILE) as f:
+             ^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patch_export_log.txt'
+
+/tests/test_outputs.py:129: FileNotFoundError
+____________________________ test_log_file_content _____________________________
+
+    def test_log_file_content():
+>       with open(LOG_FILE) as f:
+             ^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/patch_export_log.txt'
+
+/tests/test_outputs.py:135: FileNotFoundError
+=========================== short test summary info ============================
+FAILED ../tests/test_outputs.py::test_patches_directory_exists - AssertionErr...
+FAILED ../tests/test_outputs.py::test_patches_directory_has_six_files - FileN...
+FAILED ../tests/test_outputs.py::test_cover_letter_exists - FileNotFoundError...
+FAILED ../tests/test_outputs.py::test_cover_letter_subject - FileNotFoundErro...
+FAILED ../tests/test_outputs.py::test_patch_0001_exists_and_valid - FileNotFo...
+FAILED ../tests/test_outputs.py::test_patch_0002_exists_and_valid - FileNotFo...
+FAILED ../tests/test_outputs.py::test_patch_0003_exists_and_valid - FileNotFo...
+FAILED ../tests/test_outputs.py::test_patch_0004_exists_and_valid - FileNotFo...
+FAILED ../tests/test_outputs.py::test_patch_0005_exists_and_valid - FileNotFo...
+FAILED ../tests/test_outputs.py::test_all_patches_have_from_header - FileNotF...
+FAILED ../tests/test_outputs.py::test_log_file_exists - AssertionError: Log f...
+FAILED ../tests/test_outputs.py::test_log_file_has_five_lines - FileNotFoundE...
+FAILED ../tests/test_outputs.py::test_log_file_content - FileNotFoundError: [...
+============================== 13 failed in 0.05s ==============================

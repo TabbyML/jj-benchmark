@@ -1,0 +1,113 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 9,
+            "passed": 5,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773236958.033101,
+            "stop": 1773236958.1797953
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_log_file_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0004469898995012045,
+                "start": 1773236958.041639,
+                "stop": 1773236958.0530624,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_file_exists():\n>       assert os.path.isfile(LOG_FILE), f\"{LOG_FILE} does not exist\"\nE       AssertionError: /home/user/divergence_log.txt does not exist\nE       assert False\nE        +  where False = <function isfile at 0x70d0bfb8c220>('/home/user/divergence_log.txt')\nE        +    where <function isfile at 0x70d0bfb8c220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:17: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_log_file_has_required_keys",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002951899077743292,
+                "start": 1773236958.0532007,
+                "stop": 1773236958.0547123,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_file_has_required_keys():\n>       content = open(LOG_FILE).read()\n                  ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_log.txt'\n\n/tests/test_outputs.py:21: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_log_change_ids_nonempty",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00026386091485619545,
+                "start": 1773236958.0548327,
+                "stop": 1773236958.0566502,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_change_ids_nonempty():\n>       content = open(LOG_FILE).read()\n                  ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_log.txt'\n\n/tests/test_outputs.py:30: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_patch_bookmark_exists",
+                "status": "passed",
+                "duration": 0.0265641410369426,
+                "start": 1773236958.0567696,
+                "stop": 1773236958.083511,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_patch_has_no_conflicts",
+                "status": "passed",
+                "duration": 0.018192031886428595,
+                "start": 1773236958.0837061,
+                "stop": 1773236958.1021116,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_patch_py_has_apply_patch_v1",
+                "status": "passed",
+                "duration": 0.017938071046955884,
+                "start": 1773236958.1024187,
+                "stop": 1773236958.120532,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_patch_py_has_apply_patch_v2",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.018937141867354512,
+                "start": 1773236958.1207232,
+                "stop": 1773236958.14236,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patch_py_has_apply_patch_v2():\n        r = run_jj([\"file\", \"show\", \"-r\", \"patch\", \"src/patch.py\"])\n>       assert \"def apply_patch_v2(\" in r.stdout, \\\n            \"apply_patch_v2() missing from src/patch.py at patch bookmark\"\nE       AssertionError: apply_patch_v2() missing from src/patch.py at patch bookmark\nE       assert 'def apply_patch_v2(' in '# Patch module\\n\\n\\ndef apply_patch_v1():\\n    \"\"\"Apply patch version 1.\"\"\"\\n    return \"patch_v1\"\\n'\nE        +  where '# Patch module\\n\\n\\ndef apply_patch_v1():\\n    \"\"\"Apply patch version 1.\"\"\"\\n    return \"patch_v1\"\\n' = CompletedProcess(args=['jj', 'file', 'show', '-r', 'patch', 'src/patch.py'], returncode=0, stdout='# Patch module\\n\\n\\ndef apply_patch_v1():\\n    \"\"\"Apply patch version 1.\"\"\"\\n    return \"patch_v1\"\\n', stderr='').stdout\n\n/tests/test_outputs.py:55: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_patch_py_no_conflict_markers",
+                "status": "passed",
+                "duration": 0.017793730017729104,
+                "start": 1773236958.1425986,
+                "stop": 1773236958.1606412,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_canonical_commit_description_is_fix_patch",
+                "status": "passed",
+                "duration": 0.0183600828750059,
+                "start": 1773236958.1609116,
+                "stop": 1773236958.179517,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}

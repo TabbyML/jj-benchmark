@@ -1,0 +1,156 @@
+{
+  "schema_version": "ATIF-v1.6",
+  "session_id": "b503b683-4c0e-46c6-8def-fbda508d7567",
+  "agent": {
+    "name": "pochi",
+    "version": "unknown",
+    "model_name": "google/gemini-3.1-pro"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "user",
+      "message": "<system-reminder># System Information\n\nOperating System: linux\nDefault Shell: \nHome Directory: /root\nCurrent Working Directory: /root\nCurrent Time: Wed Mar 11 2026 13:28:25 GMT+0000 (Coordinated Universal Time)\n\n# Current Working Directory (/root) Files\n.bashrc\n.profile\n.daytona\n.bash_profile\n.pochi\n.config\n.daytona/sessions\n.pochi/bin\n.pochi/config.jsonc\n.config/jj\n.daytona/sessions/774dc709-1579-46fa-90e9-7693bfe7b463\n.daytona/sessions/53a35506-babf-474a-95f9-25dda9dbe912\n.daytona/sessions/918fd6db-99d7-4770-abb6-8ec924ea8d2b\n.daytona/sessions/93da3256-6738-42c1-a31a-a76eed786f10\n.daytona/sessions/fe5eb8bb-f176-4d62-8b01-9dc543af945b\n.pochi/bin/pochi\n.config/jj/config.toml\n.daytona/sessions/774dc709-1579-46fa-90e9-7693bfe7b463/faead6f9-3ece-4f06-8ba6-b10fed9902a3\n.daytona/sessions/53a35506-babf-474a-95f9-25dda9dbe912/78fa0605-a26e-4b2e-be2e-939952e4d754\n.daytona/sessions/918fd6db-99d7-4770-abb6-8ec924ea8d2b/94dd96b7-2e4c-4f78-8878-f5308e8bb5d4\n.daytona/sessions/93da3256-6738-42c1-a31a-a76eed786f10/5840b804-a3cf-4e6c-b207-f89de27a25fc\n.daytona/sessions/fe5eb8bb-f176-4d62-8b01-9dc543af945b/c510ffbd-89f7-4dc0-a8aa-60b1c8912fd7\n.daytona/sessions/774dc709-1579-46fa-90e9-7693bfe7b463/faead6f9-3ece-4f06-8ba6-b10fed9902a3/output.log\n.daytona/sessions/774dc709-1579-46fa-90e9-7693bfe7b463/faead6f9-3ece-4f06-8ba6-b10fed9902a3/exit_code\n.daytona/sessions/53a35506-babf-474a-95f9-25dda9dbe912/78fa0605-a26e-4b2e-be2e-939952e4d754/output.log\n.daytona/sessions/53a35506-babf-474a-95f9-25dda9dbe912/78fa0605-a26e-4b2e-be2e-939952e4d754/exit_code\n.daytona/sessions/918fd6db-99d7-4770-abb6-8ec924ea8d2b/94dd96b7-2e4c-4f78-8878-f5308e8bb5d4/output.log\n.daytona/sessions/918fd6db-99d7-4770-abb6-8ec924ea8d2b/94dd96b7-2e4c-4f78-8878-f5308e8bb5d4/exit_code\n.daytona/sessions/93da3256-6738-42c1-a31a-a76eed786f10/5840b804-a3cf-4e6c-b207-f89de27a25fc/output.log\n.daytona/sessions/93da3256-6738-42c1-a31a-a76eed786f10/5840b804-a3cf-4e6c-b207-f89de27a25fc/exit_code\n.daytona/sessions/fe5eb8bb-f176-4d62-8b01-9dc543af945b/c510ffbd-89f7-4dc0-a8aa-60b1c8912fd7/output.log\n\n# GIT STATUS\nCurrent branch: \nMain branch (you will usually use this for PRs): \n\nRecent commits:\n\n\n# TODOs\nNo TODOs yet, if you are working on tasks that would benefit from a todo list please use the todoWrite tool to create one.</system-reminder>\n'You are a developer working on a multi-workspace project. You need to create a new workspace to work on a feature, make a commit, and then clean up by forgetting the workspace.\n\nYour tasks are:\n1. Create a new jj workspace named `feature-workspace` at `../feature-workspace` relative to the current repository.\n2. In the new workspace, create a file named `feature.txt` with the content `new feature`.\n3. Create a new commit in the `feature-workspace` with the description `Add feature`.\n4. Return to the original repository directory.\n5. Forget the `feature-workspace` workspace using `jj workspace forget`.\n\nNote: The original repository is located at `/home/user/repo`. The new workspace should be created at `/home/user/feature-workspace`.\n'"
+    },
+    {
+      "step_id": 2,
+      "source": "agent",
+      "model_name": "google/gemini-3.1-pro",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "hthWJ3pneckKLMFN",
+          "function_name": "executeCommand",
+          "arguments": {
+            "command": "ls -la /home/user/repo"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "hthWJ3pneckKLMFN",
+            "content": "total 4\r\ndrwxr-xr-x 4 root root  64 Mar 11 12:32 .\r\ndrwxr-xr-x 1 root root  26 Mar 11 12:32 ..\r\ndrwxr-xr-x 7 root root 168 Mar 11 12:32 .git\r\ndrwxr-xr-x 4 root root  72 Mar 11 12:32 .jj\r\n-rw-r--r-- 1 root root  16 Mar 11 12:32 initial.txt\r\n"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 3,
+      "source": "agent",
+      "model_name": "google/gemini-3.1-pro",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "7EKiQEEPRmQR51aA",
+          "function_name": "executeCommand",
+          "arguments": {
+            "command": "jj workspace add --name feature-workspace ../feature-workspace",
+            "cwd": "/home/user/repo"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "7EKiQEEPRmQR51aA",
+            "content": "Created workspace in \"../feature-workspace\"\r\nWorking copy  (@) now at: nvvqzmrq 5645181b (empty) (no description set)\r\nParent commit (@-)      : ssvuyqzt c9e2db85 (empty) Add initial file\r\nAdded 1 files, modified 0 files, removed 0 files\r\n"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 4,
+      "source": "agent",
+      "model_name": "google/gemini-3.1-pro",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "Onuc8pLfpOufZRkA",
+          "function_name": "executeCommand",
+          "arguments": {
+            "command": "echo \"new feature\" > feature.txt && jj commit -m \"Add feature\"",
+            "cwd": "/home/user/feature-workspace"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "Onuc8pLfpOufZRkA",
+            "content": "Working copy  (@) now at: zrzlltml 8875394e (empty) (no description set)\r\nParent commit (@-)      : nvvqzmrq 05ab9539 Add feature\r\n"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 5,
+      "source": "agent",
+      "model_name": "google/gemini-3.1-pro",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "FDfblNUuWx7cCSzK",
+          "function_name": "executeCommand",
+          "arguments": {
+            "command": "jj workspace forget feature-workspace",
+            "cwd": "/home/user/repo"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "FDfblNUuWx7cCSzK",
+            "content": ""
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 6,
+      "source": "agent",
+      "model_name": "google/gemini-3.1-pro",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "12T3wiwGVP8iy1TP",
+          "function_name": "executeCommand",
+          "arguments": {
+            "command": "jj workspace list",
+            "cwd": "/home/user/repo"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "12T3wiwGVP8iy1TP",
+            "content": "default: lowmqpnp 8bac2806 (empty) (no description set)\r\n"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 7,
+      "source": "agent",
+      "model_name": "google/gemini-3.1-pro",
+      "message": "",
+      "tool_calls": [
+        {
+          "tool_call_id": "TRMTT3Z3xH75TLt9",
+          "function_name": "attemptCompletion",
+          "arguments": {
+            "result": "I have successfully created the `feature-workspace` jj workspace, added the `feature.txt` file with the requested content, created the commit with the description \"Add feature\", and then forgotten the workspace from the original repository."
+          }
+        }
+      ]
+    }
+  ],
+  "final_metrics": {
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 11983,
+    "total_cached_tokens": 0,
+    "total_steps": 7
+  }
+}

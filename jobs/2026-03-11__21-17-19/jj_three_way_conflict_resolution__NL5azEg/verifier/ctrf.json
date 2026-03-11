@@ -1,0 +1,110 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 9,
+            "passed": 6,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773236996.941612,
+            "stop": 1773236997.1219594
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_no_conflicts_remain",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.020363886607810855,
+                "start": 1773236996.9516866,
+                "stop": 1773236996.983199,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_no_conflicts_remain():\n        result = jj(\"resolve\", \"--list\", \"-r\", \"merge-ab\")\n>       assert result.returncode != 0 or result.stdout.strip() == \"\", \\\n            \"No conflicts should remain in merge-ab\"\nE       AssertionError: No conflicts should remain in merge-ab\nE       assert (0 != 0 or 'src/config.p...ided conflict' == ''\nE        +  where 0 = CompletedProcess(args=['jj', 'resolve', '--list', '-r', 'merge-ab'], returncode=0, stdout='src/config.py    2-sided conflict\\n', stderr='').returncode\nE         \nE         + src/config.py    2-sided conflict)\n\n/tests/test_outputs.py:23: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_config_has_production_host",
+                "status": "passed",
+                "duration": 0.017491971841081977,
+                "start": 1773236996.98336,
+                "stop": 1773236997.0010326,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_config_has_production_port",
+                "status": "passed",
+                "duration": 0.018428519135341048,
+                "start": 1773236997.0012243,
+                "stop": 1773236997.0197926,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_config_has_prod_db_name",
+                "status": "passed",
+                "duration": 0.017291562166064978,
+                "start": 1773236997.0199473,
+                "stop": 1773236997.037411,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_config_has_debug_log_level",
+                "status": "passed",
+                "duration": 0.016694172052666545,
+                "start": 1773236997.0376015,
+                "stop": 1773236997.0544424,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_config_has_max_connections_50",
+                "status": "passed",
+                "duration": 0.02444754960015416,
+                "start": 1773236997.0545998,
+                "stop": 1773236997.0792081,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_config_has_timeout_60",
+                "status": "passed",
+                "duration": 0.018682688241824508,
+                "start": 1773236997.0793984,
+                "stop": 1773236997.0982933,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_resolution_summary_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0006497576832771301,
+                "start": 1773236997.0985782,
+                "stop": 1773236997.1020682,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_resolution_summary_exists():\n        summary_path = \"/home/user/resolution_summary.md\"\n>       assert os.path.isfile(summary_path), \\\n            \"Resolution summary file should exist at /home/user/resolution_summary.md\"\nE       AssertionError: Resolution summary file should exist at /home/user/resolution_summary.md\nE       assert False\nE        +  where False = <function isfile at 0x752b68e9c220>('/home/user/resolution_summary.md')\nE        +    where <function isfile at 0x752b68e9c220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:71: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_working_copy_clean",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.016430052928626537,
+                "start": 1773236997.1022928,
+                "stop": 1773236997.1217458,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_working_copy_clean():\n        result = jj(\"resolve\", \"--list\")\n>       assert result.returncode != 0 or result.stdout.strip() == \"\", \\\n            \"Working copy should have no conflicts\"\nE       AssertionError: Working copy should have no conflicts\nE       assert (0 != 0 or 'src/config.p...ided conflict' == ''\nE        +  where 0 = CompletedProcess(args=['jj', 'resolve', '--list'], returncode=0, stdout='src/config.py    2-sided conflict\\n', stderr='').returncode\nE         \nE         + src/config.py    2-sided conflict)\n\n/tests/test_outputs.py:80: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

@@ -1,0 +1,150 @@
+Hit:1 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.22).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /home/user/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 18ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 9 items
+
+../../../tests/test_final_state.py .FFFFFF..                             [100%]
+
+=================================== FAILURES ===================================
+_________________ test_feature_password_reset_bookmark_exists __________________
+
+    def test_feature_password_reset_bookmark_exists():
+        """Bookmark 'feature/password-reset' was created."""
+        result = run("jj bookmark list")
+        assert result.returncode == 0, f"jj bookmark list failed: {result.stderr}"
+>       assert "feature/password-reset" in result.stdout, (
+            f"Bookmark 'feature/password-reset' not found. Got: {result.stdout!r}"
+        )
+E       AssertionError: Bookmark 'feature/password-reset' not found. Got: 'feature/auth: umkopntp 361f10fd feat: implement user login\n'
+E       assert 'feature/password-reset' in 'feature/auth: umkopntp 361f10fd feat: implement user login\n'
+E        +  where 'feature/auth: umkopntp 361f10fd feat: implement user login\n' = CompletedProcess(args='jj bookmark list', returncode=0, stdout='feature/auth: umkopntp 361f10fd feat: implement user login\n', stderr='').stdout
+
+/tests/test_final_state.py:31: AssertionError
+______________ test_feature_auth_points_to_password_reset_commit _______________
+
+    def test_feature_auth_points_to_password_reset_commit():
+        """Bookmark 'feature/auth' now points to the 'feat: implement password reset' commit."""
+        result = run(
+            "jj log --no-graph -r 'bookmarks(\"feature/auth\")' "
+            "-T 'description ++ \"\\n\"'"
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+>       assert "feat: implement password reset" in result.stdout, (
+            f"Bookmark 'feature/auth' should point to password reset commit. Got: {result.stdout!r}"
+        )
+E       AssertionError: Bookmark 'feature/auth' should point to password reset commit. Got: 'feat: implement user login\n\n'
+E       assert 'feat: implement password reset' in 'feat: implement user login\n\n'
+E        +  where 'feat: implement user login\n\n' = CompletedProcess(args='jj log --no-graph -r \'bookmarks("feature/auth")\' -T \'description ++ "\\n"\'', returncode=0, stdout='feat: implement user login\n\n', stderr='').stdout
+
+/tests/test_final_state.py:43: AssertionError
+_________ test_feature_password_reset_points_to_password_reset_commit __________
+
+    def test_feature_password_reset_points_to_password_reset_commit():
+        """Bookmark 'feature/password-reset' points to the 'feat: implement password reset' commit."""
+        result = run(
+            "jj log --no-graph -r 'bookmarks(\"feature/password-reset\")' "
+            "-T 'description ++ \"\\n\"'"
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+>       assert "feat: implement password reset" in result.stdout, (
+            f"Bookmark 'feature/password-reset' should point to password reset commit. "
+            f"Got: {result.stdout!r}"
+        )
+E       AssertionError: Bookmark 'feature/password-reset' should point to password reset commit. Got: ''
+E       assert 'feat: implement password reset' in ''
+E        +  where '' = CompletedProcess(args='jj log --no-graph -r \'bookmarks("feature/password-reset")\' -T \'description ++ "\\n"\'', returncode=0, stdout='', stderr='').stdout
+
+/tests/test_final_state.py:55: AssertionError
+___________________ test_both_bookmarks_point_to_same_commit ___________________
+
+    def test_both_bookmarks_point_to_same_commit():
+        """Both bookmarks resolve to the same commit."""
+        result = run(
+            "jj log --no-graph "
+            "-r 'bookmarks(\"feature/auth\") & bookmarks(\"feature/password-reset\")' "
+            "-T 'change_id ++ \"\\n\"'"
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+        lines = [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]
+>       assert len(lines) == 1, (
+            f"Expected both bookmarks to point to the same commit (1 result), "
+            f"got {len(lines)}: {result.stdout!r}"
+        )
+E       AssertionError: Expected both bookmarks to point to the same commit (1 result), got 0: ''
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+/tests/test_final_state.py:70: AssertionError
+____________________ test_feature_auth_points_to_wc_parent _____________________
+
+    def test_feature_auth_points_to_wc_parent():
+        """Bookmark 'feature/auth' points to @- (the parent of the working copy)."""
+        result = run(
+            "jj log --no-graph -r 'bookmarks(\"feature/auth\") & @-' "
+            "-T 'change_id ++ \"\\n\"'"
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+        lines = [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]
+>       assert len(lines) == 1, (
+            f"Bookmark 'feature/auth' is not pointing at @-. Got: {result.stdout!r}"
+        )
+E       AssertionError: Bookmark 'feature/auth' is not pointing at @-. Got: ''
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+/tests/test_final_state.py:84: AssertionError
+_______________ test_feature_password_reset_points_to_wc_parent ________________
+
+    def test_feature_password_reset_points_to_wc_parent():
+        """Bookmark 'feature/password-reset' points to @- (the parent of the working copy)."""
+        result = run(
+            "jj log --no-graph -r 'bookmarks(\"feature/password-reset\") & @-' "
+            "-T 'change_id ++ \"\\n\"'"
+        )
+        assert result.returncode == 0, f"jj log failed: {result.stderr}"
+        lines = [l.strip() for l in result.stdout.strip().splitlines() if l.strip()]
+>       assert len(lines) == 1, (
+            f"Bookmark 'feature/password-reset' is not pointing at @-. Got: {result.stdout!r}"
+        )
+E       AssertionError: Bookmark 'feature/password-reset' is not pointing at @-. Got: ''
+E       assert 0 == 1
+E        +  where 0 = len([])
+
+/tests/test_final_state.py:97: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../../../tests/test_final_state.py::test_feature_auth_bookmark_exists
+PASSED ../../../tests/test_final_state.py::test_commit_history_intact
+PASSED ../../../tests/test_final_state.py::test_working_copy_is_still_empty
+FAILED ../../../tests/test_final_state.py::test_feature_password_reset_bookmark_exists
+FAILED ../../../tests/test_final_state.py::test_feature_auth_points_to_password_reset_commit
+FAILED ../../../tests/test_final_state.py::test_feature_password_reset_points_to_password_reset_commit
+FAILED ../../../tests/test_final_state.py::test_both_bookmarks_point_to_same_commit
+FAILED ../../../tests/test_final_state.py::test_feature_auth_points_to_wc_parent
+FAILED ../../../tests/test_final_state.py::test_feature_password_reset_points_to_wc_parent
+========================= 6 failed, 3 passed in 0.28s ==========================

@@ -1,0 +1,92 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 4,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773236941.87051,
+            "stop": 1773236942.0068934
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_status_report_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00041717803105711937,
+                "start": 1773236941.8797839,
+                "stop": 1773236941.8901367,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_status_report_exists():\n>       assert os.path.isfile(REPORT), \\\n            \"status_report.txt must exist at /home/user/status_report.txt\"\nE       AssertionError: status_report.txt must exist at /home/user/status_report.txt\nE       assert False\nE        +  where False = <function isfile at 0x79696d78c220>('/home/user/status_report.txt')\nE        +    where <function isfile at 0x79696d78c220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_upstream_commits_fetched",
+                "status": "passed",
+                "duration": 0.025849495083093643,
+                "start": 1773236941.8902612,
+                "stop": 1773236941.9162874,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_local_commits_rebased_onto_new_upstream",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02521526673808694,
+                "start": 1773236941.9164736,
+                "stop": 1773236941.9434667,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_local_commits_rebased_onto_new_upstream():\n        \"\"\"Local commits should be descendants of the new upstream HEAD.\"\"\"\n        result = run_jj([\"log\", \"--no-graph\",\n                         \"-r\", \"local-branch & descendants(main)\",\n                         \"-T\", 'description ++ \"\\n\"'])\n        assert result.returncode == 0\n>       assert \"local-3\" in result.stdout or \"order\" in result.stdout, \\\n            \"local-branch should be rebased onto new main (upstream-4)\"\nE       AssertionError: local-branch should be rebased onto new main (upstream-4)\nE       assert ('local-3' in '' or 'order' in '')\nE        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'local-branch & descendants(main)', '-T', 'description ++ \"\\n\"'], returncode=0, stdout='', stderr='').stdout\nE        +  and   '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'local-branch & descendants(main)', '-T', 'description ++ \"\\n\"'], returncode=0, stdout='', stderr='').stdout\n\n/tests/test_outputs.py:41: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_all_local_commits_present",
+                "status": "passed",
+                "duration": 0.013965299353003502,
+                "start": 1773236941.9435875,
+                "stop": 1773236941.9577157,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_no_conflicts",
+                "status": "passed",
+                "duration": 0.024200200103223324,
+                "start": 1773236941.9579358,
+                "stop": 1773236941.982264,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_main_on_new_upstream_head",
+                "status": "passed",
+                "duration": 0.020624270662665367,
+                "start": 1773236941.9824033,
+                "stop": 1773236942.0032697,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_status_report_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0005086776800453663,
+                "start": 1773236942.0036128,
+                "stop": 1773236942.0066872,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_status_report_content():\n        \"\"\"The status report should document the rebase operation.\"\"\"\n>       with open(REPORT) as f:\n             ^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/status_report.txt'\n\n/tests/test_outputs.py:74: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

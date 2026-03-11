@@ -1,0 +1,116 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 8,
+            "passed": 0,
+            "failed": 8,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773237013.5897062,
+            "stop": 1773237013.6512356
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_report_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0004259400302544236,
+                "start": 1773237013.5991542,
+                "stop": 1773237013.61017,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_exists():\n>       assert os.path.exists(REPORT), f\"ancestry_report.txt must exist at {REPORT}\"\nE       AssertionError: ancestry_report.txt must exist at /home/user/ancestry_report.txt\nE       assert False\nE        +  where False = <function exists at 0x772ded4af560>('/home/user/ancestry_report.txt')\nE        +    where <function exists at 0x772ded4af560> = <module 'posixpath' (frozen)>.exists\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_feature_a_exclusive_section",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002749409759417176,
+                "start": 1773237013.610301,
+                "stop": 1773237013.6118276,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_feature_a_exclusive_section():\n>       with open(REPORT) as f:\n             ^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/ancestry_report.txt'\n\n/tests/test_outputs.py:24: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_all_features_intersection",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00024166004732251167,
+                "start": 1773237013.6119442,
+                "stop": 1773237013.6133664,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_all_features_intersection():\n>       with open(REPORT) as f:\n             ^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/ancestry_report.txt'\n\n/tests/test_outputs.py:31: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_merge_base_section",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00024058984126895666,
+                "start": 1773237013.613478,
+                "stop": 1773237013.6149082,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_merge_base_section():\n>       with open(REPORT) as f:\n             ^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/ancestry_report.txt'\n\n/tests/test_outputs.py:40: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_core_py_section",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00024079205468297005,
+                "start": 1773237013.6150205,
+                "stop": 1773237013.616437,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_core_py_section():\n>       with open(REPORT) as f:\n             ^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/ancestry_report.txt'\n\n/tests/test_outputs.py:47: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_is_non_trivial",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00023360003251582384,
+                "start": 1773237013.616545,
+                "stop": 1773237013.617941,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_is_non_trivial():\n>       with open(REPORT) as f:\n             ^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/ancestry_report.txt'\n\n/tests/test_outputs.py:53: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_feature_a_exclusive_commits_identified",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00023768201936036348,
+                "start": 1773237013.6180458,
+                "stop": 1773237013.6194546,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_feature_a_exclusive_commits_identified():\n        # The report should include actual commit descriptions or IDs from feature-a\n>       with open(REPORT) as f:\n             ^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/ancestry_report.txt'\n\n/tests/test_outputs.py:61: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_core_py_commits_in_report",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02976077003404498,
+                "start": 1773237013.6195595,
+                "stop": 1773237013.651077,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_core_py_commits_in_report():\n        # Get commits that modified core.py in features\n        result = run_jj([\"log\", \"--no-graph\", \"-r\",\n                         \"(feature-a | feature-b | feature-c) & ~ancestors(main)\",\n                         \"-T\", \"description.first_line() ++ '\\n'\"])\n        if result.returncode == 0 and result.stdout.strip():\n>           with open(REPORT) as f:\n                 ^^^^^^^^^^^^\nE           FileNotFoundError: [Errno 2] No such file or directory: '/home/user/ancestry_report.txt'\n\n/tests/test_outputs.py:74: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

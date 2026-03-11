@@ -1,0 +1,22 @@
+{
+  "schema_version": "ATIF-v1.6",
+  "session_id": "d66a6a25-1cff-447f-8d02-676ee9f288df",
+  "agent": {
+    "name": "pochi",
+    "version": "unknown",
+    "model_name": "google/gemini-3.1-pro"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "user",
+      "message": "<system-reminder># System Information\n\nOperating System: linux\nDefault Shell: \nHome Directory: /root\nCurrent Working Directory: /root\nCurrent Time: Wed Mar 11 2026 13:17:43 GMT+0000 (Coordinated Universal Time)\n\n# Current Working Directory (/root) Files\n.bashrc\n.profile\n.daytona\n.bash_profile\n.pochi\n.config\n.daytona/sessions\n.pochi/bin\n.pochi/config.jsonc\n.config/jj\n.daytona/sessions/983a1f70-f1ce-4cc8-8686-8280d2173e1c\n.daytona/sessions/d8d64ceb-f601-4648-9828-304168594ec7\n.daytona/sessions/16c8fa5f-9c6e-4f8a-8e0a-a4cfd2b19847\n.daytona/sessions/f147aa48-00e2-41af-93a2-0f0b580051cc\n.daytona/sessions/562a8c95-e8e6-4e09-b15f-daad2b40e51f\n.pochi/bin/pochi\n.config/jj/repos\n.daytona/sessions/983a1f70-f1ce-4cc8-8686-8280d2173e1c/ead8efa7-1f85-439c-89ee-4ffe2c13dc71\n.daytona/sessions/d8d64ceb-f601-4648-9828-304168594ec7/d01f8ff7-7a7b-4c3f-8866-8d8515fbd48a\n.daytona/sessions/16c8fa5f-9c6e-4f8a-8e0a-a4cfd2b19847/95bcbb37-ad20-4014-9a12-0a1821ea0443\n.daytona/sessions/f147aa48-00e2-41af-93a2-0f0b580051cc/f4e23f26-13e7-4409-a704-ded85a119b13\n.daytona/sessions/562a8c95-e8e6-4e09-b15f-daad2b40e51f/895dac11-cf25-4fb1-8d02-637ea09a0c66\n.config/jj/repos/58793b66646fb0da98ac\n.daytona/sessions/983a1f70-f1ce-4cc8-8686-8280d2173e1c/ead8efa7-1f85-439c-89ee-4ffe2c13dc71/output.log\n.daytona/sessions/983a1f70-f1ce-4cc8-8686-8280d2173e1c/ead8efa7-1f85-439c-89ee-4ffe2c13dc71/exit_code\n.daytona/sessions/d8d64ceb-f601-4648-9828-304168594ec7/d01f8ff7-7a7b-4c3f-8866-8d8515fbd48a/output.log\n.daytona/sessions/d8d64ceb-f601-4648-9828-304168594ec7/d01f8ff7-7a7b-4c3f-8866-8d8515fbd48a/exit_code\n.daytona/sessions/16c8fa5f-9c6e-4f8a-8e0a-a4cfd2b19847/95bcbb37-ad20-4014-9a12-0a1821ea0443/output.log\n.daytona/sessions/16c8fa5f-9c6e-4f8a-8e0a-a4cfd2b19847/95bcbb37-ad20-4014-9a12-0a1821ea0443/exit_code\n.daytona/sessions/f147aa48-00e2-41af-93a2-0f0b580051cc/f4e23f26-13e7-4409-a704-ded85a119b13/output.log\n.daytona/sessions/f147aa48-00e2-41af-93a2-0f0b580051cc/f4e23f26-13e7-4409-a704-ded85a119b13/exit_code\n.daytona/sessions/562a8c95-e8e6-4e09-b15f-daad2b40e51f/895dac11-cf25-4fb1-8d02-637ea09a0c66/output.log\n.config/jj/repos/58793b66646fb0da98ac/config.toml\n.config/jj/repos/58793b66646fb0da98ac/metadata.binpb\n\n# GIT STATUS\nCurrent branch: \nMain branch (you will usually use this for PRs): \n\nRecent commits:\n\n\n# TODOs\nNo TODOs yet, if you are working on tasks that would benefit from a todo list please use the todoWrite tool to create one.</system-reminder>\n'You are a developer migrating from Git to `jj` (Jujutsu), working in a repository at `/home/user/project`.\n\nThe repository has the following structure:\n- `main` bookmark points to a commit described as `chore: project setup` (creates `main.py` with content `print('\"'\"'main'\"'\"')`)\n- From the `root()`, there is also a separate line of commits:\n  - `feat: add helper` (creates `helper.py` with content `def helper(): pass`)\n  - Your working copy `@` is at `feat: add helper`\n\nThe `main` bookmark was updated by a teammate after you created `feat: add helper`. As a result, your feature commit is currently based on `root()`, not on `main`.\n\nYou need to rebase your working copy commit (`feat: add helper`) so that it is based on the commit pointed to by `main` (i.e., `chore: project setup`). Do not create any new commits.\n\nAfter rebasing, save the output of `jj log --no-graph -r '\"'\"'root()..@'\"'\"' -T '\"'\"'description ++ \"\\n\"'\"'\"'` to `/home/user/project/rebase.log`.\n\nYour task is complete when:\n- The parent of `@` is the commit described as `chore: project setup`\n- `feat: add helper` is the description of `@`\n- Both `main.py` and `helper.py` exist in the working directory\n- `/home/user/project/rebase.log` exists and contains both `chore: project setup` and `feat: add helper`\n'"
+    }
+  ],
+  "final_metrics": {
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_cached_tokens": 0,
+    "total_steps": 1
+  }
+}

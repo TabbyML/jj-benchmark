@@ -1,0 +1,22 @@
+{
+  "schema_version": "ATIF-v1.6",
+  "session_id": "dc7b3949-96ff-4a7e-946c-c7b244155d75",
+  "agent": {
+    "name": "pochi",
+    "version": "unknown",
+    "model_name": "google/gemini-3.1-pro"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "user",
+      "message": "<system-reminder># System Information\n\nOperating System: linux\nDefault Shell: \nHome Directory: /root\nCurrent Working Directory: /root\nCurrent Time: Wed Mar 11 2026 13:34:17 GMT+0000 (Coordinated Universal Time)\n\n# Current Working Directory (/root) Files\n.bashrc\n.profile\n.daytona\n.bash_profile\n.pochi\n.daytona/sessions\n.pochi/bin\n.pochi/config.jsonc\n.daytona/sessions/74de5ce2-8a52-48dc-ba17-7f9f9ba778a8\n.daytona/sessions/68f4f63e-79bc-4b36-856e-4d5be827f0de\n.daytona/sessions/f390ccd4-3cdc-4cba-869e-d1500ff7ac43\n.daytona/sessions/b0bc90ea-1827-4693-a4b1-532e7f9b248e\n.daytona/sessions/9441c715-7c8f-4c51-90f4-83b45dd3461d\n.pochi/bin/pochi\n.daytona/sessions/74de5ce2-8a52-48dc-ba17-7f9f9ba778a8/b8c78ec4-734a-447f-b995-b74f6ecc7d92\n.daytona/sessions/68f4f63e-79bc-4b36-856e-4d5be827f0de/14b57de1-2bdc-43a3-b2cd-206f3967e65c\n.daytona/sessions/f390ccd4-3cdc-4cba-869e-d1500ff7ac43/0cfbe4a9-eb5b-452c-9849-b7cb5cde1cf4\n.daytona/sessions/b0bc90ea-1827-4693-a4b1-532e7f9b248e/76ac5a8a-1636-4a30-a57e-fb18fee06e12\n.daytona/sessions/9441c715-7c8f-4c51-90f4-83b45dd3461d/7ad0b18c-581c-4135-b27b-e84509a9f13f\n.daytona/sessions/74de5ce2-8a52-48dc-ba17-7f9f9ba778a8/b8c78ec4-734a-447f-b995-b74f6ecc7d92/output.log\n.daytona/sessions/74de5ce2-8a52-48dc-ba17-7f9f9ba778a8/b8c78ec4-734a-447f-b995-b74f6ecc7d92/exit_code\n.daytona/sessions/68f4f63e-79bc-4b36-856e-4d5be827f0de/14b57de1-2bdc-43a3-b2cd-206f3967e65c/output.log\n.daytona/sessions/68f4f63e-79bc-4b36-856e-4d5be827f0de/14b57de1-2bdc-43a3-b2cd-206f3967e65c/exit_code\n.daytona/sessions/f390ccd4-3cdc-4cba-869e-d1500ff7ac43/0cfbe4a9-eb5b-452c-9849-b7cb5cde1cf4/output.log\n.daytona/sessions/f390ccd4-3cdc-4cba-869e-d1500ff7ac43/0cfbe4a9-eb5b-452c-9849-b7cb5cde1cf4/exit_code\n.daytona/sessions/b0bc90ea-1827-4693-a4b1-532e7f9b248e/76ac5a8a-1636-4a30-a57e-fb18fee06e12/output.log\n.daytona/sessions/b0bc90ea-1827-4693-a4b1-532e7f9b248e/76ac5a8a-1636-4a30-a57e-fb18fee06e12/exit_code\n.daytona/sessions/9441c715-7c8f-4c51-90f4-83b45dd3461d/7ad0b18c-581c-4135-b27b-e84509a9f13f/output.log\n\n# GIT STATUS\nCurrent branch: \nMain branch (you will usually use this for PRs): \n\nRecent commits:\n\n\n# TODOs\nNo TODOs yet, if you are working on tasks that would benefit from a todo list please use the todoWrite tool to create one.</system-reminder>\n'You are a developer migrating from Git to Jujutsu (jj). A teammate has concurrently modified and pushed the same commit you were working on, resulting in a divergent commit in your local repository after you fetched from the remote.\n\nYour task is to resolve this divergence.\n\nHere is your environment:\n\n* You are in a jj repository located at `/home/user/repo`.\n* There is a bookmark `feature` which currently points to a divergent commit. One side of the divergence has your local changes (adding a feature in `main.py`), and the other side has the remote changes (a bugfix in `main.py`).\n\nPerform the following steps:\n\n1. Identify the divergent commits using `jj log`.\n2. Resolve the divergence. Since the commits are divergent, they share the same change ID. You need to resolve them into a single commit with that change ID. You can do this by abandoning one side and keeping the other, or by rebasing/squashing them. However, the standard way to resolve divergence in jj is to rebase one side onto the other or squash them if they represent the same logical change. Actually, `jj squash` or `jj rebase` can handle it, but wait, divergent commits have the SAME change ID. If you just edit the file and `jj squash` or `jj new`, you might still have divergence. Wait, if you `jj squash -r <side1> --into <side2>`, it resolves the divergence. Let'\"'\"'s ask the user to resolve it such that the `feature` bookmark points to a single commit with no divergence, containing both changes.\n3. Write the change ID (not commit ID) of the resolved commit to `/home/user/resolved_change_id.txt`.\n4. Write the content of `main.py` from the resolved commit to `/home/user/main_content.txt`.\n   '"
+    }
+  ],
+  "final_metrics": {
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_cached_tokens": 0,
+    "total_steps": 1
+  }
+}

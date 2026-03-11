@@ -1,0 +1,137 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 10,
+            "passed": 1,
+            "failed": 9,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773236946.2192702,
+            "stop": 1773236946.2804036
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_divergence_report_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0004182825796306133,
+                "start": 1773236946.229834,
+                "stop": 1773236946.240034,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_divergence_report_exists():\n>       assert os.path.isfile(REPORT_FILE), f\"Divergence report {REPORT_FILE} does not exist.\"\nE       AssertionError: Divergence report /home/user/divergence-report.md does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x714c19564220>('/home/user/divergence-report.md')\nE        +    where <function isfile at 0x714c19564220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_analysis_log_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00031993119046092033,
+                "start": 1773236946.2401602,
+                "stop": 1773236946.241913,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_analysis_log_exists():\n>       assert os.path.isfile(LOG_FILE), f\"Analysis log {LOG_FILE} does not exist.\"\nE       AssertionError: Analysis log /home/user/divergence_analysis_log.txt does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x714c19564220>('/home/user/divergence_analysis_log.txt')\nE        +    where <function isfile at 0x714c19564220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:24: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_analysis_log_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00022969068959355354,
+                "start": 1773236946.2420256,
+                "stop": 1773236946.243555,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_analysis_log_content():\n>       with open(LOG_FILE) as f:\n             ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_analysis_log.txt'\n\n/tests/test_outputs.py:28: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_section_headings",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002209511585533619,
+                "start": 1773236946.2436616,
+                "stop": 1773236946.2451372,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_section_headings():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_outputs.py:38: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_commit_description",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00022131996229290962,
+                "start": 1773236946.2452426,
+                "stop": 1773236946.2467222,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_commit_description():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_outputs.py:48: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_change_id",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00023084180429577827,
+                "start": 1773236946.2468286,
+                "stop": 1773236946.2483203,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_change_id():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_outputs.py:57: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_divergence_op_id",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00023393100127577782,
+                "start": 1773236946.2484255,
+                "stop": 1773236946.249912,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_divergence_op_id():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_outputs.py:68: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_first_develop_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00022275932133197784,
+                "start": 1773236946.2500186,
+                "stop": 1773236946.251499,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_first_develop_commit():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_outputs.py:79: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_first_main_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002221311442553997,
+                "start": 1773236946.2516034,
+                "stop": 1773236946.2531025,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_first_main_commit():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_outputs.py:87: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_common_ancestor_is_correct",
+                "status": "passed",
+                "duration": 0.026892928406596184,
+                "start": 1773236946.2532067,
+                "stop": 1773236946.280257,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}
