@@ -1,0 +1,4 @@
+pochi --model zai/glm-4.7 --stream-json > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+'You are a developer migrating from Git to Jujutsu (jj). You have an existing local Git repository at `/home/user/my-project`. Your task is to start using jj with this repository without breaking Git compatibility.\n\n1. Navigate to `/home/user/my-project`.\n2. Initialize a colocated jj repository so that jj and Git can be used together.\n3. Create a new bookmark named `feature-x`.\n4. Create a new file named `feature.txt` containing the text `Hello jj`.\n5. Create a new jj commit (or describe the working copy) with the description `Add feature.txt`.\n\nWhen finished, the repository should be a valid colocated jj/Git repo, the `feature-x` bookmark should exist and be exported to Git, and the commit should have the specified description and file.
+'
+EOF

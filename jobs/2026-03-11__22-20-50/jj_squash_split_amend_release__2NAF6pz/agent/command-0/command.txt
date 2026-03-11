@@ -1,0 +1,81 @@
+pochi --model zai/glm-4.7 --stream-json > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+'# Preparing a Clean Release Branch with jj History Rewriting
+
+## Scenario
+
+You are a release manager at a software company preparing the `v2.3` release of the `widget-engine` project. The repository lives at `/home/user/widget-engine`. A developer has been working on the `release/v2.3` bookmark and the history is messy — it needs to be cleaned up before the release can be tagged.
+
+Run `jj log -r '"'"'root()..@'"'"'` in the `/home/user/widget-engine` directory to inspect the current history. You will find the following chain of commits on the `release/v2.3` bookmark (from oldest to newest):
+
+1. **"initial project scaffold"** — the base commit (this is correct, do not modify it)
+2. **"add API endpoint and fix login bug"** — this commit **incorrectly bundles** two unrelated changes together:
+   - Changes to `src/api.py` (the new API endpoint)
+   - Changes to `src/auth.py` (the login bug fix)
+3. **"add release notes"** — adds the file `RELEASE_NOTES.md` (this is correct, do not modify it)
+4. **"wip: bump version"** — adds/modifies `version.txt` with the new version string (the description is wrong — it should be `"bump version to 2.3.0"`)
+5. **"fixup: missing newline in release notes"** — a small fixup commit that modifies `RELEASE_NOTES.md` (this needs to be squashed into the "add release notes" commit)
+
+The `release/v2.3` bookmark currently points to commit 5 (the topmost commit).
+
+## Your Tasks
+
+Perform the following operations **in order**, all within the `/home/user/widget-engine` jj repository:
+
+### Task 1 — Split the mixed commit
+
+The commit with description **"add API endpoint and fix login bug"** contains changes to two unrelated files: `src/api.py` and `src/auth.py`. You must split it into **two separate commits** with the following descriptions (in order, oldest first):
+
+- First commit (parent): description must be exactly `"fix login bug"` — contains **only** the changes to `src/auth.py`
+- Second commit (child): description must be exactly `"add API endpoint"` — contains **only** the changes to `src/api.py`
+
+Use `jj split` with the file argument to split by file path without entering an interactive diff editor. Pass `-m` to set the description of the first (selected) commit. After splitting, use `jj describe` to rename the second commit from its inherited description to `"add API endpoint"`.
+
+**Important**: `jj split` by default puts the **selected files** (those you pass as arguments) into the **first** commit and the remaining files into the second. So think carefully about which file to select.
+
+### Task 2 — Squash the fixup commit
+
+The commit with description **"fixup: missing newline in release notes"** (which modifies `RELEASE_NOTES.md`) is a small fixup that logically belongs in the **"add release notes"** commit. Squash it into the "add release notes" commit using `jj squash`.
+
+After the squash, the commit with description "add release notes" should contain all changes to `RELEASE_NOTES.md`. The "fixup: missing newline in release notes" commit must no longer exist in the history.
+
+Use `jj squash --from <rev> --into <rev>` to move the changes from the fixup commit into the "add release notes" commit. You will need to identify the correct revision specifiers using `jj log`. Use `--use-destination-message` to keep the destination commit description.
+
+### Task 3 — Amend the commit description
+
+The commit with description **"wip: bump version"** has a wrong description. Change it to exactly `"bump version to 2.3.0"` using `jj describe`.
+
+Use `jj describe -r <rev> -m "bump version to 2.3.0"` where `<rev>` identifies the version-bumping commit.
+
+### Task 4 — Move the release bookmark
+
+After all the rewriting above, move the `release/v2.3` bookmark to point to the working copy'"'"'s parent commit (`@-`), which should be the `"bump version to 2.3.0"` commit. Use:
+
+```
+jj bookmark set release/v2.3 -r @-
+```
+
+This explicitly marks the cleaned tip of the branch as the `release/v2.3` bookmark.
+
+## Expected Final History
+
+After completing all four tasks, running `jj log -r '"'"'root()..@'"'"'` should show a clean linear chain (oldest to newest) with these descriptions:
+
+1. `"initial project scaffold"`
+2. `"fix login bug"` — contains only `src/auth.py`
+3. `"add API endpoint"` — contains only `src/api.py`
+4. `"add release notes"` — contains all changes to `RELEASE_NOTES.md` (original + fixup merged)
+5. `"bump version to 2.3.0"` — contains changes to `version.txt`
+6. `(empty working copy @ — ignore this)` 
+
+The `release/v2.3` bookmark must point to the `"bump version to 2.3.0"` commit.
+
+## Verification Hints
+
+- Use `jj log` to view the history and find change IDs for each commit.
+- Use `jj show -r <rev>` to inspect which files a commit touches.
+- Use `jj bookmark list` to verify the bookmark location.
+- All operations must be performed inside `/home/user/widget-engine`.
+- Do not modify `version.txt` content — only the description needs to change.
+- Do not create any new files; only rewrite history.
+'
+EOF
