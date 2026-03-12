@@ -1,0 +1,74 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 2,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773284441.4461343,
+            "stop": 1773284441.5010526
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_dot_jj_directory_exists",
+                "status": "passed",
+                "duration": 0.0003260511439293623,
+                "start": 1773284441.454494,
+                "stop": 1773284441.454958,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_app_py_has_migrate_function",
+                "status": "passed",
+                "duration": 0.0002478603273630142,
+                "start": 1773284441.45508,
+                "stop": 1773284441.4554107,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_jj_bookmark_exists_and_points_to_migrate",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022490400122478604,
+                "start": 1773284441.455513,
+                "stop": 1773284441.4914904,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_jj_bookmark_exists_and_points_to_migrate():\n        # Check if the bookmark exists\n        result = run_cmd([\"jj\", \"bookmark\", \"list\"])\n        assert result.returncode == 0, f\"jj bookmark list failed: {result.stderr}\"\n>       assert \"jj-migration\" in result.stdout, \"The bookmark 'jj-migration' does not exist in jj.\"\nE       AssertionError: The bookmark 'jj-migration' does not exist in jj.\nE       assert 'jj-migration' in 'main: vrnkxmly 0b2ba60c Initial commit\\n'\nE        +  where 'main: vrnkxmly 0b2ba60c Initial commit\\n' = CompletedProcess(args=['jj', 'bookmark', 'list'], returncode=0, stdout='main: vrnkxmly 0b2ba60c Initial commit\\n', stderr='').stdout\n\n/tests/test_final_state.py:24: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_git_branch_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0034064410720020533,
+                "start": 1773284441.4916399,
+                "stop": 1773284441.496382,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_git_branch_exists():\n        result = run_cmd([\"git\", \"branch\"])\n        assert result.returncode == 0, f\"git branch failed: {result.stderr}\"\n>       assert \"jj-migration\" in result.stdout, \"The Git branch 'jj-migration' does not exist.\"\nE       AssertionError: The Git branch 'jj-migration' does not exist.\nE       assert 'jj-migration' in '* (no branch)\\n  main\\n'\nE        +  where '* (no branch)\\n  main\\n' = CompletedProcess(args=['git', 'branch'], returncode=0, stdout='* (no branch)\\n  main\\n', stderr='').stdout\n\n/tests/test_final_state.py:35: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_git_branch_points_to_same_commit_as_jj_bookmark",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.002842570189386606,
+                "start": 1773284441.4965038,
+                "stop": 1773284441.5009236,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_git_branch_points_to_same_commit_as_jj_bookmark():\n        # Get the git commit hash for the branch\n        git_result = run_cmd([\"git\", \"rev-parse\", \"jj-migration\"])\n>       assert git_result.returncode == 0, f\"git rev-parse failed: {git_result.stderr}\"\nE       AssertionError: git rev-parse failed: fatal: ambiguous argument 'jj-migration': unknown revision or path not in the working tree.\nE         Use '--' to separate paths from revisions, like this:\nE         'git <command> [<revision>...] -- [<file>...]'\nE         \nE       assert 128 == 0\nE        +  where 128 = CompletedProcess(args=['git', 'rev-parse', 'jj-migration'], returncode=128, stdout='jj-migration\\n', stderr=\"fatal: am...orking tree.\\nUse '--' to separate paths from revisions, like this:\\n'git <command> [<revision>...] -- [<file>...]'\\n\").returncode\n\n/tests/test_final_state.py:40: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

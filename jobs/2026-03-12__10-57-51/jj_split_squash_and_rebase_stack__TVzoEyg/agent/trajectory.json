@@ -1,0 +1,22 @@
+{
+  "schema_version": "ATIF-v1.6",
+  "session_id": "5942bc1d-82d6-419c-be46-384cc6ca4fc7",
+  "agent": {
+    "name": "pochi",
+    "version": "unknown",
+    "model_name": "anthropic/claude-opus-4-6"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "user",
+      "message": "<system-reminder># System Information\n\nOperating System: linux\nDefault Shell: \nHome Directory: /root\nCurrent Working Directory: /root\nCurrent Time: Thu Mar 12 2026 02:59:25 GMT+0000 (Coordinated Universal Time)\n\n# Current Working Directory (/root) Files\n.bashrc\n.profile\n.daytona\n.bash_profile\n.pochi\n.config\n.daytona/sessions\n.pochi/bin\n.pochi/config.jsonc\n.config/jj\n.daytona/sessions/7cbcc6f0-e2c1-43d1-a354-0ff55d5ed26a\n.daytona/sessions/0015a448-a229-4591-8d7d-dfbaba0aa0b8\n.daytona/sessions/35777c07-3f33-4f5c-9e9c-a3744944efac\n.daytona/sessions/b07a49b6-5cc6-4842-8018-a20d416b0911\n.daytona/sessions/97a5ebb6-ae62-4d31-b96d-ead5dffecc96\n.pochi/bin/pochi\n.config/jj/repos\n.daytona/sessions/7cbcc6f0-e2c1-43d1-a354-0ff55d5ed26a/b4701b25-84fb-472c-bc0a-642d3c3d71fa\n.daytona/sessions/0015a448-a229-4591-8d7d-dfbaba0aa0b8/49059400-2fd6-49bf-8e66-32b436cf903a\n.daytona/sessions/35777c07-3f33-4f5c-9e9c-a3744944efac/ef15aab3-30b4-4a2a-8b1e-bb6154c257f5\n.daytona/sessions/b07a49b6-5cc6-4842-8018-a20d416b0911/933415dd-ec6d-4672-b818-645d9bb014ee\n.daytona/sessions/97a5ebb6-ae62-4d31-b96d-ead5dffecc96/f1f8f592-f9a5-4cfe-82db-0351aef59570\n.config/jj/repos/e9f030723e78018584eb\n.daytona/sessions/7cbcc6f0-e2c1-43d1-a354-0ff55d5ed26a/b4701b25-84fb-472c-bc0a-642d3c3d71fa/output.log\n.daytona/sessions/7cbcc6f0-e2c1-43d1-a354-0ff55d5ed26a/b4701b25-84fb-472c-bc0a-642d3c3d71fa/exit_code\n.daytona/sessions/0015a448-a229-4591-8d7d-dfbaba0aa0b8/49059400-2fd6-49bf-8e66-32b436cf903a/output.log\n.daytona/sessions/0015a448-a229-4591-8d7d-dfbaba0aa0b8/49059400-2fd6-49bf-8e66-32b436cf903a/exit_code\n.daytona/sessions/35777c07-3f33-4f5c-9e9c-a3744944efac/ef15aab3-30b4-4a2a-8b1e-bb6154c257f5/output.log\n.daytona/sessions/35777c07-3f33-4f5c-9e9c-a3744944efac/ef15aab3-30b4-4a2a-8b1e-bb6154c257f5/exit_code\n.daytona/sessions/b07a49b6-5cc6-4842-8018-a20d416b0911/933415dd-ec6d-4672-b818-645d9bb014ee/output.log\n.daytona/sessions/b07a49b6-5cc6-4842-8018-a20d416b0911/933415dd-ec6d-4672-b818-645d9bb014ee/exit_code\n.daytona/sessions/97a5ebb6-ae62-4d31-b96d-ead5dffecc96/f1f8f592-f9a5-4cfe-82db-0351aef59570/output.log\n.config/jj/repos/e9f030723e78018584eb/config.toml\n.config/jj/repos/e9f030723e78018584eb/metadata.binpb\n\n# GIT STATUS\nCurrent branch: \nMain branch (you will usually use this for PRs): \n\nRecent commits:\n\n\n# TODOs\nNo TODOs yet, if you are working on tasks that would benefit from a todo list please use the todoWrite tool to create one.</system-reminder>\nYou are a contributor preparing a patch series for upstream submission. You have a local repository at `/home/user/workspace/repo` with a feature branch named `feature-stack`. The branch contains a series of commits that need to be cleaned up before submission.\n\nThe current commit stack on `feature-stack` (from oldest to newest) is:\n1. A commit adding `feature_a.py`.\n2. A commit modifying `feature_a.py` and adding `feature_b.py`.\n3. A commit fixing a typo in `feature_a.py`.\n\nYour task is to rewrite the history to make it a clean series of two commits:\n1. The first commit should contain all changes related to `feature_a.py` (i.e., squash the typo fix into the first commit, and split out the `feature_a.py` modifications from the second commit into the first commit).\n2. The second commit should contain only the addition of `feature_b.py`.\n\nAfter rewriting the history, move the `feature-stack` bookmark to point to the new second commit.\nFinally, rebase the entire two-commit stack onto the `main` bookmark.\n\nTo verify your work, run `jj log -r 'main..feature-stack' -T 'description ++ \"\\n\"' > /home/user/workspace/final_log.txt`. The log should show exactly two commits, with the first commit's description being 'Add feature A complete' and the second commit's description being 'Add feature B'."
+    }
+  ],
+  "final_metrics": {
+    "total_prompt_tokens": 0,
+    "total_completion_tokens": 0,
+    "total_cached_tokens": 0,
+    "total_steps": 1
+  }
+}
