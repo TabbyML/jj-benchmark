@@ -277,7 +277,7 @@ function TasksContent() {
             Task
           </h1>
           <p className="text-muted-foreground max-w-2xl leading-relaxed mt-2">
-            Detailed breakdown of individual task performance across different models and agents.
+            Detailed breakdown of individual task performance across different models.
           </p>
         </div>
       </div>
@@ -310,14 +310,6 @@ function TasksContent() {
               selected={selectedModels}
               onChange={(vals) => updateParams({ model: vals.length > 0 ? vals.join(",") : null })}
               className="w-full sm:w-[180px]"
-            />
-
-            <MultiSelect
-              title="Agents"
-              options={allAgents.map(a => a.toLowerCase())}
-              selected={selectedAgents}
-              onChange={(vals) => updateParams({ agent: vals.length > 0 ? vals.join(",") : null })}
-              className="w-full sm:w-[140px] col-span-2 sm:col-span-1"
             />
           </div>
 
@@ -360,7 +352,7 @@ function TasksContent() {
               <thead className="sticky top-0 z-30 bg-secondary/95 backdrop-blur text-muted-foreground font-medium border-b border-border select-none shadow-sm">
                 <tr>
                   <th 
-                    className="md:sticky left-0 z-40 bg-transparent md:bg-[#f6f6f6] dark:md:bg-[#0f0f0f] border-r border-border/50 px-3 sm:px-6 py-3 w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px] cursor-pointer hover:bg-secondary/50 hover:text-foreground transition-colors group"
+                    className="md:sticky left-0 z-40 bg-transparent md:bg-[#f6f6f6] dark:md:bg-[#0f0f0f] border-r border-border/50 px-3 sm:px-6 py-3 w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px] cursor-pointer hover:bg-secondary/50 hover:text-foreground transition-colors group md:shadow-[1px_0_0_rgba(0,0,0,0.05)]"
                     onClick={() => toggleSort("taskName")}
                   >
                     <div className="flex items-center gap-1 sm:gap-2">
@@ -368,24 +360,11 @@ function TasksContent() {
                       {renderSortIcon("taskName")}
                     </div>
                   </th>
-                  <th 
-                    className="md:sticky md:left-[350px] z-40 bg-transparent md:bg-[#f6f6f6] dark:md:bg-[#0f0f0f] border-r border-border/50 px-3 sm:px-6 py-3 w-[100px] min-w-[100px] max-w-[100px] md:w-[120px] md:min-w-[120px] md:max-w-[120px] text-right cursor-pointer hover:bg-secondary/50 hover:text-foreground transition-colors group md:shadow-[1px_0_0_rgba(0,0,0,0.05)]"
-                    onClick={() => toggleSort("latency")}
-                  >
-                    <div className="flex items-center justify-end gap-1 sm:gap-2">
-                      <span className="hidden md:inline">Avg Duration</span>
-                      <span className="md:hidden">Duration</span>
-                      {renderSortIcon("latency")}
-                    </div>
-                  </th>
                   {activeCombos.map(combo => (
                     <th key={combo} className="px-3 sm:px-6 py-3 min-w-[120px] md:min-w-[150px] text-left border-l border-border/50">
                       <div className="flex flex-col items-start">
                         <span className="text-foreground font-medium truncate max-w-[100px] md:max-w-[130px]" title={combo.split(' (')[0]}>
                           {combo.split(' (')[0]}
-                        </span>
-                        <span className="text-[10px] text-muted-foreground">
-                          {combo.split(' (')[1].slice(0, -1)}
                         </span>
                       </div>
                     </th>
@@ -398,7 +377,7 @@ function TasksContent() {
                     key={task.taskName} 
                     className="hover:bg-secondary/30 even:bg-secondary/5 transition-colors duration-200 group"
                   >
-                    <td className="md:sticky left-0 z-20 bg-background border-r border-border/50 p-0 font-mono w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px]">
+                    <td className="md:sticky left-0 z-20 bg-background border-r border-border/50 p-0 font-mono w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px] md:shadow-[1px_0_0_rgba(0,0,0,0.05)]">
                       <a 
                         href={`https://github.com/TabbyML/jj-benchmark/tree/main/tasks/${task.taskName}/instruction.md`}
                         target="_blank"
@@ -410,13 +389,6 @@ function TasksContent() {
                           {task.taskName}
                         </span>
                       </a>
-                    </td>
-                    <td className="md:sticky md:left-[350px] z-20 bg-background border-r border-border/50 p-0 text-right w-[100px] min-w-[100px] max-w-[100px] md:w-[120px] md:min-w-[120px] md:max-w-[120px] md:shadow-[1px_0_0_rgba(0,0,0,0.05)]">
-                      <div className="flex items-center justify-end px-3 sm:px-6 py-2 w-full h-full bg-transparent group-even:bg-secondary/5 group-hover:bg-secondary/30 transition-colors">
-                        <span className="font-mono text-xs md:text-sm text-muted-foreground">
-                          {task.avgDuration > 0 ? `${task.avgDuration.toFixed(1)}s` : '-'}
-                        </span>
-                      </div>
                     </td>
                     {activeCombos.map(combo => {
                       const trial = task.comboMap[combo];
@@ -460,11 +432,11 @@ function TasksContent() {
                                       <span className="font-mono">{trial.latency_breakdown.env_setup?.toFixed(1) || '-'}s</span>
                                     </div>
                                     <div className="flex justify-between items-center">
-                                      <span className="text-muted-foreground">Setup Agent</span>
+                                      <span className="text-muted-foreground">Setup</span>
                                       <span className="font-mono">{trial.latency_breakdown.agent_setup?.toFixed(1) || '-'}s</span>
                                     </div>
                                     <div className="flex justify-between items-center font-medium bg-secondary/40 py-1.5 px-2 -mx-2 rounded">
-                                      <span className="text-foreground">Agent Execution</span>
+                                      <span className="text-foreground">Execution</span>
                                       <span className="font-mono text-primary">{trial.latency_breakdown.agent_exec?.toFixed(1) || '-'}s</span>
                                     </div>
                                     <div className="flex justify-between items-center">

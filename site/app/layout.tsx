@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: 'JJ Benchmark',
-  description: 'Performance results of AI coding agents on JJ integration and usage tasks.',
+  description: 'Performance results of AI coding models on JJ integration and usage tasks.',
 };
 
 export default function RootLayout({
