@@ -1,1 +1,0 @@
-trap 'rm -rf /tmp/codex-secrets "$CODEX_HOME/auth.json"' EXIT TERM INT; codex exec --dangerously-bypass-approvals-and-sandbox --skip-git-repo-check --model gpt-5.2-codex --json --enable unified_exec -c model_reasoning_effort=high -- '' 2>&1 </dev/null | tee /logs/agent/codex.txt
