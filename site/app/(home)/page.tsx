@@ -83,7 +83,7 @@ export default function Home() {
           </h1>
 
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Performance results of AI coding agents on Jujutsu tasks,
+            Performance results of AI coding models on Jujutsu tasks,
             measuring success rate and execution time with high precision.
           </p>
 

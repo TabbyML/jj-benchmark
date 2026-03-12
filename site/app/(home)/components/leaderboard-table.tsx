@@ -68,8 +68,7 @@ export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] })
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       processedData = processedData.filter(item => 
-        item.model.toLowerCase().includes(query) || 
-        item.agent.toLowerCase().includes(query)
+        item.model.toLowerCase().includes(query)
       );
     }
 
@@ -81,7 +80,7 @@ export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] })
       {/* Controls & Filters */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <h2 className="text-2xl font-semibold flex items-center gap-2">
-          Agent Performance
+          Model Performance
         </h2>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full md:w-auto">
@@ -97,7 +96,7 @@ export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] })
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search models or agents..."
+              placeholder="Search models..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9 pr-4 py-2 bg-card border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-64 transition-all"
@@ -112,8 +111,7 @@ export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] })
           <table className="w-full text-sm text-left">
             <thead className="bg-secondary/50 text-muted-foreground font-medium border-b border-border">
               <tr>
-                <th className="px-6 py-4 w-[25%]">Model</th>
-                <th className="px-6 py-4 w-[15%]">Agent</th>
+                <th className="px-6 py-4 w-[40%]">Model</th>
                 <th className="px-6 py-4 w-[15%] text-center">Passed</th>
                 <th className="px-6 py-4 w-[15%] text-right">Avg Duration</th>
                 <th className="px-6 py-4 w-[30%]">Success Rate</th>
@@ -122,7 +120,7 @@ export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] })
             <tbody className="divide-y divide-border/50">
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-muted-foreground">
+                  <td colSpan={4} className="px-6 py-8 text-center text-muted-foreground">
                     No results found matching your search.
                   </td>
                 </tr>
@@ -130,7 +128,7 @@ export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] })
                 filteredData.map((row, index) => (
                   <tr
                     key={row.id}
-                    onClick={() => router.push(`./tasks?model=${encodeURIComponent(row.model)}&agent=${encodeURIComponent(row.agent.toLowerCase())}`)}
+                    onClick={() => router.push(`./tasks?model=${encodeURIComponent(row.model)}`)}
                     className="group hover:bg-secondary/30 transition-colors duration-200 cursor-pointer"
                   >
                   <td className="px-6 py-4 font-medium text-foreground flex items-center gap-3">
@@ -145,14 +143,6 @@ export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] })
                           </span>
                         )}
                       </span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-secondary flex items-center justify-center text-[10px] font-bold border border-border">
-                        {row.agent.substring(0, 1).toUpperCase()}
-                      </div>
-                      {row.agent}
                     </div>
                   </td>
                   <td className="px-6 py-4 text-center text-muted-foreground font-mono">
