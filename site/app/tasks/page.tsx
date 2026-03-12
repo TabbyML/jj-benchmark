@@ -1,27 +1,120 @@
 "use client";
 
 import { useState, useMemo, useEffect, Suspense } from "react";
-import { CheckCircle2, XCircle, Search, AlertTriangle, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, ExternalLink } from "lucide-react";
+import { Check, X as XIcon, Search, AlertTriangle, ArrowUpDown, ArrowUp, ArrowDown, Filter, X, ExternalLink, ChevronsUpDown } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import tasksDataRaw from "../../tasks.json";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+function MultiSelect({
+  title,
+  options,
+  selected,
+  onChange,
+  className
+}: {
+  title: string;
+  options: string[];
+  selected: string[];
+  onChange: (vals: string[]) => void;
+  className?: string;
+}) {
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className={cn(
+            "flex h-9 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+            className
+          )}
+        >
+          <div className="flex gap-1 items-center overflow-hidden">
+            <span className="text-muted-foreground mr-1 whitespace-nowrap">{title}</span>
+            {selected.length === 0 && (
+              <Badge variant="secondary" className="px-1 font-normal rounded-sm">
+                All
+              </Badge>
+            )}
+            {selected.length > 0 && selected.length <= 2 && selected.map(s => (
+              <Badge variant="secondary" key={s} className="px-1 font-normal rounded-sm truncate max-w-[80px]">
+                {s}
+              </Badge>
+            ))}
+            {selected.length > 2 && (
+              <Badge variant="secondary" className="px-1 font-normal rounded-sm">
+                {selected.length} selected
+              </Badge>
+            )}
+          </div>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[200px] p-0" align="start">
+        <Command>
+          <CommandInput placeholder={`Search ${title}...`} />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup>
+              <CommandItem
+                onSelect={() => onChange([])}
+              >
+                <Checkbox 
+                  checked={selected.length === 0} 
+                  className="mr-2"
+                  onCheckedChange={() => onChange([])}
+                />
+                <span>All</span>
+              </CommandItem>
+              {options.map((option) => {
+                const isSelected = selected.includes(option);
+                return (
+                  <CommandItem
+                    key={option}
+                    onSelect={() => {
+                      if (isSelected) {
+                        onChange(selected.filter((s) => s !== option));
+                      } else {
+                        onChange([...selected, option]);
+                      }
+                    }}
+                  >
+                    <Checkbox 
+                      checked={isSelected} 
+                      className="mr-2"
+                      onCheckedChange={() => {
+                        if (isSelected) {
+                          onChange(selected.filter((s) => s !== option));
+                        } else {
+                          onChange([...selected, option]);
+                        }
+                      }}
+                    />
+                    <span>{option}</span>
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
 }
 
 // Convert object to array and sort by task name
@@ -31,13 +124,22 @@ const tasksData = Object.entries(tasksDataRaw).map(([taskName, trials]) => {
     trials: (trials as any[]).map(t => ({ 
       ...t, 
       model: t.model.split('/').pop() || t.model,
-      agent: t.agent.charAt(0).toUpperCase() + t.agent.slice(1)
+      agent: t.agent.charAt(0).toUpperCase() + t.agent.slice(1),
+      exec_duration: t.latency_breakdown?.agent_exec || t.latency_sec || 0
     })),
   };
 }).sort((a, b) => a.taskName.localeCompare(b.taskName));
 
-const allModels = Array.from(new Set(tasksData.flatMap(t => t.trials.map(tr => tr.model))));
-const allAgents = Array.from(new Set(tasksData.flatMap(t => t.trials.map(tr => tr.agent))));
+const allTrialsFlat = tasksData.flatMap(task => 
+  task.trials.map(trial => ({
+    taskName: task.taskName,
+    ...trial
+  }))
+);
+
+const allModels = Array.from(new Set(allTrialsFlat.map(tr => tr.model)));
+const allAgents = Array.from(new Set(allTrialsFlat.map(tr => tr.agent)));
+const allCombos = Array.from(new Set(allTrialsFlat.map(tr => `${tr.model} (${tr.agent})`))).sort();
 
 function TasksContent() {
   const router = useRouter();
@@ -45,15 +147,19 @@ function TasksContent() {
   const searchParams = useSearchParams();
 
   const queryQ = searchParams.get("q") || "";
-  const queryStatus = searchParams.get("status") || "all";
-  const queryModel = searchParams.get("model") || "all";
-  const queryAgent = searchParams.get("agent") || "all";
+  const queryStatusStr = searchParams.get("status") || "";
+  const queryModelStr = searchParams.get("model") || "";
+  const queryAgentStr = searchParams.get("agent") || "";
   const querySort = searchParams.get("sort") || "default";
   const queryOrder = searchParams.get("order") || "asc";
 
+  const selectedStatuses = queryStatusStr ? queryStatusStr.split(",") : [];
+  const selectedModels = queryModelStr ? queryModelStr.split(",") : [];
+  const selectedAgents = queryAgentStr ? queryAgentStr.split(",") : [];
+
   const [searchQuery, setSearchQuery] = useState(queryQ);
 
-  const hasActiveFilters = queryStatus !== "all" || queryModel !== "all" || queryAgent !== "all" || searchQuery !== "" || querySort !== "default";
+  const hasActiveFilters = selectedStatuses.length > 0 || selectedModels.length > 0 || selectedAgents.length > 0 || searchQuery !== "" || querySort !== "default";
 
   // Debounce search query to URL
   useEffect(() => {
@@ -75,56 +181,70 @@ function TasksContent() {
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const filteredTasks = useMemo(() => {
-    return tasksData.map(task => {
-      // Filter trials based on status and model
-      const filteredTrials = task.trials.filter(trial => {
-        if (queryStatus === "passed" && !trial.passed) return false;
-        if (queryStatus === "failed" && (trial.passed || trial.error)) return false;
-        if (queryStatus === "error" && !trial.error) return false;
-        if (queryModel !== "all" && trial.model !== queryModel) return false;
-        if (queryAgent !== "all" && trial.agent.toLowerCase() !== queryAgent.toLowerCase()) return false;
-        return true;
-      });
-
-      // Sort trials
-      const sortedTrials = [...filteredTrials].sort((a, b) => {
-        let valA = 0;
-        let valB = 0;
-        if (querySort === "latency") {
-          valA = a.latency_sec || 0;
-          valB = b.latency_sec || 0;
-        } else if (querySort === "tokens") {
-          valA = (a.tokens?.input || 0) + (a.tokens?.output || 0) + (a.tokens?.cache || 0);
-          valB = (b.tokens?.input || 0) + (b.tokens?.output || 0) + (b.tokens?.cache || 0);
-        } else {
-           // default: preserve original order
-           return 0;
-        }
-        
-        if (queryOrder === "asc") {
-          return valA - valB;
-        } else {
-          return valB - valA;
-        }
-      });
-
-      return {
-        ...task,
-        trials: sortedTrials
-      };
-    }).filter(task => {
-      // Filter by search query
-      if (searchQuery && !task.taskName.toLowerCase().includes(searchQuery.toLowerCase())) {
-        return false;
-      }
-      // Hide tasks that have no trials after filtering
-      if (task.trials.length === 0) {
-        return false;
-      }
+  const activeCombos = useMemo(() => {
+    return allCombos.filter(combo => {
+      const [model, agentStr] = combo.split(" (");
+      const agent = agentStr.slice(0, -1);
+      if (selectedModels.length > 0 && !selectedModels.includes(model)) return false;
+      if (selectedAgents.length > 0 && !selectedAgents.includes(agent.toLowerCase())) return false;
       return true;
     });
-  }, [searchQuery, queryStatus, queryModel, queryAgent, querySort, queryOrder]);
+  }, [selectedModels.join(","), selectedAgents.join(",")]);
+
+  const filteredAndSortedTasks = useMemo(() => {
+    let result = tasksData.map(task => {
+      const comboMap: Record<string, any> = {};
+      let hasMatchingTrial = false;
+      
+      task.trials.forEach(trial => {
+        const comboKey = `${trial.model} (${trial.agent})`;
+        if (!activeCombos.includes(comboKey)) return;
+        
+        if (selectedStatuses.length > 0) {
+          if (selectedStatuses.includes("passed") && trial.passed) {
+            // Keep
+          } else if (selectedStatuses.includes("failed") && !trial.passed && !trial.error) {
+            // Keep
+          } else if (selectedStatuses.includes("error") && trial.error) {
+            // Keep
+          } else {
+            return;
+          }
+        }
+        
+        comboMap[comboKey] = trial;
+        hasMatchingTrial = true;
+      });
+
+      const avgDuration = Object.values(comboMap).length > 0 
+        ? Object.values(comboMap).reduce((sum: number, t: any) => sum + t.exec_duration, 0) / Object.values(comboMap).length 
+        : 0;
+
+      return {
+        taskName: task.taskName,
+        comboMap,
+        hasMatchingTrial,
+        avgDuration
+      };
+    }).filter(task => {
+      if (!task.hasMatchingTrial) return false;
+      if (searchQuery && !task.taskName.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+      return true;
+    });
+
+    result.sort((a, b) => {
+      if (querySort === "latency") {
+        return queryOrder === "asc" ? a.avgDuration - b.avgDuration : b.avgDuration - a.avgDuration;
+      } else {
+        // default sort by taskName
+        return queryOrder === "asc" 
+          ? a.taskName.localeCompare(b.taskName)
+          : b.taskName.localeCompare(a.taskName);
+      }
+    });
+
+    return result;
+  }, [searchQuery, selectedStatuses.join(","), activeCombos, querySort, queryOrder]);
 
   const toggleSort = (field: string) => {
     if (querySort === field) {
@@ -144,9 +264,9 @@ function TasksContent() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-16 max-w-6xl">
+    <div className="container mx-auto px-4 sm:px-8 lg:px-12 py-8 max-w-screen-2xl h-[100dvh] flex flex-col overflow-hidden">
       {/* Header Section */}
-      <div className="mb-8 space-y-4">
+      <div className="mb-6 space-y-4 shrink-0">
         <div className="flex items-center gap-4">
           <Link href="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             &larr; Back to Leaderboard
@@ -163,7 +283,7 @@ function TasksContent() {
       </div>
 
       {/* Filters & Search */}
-      <div className="sticky top-4 z-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 p-4 rounded-xl border border-border bg-card/80 backdrop-blur-md shadow-sm transition-all">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 p-4 rounded-xl border border-border bg-card/50 backdrop-blur-sm shadow-sm transition-all shrink-0">
         <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
           <div 
             className={cn(
@@ -176,41 +296,29 @@ function TasksContent() {
           </div>
           
           <div className="flex-1 grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-4">
-            <Select value={queryStatus} onValueChange={(value) => updateParams({ status: value })}>
-              <SelectTrigger className="w-full sm:w-[140px] bg-background">
-                <SelectValue placeholder="All Statuses" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="passed">Passed</SelectItem>
-                <SelectItem value="failed">Failed</SelectItem>
-                <SelectItem value="error">Error</SelectItem>
-              </SelectContent>
-            </Select>
+            <MultiSelect
+              title="Status"
+              options={["passed", "failed", "error"]}
+              selected={selectedStatuses}
+              onChange={(vals) => updateParams({ status: vals.length > 0 ? vals.join(",") : null })}
+              className="w-full sm:w-[140px]"
+            />
 
-            <Select value={queryModel} onValueChange={(value) => updateParams({ model: value })}>
-              <SelectTrigger className="w-full sm:w-[180px] bg-background">
-                <SelectValue placeholder="All Models" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Models</SelectItem>
-                {allModels.map(m => (
-                  <SelectItem key={m} value={m}>{m}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <MultiSelect
+              title="Models"
+              options={allModels}
+              selected={selectedModels}
+              onChange={(vals) => updateParams({ model: vals.length > 0 ? vals.join(",") : null })}
+              className="w-full sm:w-[180px]"
+            />
 
-            <Select value={queryAgent} onValueChange={(value) => updateParams({ agent: value })}>
-              <SelectTrigger className="w-full sm:w-[140px] bg-background col-span-2 sm:col-span-1">
-                <SelectValue placeholder="All Agents" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Agents</SelectItem>
-                {allAgents.map(a => (
-                  <SelectItem key={a} value={a.toLowerCase()}>{a}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <MultiSelect
+              title="Agents"
+              options={allAgents.map(a => a.toLowerCase())}
+              selected={selectedAgents}
+              onChange={(vals) => updateParams({ agent: vals.length > 0 ? vals.join(",") : null })}
+              className="w-full sm:w-[140px] col-span-2 sm:col-span-1"
+            />
           </div>
 
           {hasActiveFilters && (
@@ -220,9 +328,9 @@ function TasksContent() {
                 setSearchQuery("");
                 router.replace(pathname, { scroll: false });
               }}
-              className="flex items-center justify-center gap-1.5 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary rounded-md transition-colors w-full sm:w-auto"
+              className="flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-medium text-foreground bg-secondary hover:bg-secondary/80 border border-border shadow-sm rounded-md transition-colors w-full sm:w-auto ml-auto md:ml-0 cursor-pointer"
             >
-              <X className="w-3.5 h-3.5" />
+              <X className="w-4 h-4" />
               Clear Filters
             </button>
           )}
@@ -241,163 +349,149 @@ function TasksContent() {
       </div>
 
       {/* Task List */}
-      <div className="space-y-6">
-        {filteredTasks.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground animate-in fade-in duration-300">
+      <div className="rounded-xl border border-border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden animate-in fade-in duration-500 relative flex flex-col max-h-full pb-1">
+        {filteredAndSortedTasks.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground flex-1 flex items-center justify-center">
             No tasks found matching your filters
           </div>
         ) : (
-          filteredTasks.map((task, index) => (
-            <div 
-              key={task.taskName} 
-              className="rounded-xl border border-border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 fill-mode-both" 
-              style={{ animationDelay: `${Math.min(index * 50, 500)}ms` }}
-            >
-              <div className="px-4 sm:px-6 py-4 bg-secondary/30 border-b border-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0">
-                <h3 className="text-lg font-semibold font-mono text-foreground flex items-center gap-2 w-full sm:w-auto">
-                  <span className="text-muted-foreground/50 text-sm shrink-0">#{index + 1}</span>
-                  <a 
-                    href={`https://github.com/TabbyML/jj-benchmark/tree/main/tasks/${task.taskName}/instruction.md`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="truncate hover:underline hover:text-primary transition-colors flex items-center gap-1.5"
-                    title={`View ${task.taskName} on GitHub`}
+          <div className="overflow-auto relative custom-scrollbar">
+            <table className="w-full text-sm text-left border-collapse">
+              <thead className="sticky top-0 z-30 bg-secondary/95 backdrop-blur text-muted-foreground font-medium border-b border-border select-none shadow-sm">
+                <tr>
+                  <th 
+                    className="md:sticky left-0 z-40 bg-transparent md:bg-[#f6f6f6] dark:md:bg-[#0f0f0f] border-r border-border/50 px-3 sm:px-6 py-3 w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px] cursor-pointer hover:bg-secondary/50 hover:text-foreground transition-colors group"
+                    onClick={() => toggleSort("taskName")}
                   >
-                    {task.taskName}
-                    <ExternalLink className="w-4 h-4 opacity-50" />
-                  </a>
-                </h3>
-                <div className="text-sm text-muted-foreground shrink-0">
-                  {task.trials.length} trials
-                </div>
-              </div>
-              
-              <div className="overflow-x-auto pb-2">
-                <table className="w-full table-fixed text-sm text-left min-w-[600px]">
-                  <thead className="bg-secondary/10 text-muted-foreground font-medium border-b border-border/50 select-none">
-                    <tr>
-                      <th className="px-4 sm:px-6 py-3 w-[50%]">Model / Agent</th>
-                      <th className="px-4 sm:px-6 py-3 w-[25%] text-center">Status</th>
-                      <th 
-                        className="px-4 sm:px-6 py-3 w-[25%] text-right cursor-pointer hover:bg-secondary/30 hover:text-foreground transition-colors group"
-                        onClick={() => toggleSort("latency")}
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <span className="truncate">Task Name ({filteredAndSortedTasks.length} tasks)</span>
+                      {renderSortIcon("taskName")}
+                    </div>
+                  </th>
+                  <th 
+                    className="md:sticky md:left-[350px] z-40 bg-transparent md:bg-[#f6f6f6] dark:md:bg-[#0f0f0f] border-r border-border/50 px-3 sm:px-6 py-3 w-[100px] min-w-[100px] max-w-[100px] md:w-[120px] md:min-w-[120px] md:max-w-[120px] text-right cursor-pointer hover:bg-secondary/50 hover:text-foreground transition-colors group md:shadow-[1px_0_0_rgba(0,0,0,0.05)]"
+                    onClick={() => toggleSort("latency")}
+                  >
+                    <div className="flex items-center justify-end gap-1 sm:gap-2">
+                      <span className="hidden md:inline">Avg Duration</span>
+                      <span className="md:hidden">Duration</span>
+                      {renderSortIcon("latency")}
+                    </div>
+                  </th>
+                  {activeCombos.map(combo => (
+                    <th key={combo} className="px-3 sm:px-6 py-3 min-w-[120px] md:min-w-[150px] text-left border-l border-border/50">
+                      <div className="flex flex-col items-start">
+                        <span className="text-foreground font-medium truncate max-w-[100px] md:max-w-[130px]" title={combo.split(' (')[0]}>
+                          {combo.split(' (')[0]}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground">
+                          {combo.split(' (')[1].slice(0, -1)}
+                        </span>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/30">
+                {filteredAndSortedTasks.map((task, index) => (
+                  <tr 
+                    key={task.taskName} 
+                    className="hover:bg-secondary/30 even:bg-secondary/5 transition-colors duration-200 group"
+                  >
+                    <td className="md:sticky left-0 z-20 bg-background border-r border-border/50 p-0 font-mono w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px]">
+                      <a 
+                        href={`https://github.com/TabbyML/jj-benchmark/tree/main/tasks/${task.taskName}/instruction.md`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/task flex items-center gap-2 px-3 sm:px-6 py-2 w-full h-full text-foreground hover:text-primary transition-colors focus:outline-none bg-transparent group-even:bg-secondary/5 group-hover:bg-secondary/30"
+                        title={`View ${task.taskName} instruction on GitHub`}
                       >
-                        <div className="flex items-center justify-end gap-1 sm:gap-2">
-                          Duration
-                          {renderSortIcon("latency")}
-                        </div>
-                      </th>
-                      {false && (
-                        <th 
-                          className="px-4 sm:px-6 py-3 w-[30%] sm:w-[40%] cursor-pointer hover:bg-secondary/30 hover:text-foreground transition-colors group"
-                          onClick={() => toggleSort("tokens")}
-                        >
-                          <div className="flex items-center gap-1 sm:gap-2">
-                            <span className="hidden sm:inline">Tokens (In / Out / Cache)</span>
-                            <span className="sm:hidden">Tokens</span>
-                            {renderSortIcon("tokens")}
-                          </div>
-                        </th>
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/30 relative">
-                    {task.trials.map((trial, tIndex) => (
-                      <tr 
-                        key={trial.trial_name || tIndex} 
-                        className="hover:bg-secondary/20 transition-all duration-300 ease-in-out"
-                        style={{
-                          transform: "translateY(0)",
-                          animation: "fadeIn 0.3s ease-in-out",
-                        }}
-                      >
-                        <td className="px-4 sm:px-6 py-3">
-                          <div className="flex flex-col">
-                            <span className="font-medium text-foreground truncate max-w-[150px] sm:max-w-none" title={trial.model}>{trial.model}</span>
-                            <span className="text-xs text-muted-foreground">{trial.agent}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 sm:px-6 py-3">
-                          <div className="flex items-center justify-center gap-2">
-                            {trial.error ? (
-                              <div className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 rounded-md bg-red-500/10 text-red-500 border border-red-500/20 w-fit mx-auto">
-                                <AlertTriangle className="w-3 h-3 sm:w-4 sm:h-4" />
-                                <span className="text-[10px] sm:text-xs font-medium">Error</span>
-                              </div>
-                            ) : trial.passed ? (
-                              <div className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 rounded-md bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 w-fit mx-auto">
-                                <CheckCircle2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                                <span className="text-[10px] sm:text-xs font-medium">Passed</span>
-                              </div>
-                            ) : (
-                              <div className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 py-1 rounded-md bg-amber-500/10 text-amber-500 border border-amber-500/20 w-fit mx-auto">
-                                <XCircle className="w-3 h-3 sm:w-4 sm:h-4" />
-                                <span className="text-[10px] sm:text-xs font-medium">Failed</span>
-                              </div>
-                            )}
-                          </div>
-                        </td>
-                        <td className="px-4 sm:px-6 py-3 text-muted-foreground text-right">
-                          {trial.latency_breakdown ? (
-                            <HoverCard openDelay={200} closeDelay={100}>
+                        <span className="truncate w-full block group-hover/task:underline text-xs md:text-sm">
+                          {task.taskName}
+                        </span>
+                      </a>
+                    </td>
+                    <td className="md:sticky md:left-[350px] z-20 bg-background border-r border-border/50 p-0 text-right w-[100px] min-w-[100px] max-w-[100px] md:w-[120px] md:min-w-[120px] md:max-w-[120px] md:shadow-[1px_0_0_rgba(0,0,0,0.05)]">
+                      <div className="flex items-center justify-end px-3 sm:px-6 py-2 w-full h-full bg-transparent group-even:bg-secondary/5 group-hover:bg-secondary/30 transition-colors">
+                        <span className="font-mono text-xs md:text-sm text-muted-foreground">
+                          {task.avgDuration > 0 ? `${task.avgDuration.toFixed(1)}s` : '-'}
+                        </span>
+                      </div>
+                    </td>
+                    {activeCombos.map(combo => {
+                      const trial = task.comboMap[combo];
+                      return (
+                        <td key={combo} className="p-0 border-l border-border/50 h-full relative min-w-[120px] md:min-w-[150px] z-10">
+                          {trial ? (
+                            <HoverCard openDelay={200} closeDelay={0}>
                               <HoverCardTrigger asChild>
-                                <button type="button" className="flex items-center justify-end gap-2 w-full cursor-help hover:text-foreground transition-colors">
-                                  <span className="font-mono text-xs sm:text-sm">{trial.latency_sec ? `${trial.latency_sec.toFixed(1)}s` : '-'}</span>
-                                </button>
+                                <a 
+                                  href={`https://github.com/TabbyML/jj-benchmark/blob/main/jobs/${trial.job_id}/${trial.trial_name}/result.json`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="absolute inset-0 flex items-center justify-start gap-1.5 md:gap-2 px-3 sm:px-6 w-full h-full cursor-pointer hover:bg-secondary/50 transition-colors group/cell focus:outline-none"
+                                >
+                                  {trial.error ? (
+                                    <AlertTriangle className="w-3.5 h-3.5 md:w-4 md:h-4 text-red-500/90 shrink-0" />
+                                  ) : trial.passed ? (
+                                    <Check className="w-3.5 h-3.5 md:w-4 md:h-4 text-emerald-500/90 shrink-0" strokeWidth={3} />
+                                  ) : (
+                                    <XIcon className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-500/90 shrink-0" strokeWidth={3} />
+                                  )}
+                                  <span className="font-mono text-xs md:text-sm text-muted-foreground/80 group-hover/cell:text-foreground group-hover/cell:underline transition-colors">
+                                    {trial.exec_duration ? `${trial.exec_duration.toFixed(1)}s` : '-'}
+                                  </span>
+                                </a>
                               </HoverCardTrigger>
-                              <HoverCardContent side="top" align="center" className="w-48 p-3 bg-popover shadow-xl border-border z-50">
-                                <div className="space-y-1.5 text-xs text-popover-foreground text-left">
-                                  <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Env Setup:</span>
-                                    <span className="font-mono">{trial.latency_breakdown.env_setup?.toFixed(1) || '-'}s</span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Agent Setup:</span>
-                                    <span className="font-mono">{trial.latency_breakdown.agent_setup?.toFixed(1) || '-'}s</span>
-                                  </div>
-                                  <div className="flex justify-between font-medium">
-                                    <span className="text-foreground">Agent Exec:</span>
-                                    <span className="font-mono text-primary">{trial.latency_breakdown.agent_exec?.toFixed(1) || '-'}s</span>
-                                  </div>
-                                  <div className="flex justify-between">
-                                    <span className="text-muted-foreground">Verifier:</span>
-                                    <span className="font-mono">{trial.latency_breakdown.verifier?.toFixed(1) || '-'}s</span>
-                                  </div>
+                              <HoverCardContent side="top" align="center" className="w-64 p-4 bg-popover shadow-xl border-border z-50">
+                                <div className="flex items-center gap-2 mb-3 pb-3 border-b border-border/50">
+                                  {trial.error ? (
+                                    <><AlertTriangle className="w-4 h-4 text-red-500" /><span className="font-medium text-red-500">Error</span></>
+                                  ) : trial.passed ? (
+                                    <><Check className="w-4 h-4 text-emerald-500" strokeWidth={3} /><span className="font-medium text-emerald-500">Passed</span></>
+                                  ) : (
+                                    <><XIcon className="w-4 h-4 text-amber-500" strokeWidth={3} /><span className="font-medium text-amber-500">Failed</span></>
+                                  )}
                                 </div>
+                                {trial.latency_breakdown ? (
+                                  <div className="space-y-2.5 text-xs text-popover-foreground text-left">
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-muted-foreground">Setup Environment</span>
+                                      <span className="font-mono">{trial.latency_breakdown.env_setup?.toFixed(1) || '-'}s</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-muted-foreground">Setup Agent</span>
+                                      <span className="font-mono">{trial.latency_breakdown.agent_setup?.toFixed(1) || '-'}s</span>
+                                    </div>
+                                    <div className="flex justify-between items-center font-medium bg-secondary/40 py-1.5 px-2 -mx-2 rounded">
+                                      <span className="text-foreground">Agent Execution</span>
+                                      <span className="font-mono text-primary">{trial.latency_breakdown.agent_exec?.toFixed(1) || '-'}s</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-muted-foreground">Verify Result</span>
+                                      <span className="font-mono">{trial.latency_breakdown.verifier?.toFixed(1) || '-'}s</span>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="text-xs text-muted-foreground text-left">
+                                    No detailed latency breakdown available.
+                                  </div>
+                                )}
                               </HoverCardContent>
                             </HoverCard>
                           ) : (
-                            <div className="flex items-center justify-end gap-2 w-full">
-                              <span className="font-mono text-xs sm:text-sm">{trial.latency_sec ? `${trial.latency_sec.toFixed(1)}s` : '-'}</span>
+                            <div className="flex items-center justify-start pl-3 sm:pl-6 text-muted-foreground/30 font-mono text-xs md:text-sm py-2 w-full h-full">
+                              -
                             </div>
                           )}
                         </td>
-                        {false && (
-                          <td className="px-4 sm:px-6 py-3 text-muted-foreground">
-                            <div className="flex items-center gap-2">
-                              <div className="flex flex-wrap gap-1 sm:gap-2 font-mono text-[10px] sm:text-[11px]">
-                                <span className="bg-secondary/50 text-foreground/80 px-1 sm:px-1.5 py-0.5 rounded border border-border whitespace-nowrap" title="Input Tokens">
-                                  In: {trial.tokens?.input?.toLocaleString() || 0}
-                                </span>
-                                <span className="bg-secondary/50 text-foreground/80 px-1 sm:px-1.5 py-0.5 rounded border border-border whitespace-nowrap" title="Output Tokens">
-                                  Out: {trial.tokens?.output?.toLocaleString() || 0}
-                                </span>
-                                {trial.tokens?.cache > 0 && (
-                                  <span className="bg-secondary/50 text-foreground/80 px-1 sm:px-1.5 py-0.5 rounded border border-border whitespace-nowrap" title="Cache Tokens">
-                                    Cache: {trial.tokens?.cache?.toLocaleString()}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          </td>
-                        )}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ))
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
 

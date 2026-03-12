@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Search, Trophy, ListTree } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -58,6 +59,7 @@ function ScoreCell({ value }: { value: number }) {
 }
 
 export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] }) {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredData = useMemo(() => {
@@ -128,7 +130,8 @@ export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] })
                 filteredData.map((row, index) => (
                   <tr
                     key={row.id}
-                    className="group hover:bg-secondary/30 transition-colors duration-200"
+                    onClick={() => router.push(`./tasks?model=${encodeURIComponent(row.model)}&agent=${encodeURIComponent(row.agent.toLowerCase())}`)}
+                    className="group hover:bg-secondary/30 transition-colors duration-200 cursor-pointer"
                   >
                   <td className="px-6 py-4 font-medium text-foreground flex items-center gap-3">
                     <span className="w-6 text-muted-foreground/50 text-xs">#{index + 1}</span>
@@ -159,9 +162,9 @@ export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] })
                     {row.avgLatency > 0 ? `${row.avgLatency.toFixed(1)}s` : '-'}
                   </td>
                   <td className="px-6 py-4">
-                    <Link href={`./tasks?model=${encodeURIComponent(row.model)}&agent=${encodeURIComponent(row.agent.toLowerCase())}`} className="block w-full hover:opacity-80 transition-opacity">
+                    <div className="block w-full group-hover:opacity-80 transition-opacity">
                       <ScoreCell value={row.successRate} />
-                    </Link>
+                    </div>
                   </td>
                 </tr>
               )))}
