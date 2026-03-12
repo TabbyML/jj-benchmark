@@ -1,0 +1,98 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 2,
+            "failed": 5,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773294751.076112,
+            "stop": 1773294751.2146819
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_git_head_not_detached",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0022171339951455593,
+                "start": 1773294751.0863345,
+                "stop": 1773294751.1003253,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_git_head_not_detached():\n        \"\"\"Git HEAD should no longer be detached after recovery.\"\"\"\n        result = run_git([\"symbolic-ref\", \"--quiet\", \"HEAD\"])\n>       assert result.returncode == 0, \\\n            f\"Git HEAD is still detached after recovery: {result.stderr}\"\nE       AssertionError: Git HEAD is still detached after recovery: \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['git', 'symbolic-ref', '--quiet', 'HEAD'], returncode=1, stdout='', stderr='').returncode\n\n/tests/test_outputs.py:23: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_config_py_committed",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0375599981052801,
+                "start": 1773294751.1004636,
+                "stop": 1773294751.1408167,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_config_py_committed():\n        \"\"\"config.py must be committed (not just in working dir as untracked change).\"\"\"\n        # Check it exists in jj history\n        result = run_jj([\n            \"log\", \"--no-graph\", \"-r\", \"all()\",\n            \"-T\", 'description ++ \"\\\\n\"'\n        ])\n        assert result.returncode == 0\n        # Also verify config.py is committed in some commit\n        result2 = run_jj([\"file\", \"show\", \"-r\", \"main\", \"config.py\"])\n>       assert result2.returncode == 0, \\\n            f\"config.py not committed in main: {result2.stderr}\"\nE       AssertionError: config.py not committed in main: Error: No such path: config.py\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'file', 'show', '-r', 'main', 'config.py'], returncode=1, stdout='', stderr='Error: No such path: config.py\\n').returncode\n\n/tests/test_outputs.py:37: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_readme_modification_preserved",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023483967990614474,
+                "start": 1773294751.14097,
+                "stop": 1773294751.166388,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_readme_modification_preserved():\n        \"\"\"The README.md modification must be in the committed state.\"\"\"\n        result = run_jj([\"file\", \"show\", \"-r\", \"main\", \"README.md\"])\n        assert result.returncode == 0, f\"README.md not accessible: {result.stderr}\"\n>       assert \"This change must be preserved\" in result.stdout, \\\n            \"The README.md modification was not preserved in the commit\"\nE       AssertionError: The README.md modification was not preserved in the commit\nE       assert 'This change must be preserved' in '# Project\\n'\nE        +  where '# Project\\n' = CompletedProcess(args=['jj', 'file', 'show', '-r', 'main', 'README.md'], returncode=0, stdout='# Project\\n', stderr='').stdout\n\n/tests/test_outputs.py:47: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_jj_and_git_in_sync",
+                "status": "passed",
+                "duration": 0.019602662068791687,
+                "start": 1773294751.1665337,
+                "stop": 1773294751.186263,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_core_py_still_present",
+                "status": "passed",
+                "duration": 0.021324394969269633,
+                "start": 1773294751.1864102,
+                "stop": 1773294751.2079465,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_sync_report_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0006132669514045119,
+                "start": 1773294751.2082157,
+                "stop": 1773294751.2115533,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_sync_report_exists():\n>       assert os.path.isfile(\"/home/user/sync_report.txt\"), \\\n            \"sync_report.txt does not exist\"\nE       AssertionError: sync_report.txt does not exist\nE       assert False\nE        +  where False = <function isfile at 0x72877ca38220>('/home/user/sync_report.txt')\nE        +    where <function isfile at 0x72877ca38220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:78: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_sync_report_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00044828990940004587,
+                "start": 1773294751.2117662,
+                "stop": 1773294751.214484,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_sync_report_content():\n>       with open(\"/home/user/sync_report.txt\") as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/sync_report.txt'\n\n/tests/test_outputs.py:83: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

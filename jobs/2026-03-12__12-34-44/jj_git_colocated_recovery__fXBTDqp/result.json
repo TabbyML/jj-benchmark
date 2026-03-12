@@ -1,0 +1,96 @@
+{
+    "id": "b433f765-e6f7-4ba7-ad7a-7220aafe2128",
+    "task_name": "jj_git_colocated_recovery",
+    "trial_name": "jj_git_colocated_recovery__fXBTDqp",
+    "trial_uri": "file:///home/kw/code/work/pochi-bench/jobs/2026-03-12__12-34-44/jj_git_colocated_recovery__fXBTDqp",
+    "task_id": {
+        "path": "../jj-benchmark/tasks/jj_git_colocated_recovery"
+    },
+    "source": "tasks",
+    "task_checksum": "d79b92de817651e34cb9b1628a1f668dbaf15fd8bf69bbf82ec7c8c36f3b5016",
+    "config": {
+        "task": {
+            "path": "../jj-benchmark/tasks/jj_git_colocated_recovery",
+            "git_url": null,
+            "git_commit_id": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "tasks"
+        },
+        "trial_name": "jj_git_colocated_recovery__fXBTDqp",
+        "trials_dir": "jobs/2026-03-12__12-34-44",
+        "timeout_multiplier": 1.0,
+        "agent": {
+            "name": null,
+            "import_path": "agents.pochi:Pochi",
+            "model_name": "google/gemini-3.1-pro",
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "kwargs": {}
+        },
+        "environment": {
+            "type": "daytona",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "suppress_override_warnings": false,
+            "kwargs": {}
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "job_id": "620d6ecb-7e46-43b8-a354-1a99963ab167"
+    },
+    "agent_info": {
+        "name": "pochi",
+        "version": "unknown",
+        "model_info": {
+            "name": "gemini-3.1-pro",
+            "provider": "google"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 0,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 0,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": {
+        "exception_type": "AgentTimeoutError",
+        "exception_message": "Agent execution timed out after 600.0 seconds",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/opt/miniconda3/lib/python3.12/asyncio/tasks.py\", line 520, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/agents/installed/base.py\", line 150, in run\n    result = await environment.exec(\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/daytona.py\", line 488, in exec\n    result = await self._poll_response(session_id, response.cmd_id)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/environments/daytona.py\", line 436, in _poll_response\n    await asyncio.sleep(1)\n  File \"/opt/miniconda3/lib/python3.12/asyncio/tasks.py\", line 665, in sleep\n    return await future\n           ^^^^^^^^^^^^\nasyncio.exceptions.CancelledError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 249, in _execute_agent\n    await asyncio.wait_for(\n  File \"/opt/miniconda3/lib/python3.12/asyncio/tasks.py\", line 519, in wait_for\n    async with timeouts.timeout(timeout):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/miniconda3/lib/python3.12/asyncio/timeouts.py\", line 115, in __aexit__\n    raise TimeoutError from exc_val\nTimeoutError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 360, in run\n    await self._execute_agent()\n  File \"/home/kw/.local/share/uv/tools/harbor/lib/python3.12/site-packages/harbor/trial/trial.py\", line 258, in _execute_agent\n    raise AgentTimeoutError(\nharbor.trial.trial.AgentTimeoutError: Agent execution timed out after 600.0 seconds\n",
+        "occurred_at": "2026-03-12T13:52:21.897572"
+    },
+    "started_at": "2026-03-12T05:41:57.998343Z",
+    "finished_at": "2026-03-12T05:52:36.721267Z",
+    "environment_setup": {
+        "started_at": "2026-03-12T05:41:57.999423Z",
+        "finished_at": "2026-03-12T05:42:01.156391Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-03-12T05:42:01.156413Z",
+        "finished_at": "2026-03-12T05:42:21.893892Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-03-12T05:42:21.893987Z",
+        "finished_at": "2026-03-12T05:52:21.894966Z"
+    },
+    "verifier": {
+        "started_at": "2026-03-12T05:52:25.054752Z",
+        "finished_at": "2026-03-12T05:52:35.421501Z"
+    }
+}

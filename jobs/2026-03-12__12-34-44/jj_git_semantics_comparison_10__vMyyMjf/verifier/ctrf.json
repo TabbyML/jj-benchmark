@@ -1,0 +1,56 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 0,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773292935.1732738,
+            "stop": 1773292935.249483
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_bookmark_points_to_third",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.019869595766067505,
+                "start": 1773292935.1796088,
+                "stop": 1773292935.2102234,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_bookmark_points_to_third():\n        result = run_jj([\"log\", \"-r\", \"feature\", \"--no-graph\", \"-T\", 'description'])\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"third\" in result.stdout, f\"Expected bookmark 'feature' to point to commit described as 'third', got: {result.stdout.strip()}\"\nE       AssertionError: Expected bookmark 'feature' to point to commit described as 'third', got: first\nE       assert 'third' in 'first\\n'\nE        +  where 'first\\n' = CompletedProcess(args=['jj', 'log', '-r', 'feature', '--no-graph', '-T', 'description'], returncode=0, stdout='first\\n', stderr='').stdout\n\n/tests/test_final_state.py:13: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_bugfix_bookmark_points_to_second",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.016041530296206474,
+                "start": 1773292935.210389,
+                "stop": 1773292935.2280176,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_bugfix_bookmark_points_to_second():\n        result = run_jj([\"log\", \"-r\", \"bugfix\", \"--no-graph\", \"-T\", 'description'])\n>       assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\nE       AssertionError: jj log failed: Error: Revision `bugfix` doesn't exist\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'log', '-r', 'bugfix', '--no-graph', '-T', 'description'], returncode=1, stdout='', stderr=\"Error: Revision `bugfix` doesn't exist\\n\").returncode\n\n/tests/test_final_state.py:17: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_working_copy_is_second",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.019767543766647577,
+                "start": 1773292935.2281635,
+                "stop": 1773292935.2493453,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_working_copy_is_second():\n        result = run_jj([\"log\", \"-r\", \"@\", \"--no-graph\", \"-T\", 'description'])\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"second\" in result.stdout, f\"Expected working copy (@) to be at commit described as 'second', got: {result.stdout.strip()}\"\nE       AssertionError: Expected working copy (@) to be at commit described as 'second', got: third\nE       assert 'second' in 'third\\n'\nE        +  where 'third\\n' = CompletedProcess(args=['jj', 'log', '-r', '@', '--no-graph', '-T', 'description'], returncode=0, stdout='third\\n', stderr='').stdout\n\n/tests/test_final_state.py:23: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

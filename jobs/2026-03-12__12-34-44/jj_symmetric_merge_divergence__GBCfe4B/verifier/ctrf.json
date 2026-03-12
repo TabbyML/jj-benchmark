@@ -1,0 +1,122 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 9,
+            "passed": 2,
+            "failed": 7,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773294006.662104,
+            "stop": 1773294006.8124962
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_log_file_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00043990102130919695,
+                "start": 1773294006.6708395,
+                "stop": 1773294006.6824586,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_file_exists():\n>       assert os.path.isfile(LOG_FILE), f\"{LOG_FILE} does not exist\"\nE       AssertionError: /home/user/divergence_log.txt does not exist\nE       assert False\nE        +  where False = <function isfile at 0x7cd3e9b00220>('/home/user/divergence_log.txt')\nE        +    where <function isfile at 0x7cd3e9b00220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:17: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_log_file_has_required_keys",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00029171991627663374,
+                "start": 1773294006.682606,
+                "stop": 1773294006.6841128,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_file_has_required_keys():\n>       content = open(LOG_FILE).read()\n                  ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_log.txt'\n\n/tests/test_outputs.py:21: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_log_change_ids_nonempty",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002619309816509485,
+                "start": 1773294006.6842332,
+                "stop": 1773294006.6860275,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_change_ids_nonempty():\n>       content = open(LOG_FILE).read()\n                  ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_log.txt'\n\n/tests/test_outputs.py:30: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_patch_bookmark_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.024477551807649434,
+                "start": 1773294006.6861453,
+                "stop": 1773294006.712058,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patch_bookmark_exists():\n        r = run_jj([\"bookmark\", \"list\"])\n>       assert \"patch\" in r.stdout, \"patch bookmark not found\"\nE       AssertionError: patch bookmark not found\nE       assert 'patch' in 'main: prvnlrly 7a32f1a7 chore: initial setup\\n'\nE        +  where 'main: prvnlrly 7a32f1a7 chore: initial setup\\n' = CompletedProcess(args=['jj', 'bookmark', 'list'], returncode=0, stdout='main: prvnlrly 7a32f1a7 chore: initial setup\\n', stderr='').stdout\n\n/tests/test_outputs.py:39: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_patch_has_no_conflicts",
+                "status": "passed",
+                "duration": 0.018120435997843742,
+                "start": 1773294006.7121866,
+                "stop": 1773294006.730486,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_patch_py_has_apply_patch_v1",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.018390115932561457,
+                "start": 1773294006.7306814,
+                "stop": 1773294006.7508676,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patch_py_has_apply_patch_v1():\n        r = run_jj([\"file\", \"show\", \"-r\", \"patch\", \"src/patch.py\"])\n>       assert \"def apply_patch_v1(\" in r.stdout, \\\n            \"apply_patch_v1() missing from src/patch.py at patch bookmark\"\nE       AssertionError: apply_patch_v1() missing from src/patch.py at patch bookmark\nE       assert 'def apply_patch_v1(' in ''\nE        +  where '' = CompletedProcess(args=['jj', 'file', 'show', '-r', 'patch', 'src/patch.py'], returncode=1, stdout='', stderr=\"Error: Revision `patch` doesn't exist\\n\").stdout\n\n/tests/test_outputs.py:49: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_patch_py_has_apply_patch_v2",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.01849650708027184,
+                "start": 1773294006.751015,
+                "stop": 1773294006.771205,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_patch_py_has_apply_patch_v2():\n        r = run_jj([\"file\", \"show\", \"-r\", \"patch\", \"src/patch.py\"])\n>       assert \"def apply_patch_v2(\" in r.stdout, \\\n            \"apply_patch_v2() missing from src/patch.py at patch bookmark\"\nE       AssertionError: apply_patch_v2() missing from src/patch.py at patch bookmark\nE       assert 'def apply_patch_v2(' in ''\nE        +  where '' = CompletedProcess(args=['jj', 'file', 'show', '-r', 'patch', 'src/patch.py'], returncode=1, stdout='', stderr=\"Error: Revision `patch` doesn't exist\\n\").stdout\n\n/tests/test_outputs.py:55: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_patch_py_no_conflict_markers",
+                "status": "passed",
+                "duration": 0.01929436798673123,
+                "start": 1773294006.7713475,
+                "stop": 1773294006.7908144,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_canonical_commit_description_is_fix_patch",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.018717658007517457,
+                "start": 1773294006.7910116,
+                "stop": 1773294006.8122814,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_canonical_commit_description_is_fix_patch():\n        r = run_jj([\"log\", \"--no-graph\", \"-T\", \"description\", \"-r\", \"patch\"])\n>       assert \"fix: patch\" in r.stdout, \\\n            \"patch bookmark does not point to a 'fix: patch' commit\"\nE       AssertionError: patch bookmark does not point to a 'fix: patch' commit\nE       assert 'fix: patch' in ''\nE        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description', '-r', 'patch'], returncode=1, stdout='', stderr=\"Error: Revision `patch` doesn't exist\\n\").stdout\n\n/tests/test_outputs.py:66: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

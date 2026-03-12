@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1773290907.3820555,
+            "stop": 1773290907.442063
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_is_direct_child_of_main",
+                "status": "passed",
+                "duration": 0.022656411165371537,
+                "start": 1773290907.3883889,
+                "stop": 1773290907.411319,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_feature_is_not_child_of_dev",
+                "status": "passed",
+                "duration": 0.023304335307329893,
+                "start": 1773290907.4115555,
+                "stop": 1773290907.4350674,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_rebase_verification_log_exists_and_correct",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00037474511191248894,
+                "start": 1773290907.4352531,
+                "stop": 1773290907.441943,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_rebase_verification_log_exists_and_correct():\n>       assert os.path.exists(LOG_FILE), f\"Verification log {LOG_FILE} does not exist.\"\nE       AssertionError: Verification log /home/user/rebase_verification.log does not exist.\nE       assert False\nE        +  where False = <function exists at 0x724890617560>('/home/user/rebase_verification.log')\nE        +    where <function exists at 0x724890617560> = <module 'posixpath' (frozen)>.exists\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:32: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}
