@@ -321,7 +321,7 @@ function TasksContent() {
                           {trial ? (
                             <HoverCard openDelay={200} closeDelay={0}>
                               <HoverCardTrigger asChild>
-                                <a 
+                                <Link 
                                   href={`/tasks/redirect?job_name=${encodeURIComponent(trial.job_name)}&trial_name=${encodeURIComponent(trial.trial_name)}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
@@ -337,7 +337,7 @@ function TasksContent() {
                                   <span className="font-mono text-xs md:text-sm text-muted-foreground/80 group-hover/cell:text-foreground group-hover/cell:underline transition-colors">
                                     {trial.exec_duration ? `${trial.exec_duration.toFixed(1)}s` : '-'}
                                   </span>
-                                </a>
+                                </Link>
                               </HoverCardTrigger>
                               <HoverCardContent side="top" align="center" className="w-64 p-4 bg-popover shadow-xl border-border z-50">
                                 <div className="flex items-center gap-2 mb-3 pb-3 border-b border-border/50">
