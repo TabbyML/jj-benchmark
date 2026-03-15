@@ -74,10 +74,10 @@ async function main() {
     const agentName = data.config?.agent?.name || data.agent_info?.name || 'unknown';
 
     // Extract job directory name (e.g., 2026-03-08__16-54-33)
-    const jobId = file.split('/')[0] || file.split('\\')[0];
+    const jobName = file.split('/')[0] || file.split('\\')[0];
 
     tasks[taskName].push({
-      job_id: jobId,
+      job_name: jobName,
       trial_name: data.trial_name,
       agent: agentName,
       model: model,
