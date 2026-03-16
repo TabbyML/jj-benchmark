@@ -1,47 +1,59 @@
 "use client";
 
-import { useEffect, useState, Suspense, useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
+
+type TrajectoryPageProps = {
+  name: string;
+  jobName: string;
+};
+
+let messagesCachePromise: Promise<Record<string, unknown>> | null = null;
+
+async function loadMessages() {
+  if (!messagesCachePromise) {
+    messagesCachePromise = import("@/messages.json").then((module) => {
+      const data = module.default || module;
+      return data as Record<string, unknown>;
+    });
+  }
+
+  return messagesCachePromise;
+}
 
 function getServerBaseUrl() {
   const isDev = process.env.NODE_ENV === "development";
   return isDev ? "http://localhost:4113" : "https://cc.getpochi.com";
 }
 
-function RedirectContent() {
-  const searchParams = useSearchParams();
+export function TrajectoryPage({ name, jobName }: TrajectoryPageProps) {
   const [error, setError] = useState<string | null>(null);
   const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
   const [iframeLoading, setIframeLoading] = useState(false);
   const [showIframe, setShowIframe] = useState(false);
-  const fallbackUrlRef = useRef<string>('');
+  const fallbackUrlRef = useRef<string>("");
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    const jobName = searchParams.get("job_name");
-    const trialName = searchParams.get("trial_name");
-
-    if (!jobName || !trialName) {
-      setError("Missing job_name or trial_name parameters.");
+    if (!name || !jobName) {
+      setError("Missing name or jobName parameters.");
       return;
     }
 
-    const fallback = `https://github.com/TabbyML/jj-benchmark/blob/main/jobs/${jobName}/${trialName}/result.json`;
+    const fallback = `https://github.com/TabbyML/jj-benchmark/blob/main/jobs/${jobName}/${name}/result.json`;
     fallbackUrlRef.current = fallback;
 
     const processRedirect = async () => {
       try {
-        const messagesModule = await import("../../../messages.json");
-        const messagesData = messagesModule.default || messagesModule;
-        const trialMessages = (messagesData as Record<string, any>)[trialName];
+        const messagesData = await loadMessages();
+        const trialMessages = messagesData[name];
 
         if (trialMessages) {
           const baseUrl = getServerBaseUrl();
           const response = await fetch(`${baseUrl}/api/clips`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ data: { messages: trialMessages } })
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ data: { messages: trialMessages } }),
           });
 
           if (!response.ok) {
@@ -52,31 +64,28 @@ function RedirectContent() {
           if (id) {
             const url = new URL(`/s/${id}`, baseUrl);
             url.searchParams.set("embed", "true");
-            url.searchParams.set("title", trialName);
+            url.searchParams.set("title", name);
             setRedirectUrl(url.toString());
             setIframeLoading(true);
-            setShowIframe(true); // Start loading iframe immediately
+            setShowIframe(true);
             return;
           }
         }
 
-        // redirect to the fallback URL
         window.location.replace(fallback);
-
       } catch (_err) {
         window.location.replace(fallback);
       }
     };
 
     processRedirect();
-  }, [searchParams]);
+  }, [name, jobName]);
 
   const handleIframeLoad = () => {
     setIframeLoading(false);
-    // Wait 300ms for styling transition, then show iframe with CSS
     setTimeout(() => {
       if (iframeRef.current) {
-        iframeRef.current.style.opacity = '1';
+        iframeRef.current.style.opacity = "1";
       }
     }, 300);
   };
@@ -102,10 +111,7 @@ function RedirectContent() {
               <Loader2 className="w-12 h-12 text-primary animate-spin relative z-10" />
             </div>
             <div className="space-y-2 text-center">
-              <h2 className="text-xl font-semibold tracking-tight text-foreground">Loading Trial Details</h2>
-              <p className="text-sm text-muted-foreground max-w-[250px] mx-auto">
-                Please wait while we load the content...
-              </p>
+              <h2 className="text-lg font-semibold tracking-tight text-foreground">Loading</h2>
             </div>
           </div>
         )}
@@ -114,7 +120,7 @@ function RedirectContent() {
             ref={iframeRef}
             src={redirectUrl}
             className="fixed inset-0 w-full h-full border-0 opacity-0"
-            title={searchParams.get("trial_name") || "Trial Details"}
+            title={name || "Trial Details"}
             onLoad={handleIframeLoad}
             onError={handleIframeError}
           />
@@ -129,29 +135,8 @@ function RedirectContent() {
         <Loader2 className="w-12 h-12 text-primary animate-spin relative z-10" />
       </div>
       <div className="space-y-2 text-center">
-        <h2 className="text-xl font-semibold tracking-tight text-foreground">Preparing Trial Details</h2>
-        <p className="text-sm text-muted-foreground max-w-[250px] mx-auto animate-pulse">
-          Loading messages and setting up your environment...
-        </p>
+        <h2 className="text-lg font-semibold tracking-tight text-foreground">Loading</h2>
       </div>
-    </div>
-  );
-}
-
-export default function RedirectPage() {
-  return (
-    <div className="w-full h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-hidden">
-      {/* Background Gradient Effect */}
-      <div className="fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 dark:opacity-40"></div>
-
-      <Suspense fallback={
-        <div className="flex flex-col items-center justify-center h-screen space-y-6">
-          <Loader2 className="w-12 h-12 text-primary animate-spin" />
-          <h2 className="text-xl font-semibold text-foreground">Loading...</h2>
-        </div>
-      }>
-        <RedirectContent />
-      </Suspense>
     </div>
   );
 }
