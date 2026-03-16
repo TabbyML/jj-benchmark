@@ -342,7 +342,7 @@ function TasksContent() {
                   >
                     <td className="md:sticky left-0 z-20 bg-background border-r border-border/50 p-0 font-mono w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px] md:shadow-[1px_0_0_rgba(0,0,0,0.05)]">
                       <a
-                        href={`${zealtConfig.githubRepo}/tree/main/tasks/${task.taskName}/instruction.md`}
+                        href={`${zealtConfig.github_repo}/tree/main/tasks/${task.taskName}/instruction.md`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group/task flex items-center gap-2 px-3 sm:px-6 py-2 w-full h-full text-foreground hover:text-primary transition-colors focus:outline-none bg-transparent group-even:bg-secondary/5 group-hover:bg-secondary/30"
