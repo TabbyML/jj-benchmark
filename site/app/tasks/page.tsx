@@ -7,6 +7,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import tasksDataRaw from "../../tasks.json";
+import zealtConfig from "../../../zealt.json";
 import {
   HoverCard,
   HoverCardContent,
@@ -23,8 +24,8 @@ function cn(...inputs: ClassValue[]) {
 const tasksData = Object.entries(tasksDataRaw).map(([taskName, trials]) => {
   return {
     taskName,
-    trials: (trials as any[]).map(t => ({ 
-      ...t, 
+    trials: (trials as any[]).map(t => ({
+      ...t,
       model: t.model.split('/').pop() || t.model,
       agent: t.agent.charAt(0).toUpperCase() + t.agent.slice(1),
       exec_duration: t.latency_breakdown?.agent_exec || t.latency_sec || 0
@@ -32,7 +33,7 @@ const tasksData = Object.entries(tasksDataRaw).map(([taskName, trials]) => {
   };
 }).sort((a, b) => a.taskName.localeCompare(b.taskName));
 
-const allTrialsFlat = tasksData.flatMap(task => 
+const allTrialsFlat = tasksData.flatMap(task =>
   task.trials.map(trial => ({
     taskName: task.taskName,
     ...trial
@@ -104,11 +105,11 @@ function TasksContent() {
     const combos = allCombos.filter(combo => {
       const [model, agentStr] = combo.split(" (");
       const agent = agentStr.slice(0, -1);
-      
+
       if (selectedModels.length !== 1) {
         if (selectedModels.length > 0 && !selectedModels.includes(model)) return false;
       }
-      
+
       if (selectedAgents.length > 0 && !selectedAgents.includes(agent.toLowerCase())) return false;
       return true;
     });
@@ -135,11 +136,11 @@ function TasksContent() {
       let hasMatchingTrial = false;
       let selectedModelMatchesStatus = false;
       let hasSelectedModelTrial = false;
-      
+
       task.trials.forEach(trial => {
         const comboKey = `${trial.model} (${trial.agent})`;
         if (!activeCombos.includes(comboKey)) return;
-        
+
         let matchesStatus = true;
         if (selectedStatuses.length > 0) {
           if (selectedStatuses.includes("passed") && trial.passed) {
@@ -159,7 +160,7 @@ function TasksContent() {
             selectedModelMatchesStatus = true;
           }
         }
-        
+
         if (selectedModels.length === 1) {
           comboMap[comboKey] = trial;
         } else {
@@ -178,8 +179,8 @@ function TasksContent() {
         }
       }
 
-      const avgDuration = Object.values(comboMap).length > 0 
-        ? Object.values(comboMap).reduce((sum: number, t: any) => sum + t.exec_duration, 0) / Object.values(comboMap).length 
+      const avgDuration = Object.values(comboMap).length > 0
+        ? Object.values(comboMap).reduce((sum: number, t: any) => sum + t.exec_duration, 0) / Object.values(comboMap).length
         : 0;
 
       return {
@@ -199,7 +200,7 @@ function TasksContent() {
         return queryOrder === "asc" ? a.avgDuration - b.avgDuration : b.avgDuration - a.avgDuration;
       } else {
         // default sort by taskName
-        return queryOrder === "asc" 
+        return queryOrder === "asc"
           ? a.taskName.localeCompare(b.taskName)
           : b.taskName.localeCompare(a.taskName);
       }
@@ -247,16 +248,16 @@ function TasksContent() {
       {/* Filters & Search */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 p-4 rounded-xl border border-border bg-card/50 backdrop-blur-sm shadow-sm transition-all shrink-0">
         <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
-          <div 
+          <div
             className={cn(
-              "flex items-center justify-center w-9 h-9 rounded-lg transition-colors shrink-0", 
+              "flex items-center justify-center w-9 h-9 rounded-lg transition-colors shrink-0",
               hasActiveFilters ? "bg-primary/10 text-primary" : "bg-secondary/50 text-muted-foreground"
             )}
             title="Filters"
           >
             <Filter className="w-4 h-4" />
           </div>
-          
+
           <div className="flex-1 grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-4">
             <MultiSelect
               title="Status"
@@ -313,7 +314,7 @@ function TasksContent() {
             <table className="w-full text-sm text-left border-collapse">
               <thead className="sticky top-0 z-30 bg-secondary/95 backdrop-blur text-muted-foreground font-medium border-b border-border select-none shadow-sm">
                 <tr>
-                  <th 
+                  <th
                     className="md:sticky left-0 z-40 bg-transparent md:bg-[#f6f6f6] dark:md:bg-[#0f0f0f] border-r border-border/50 px-3 sm:px-6 py-3 w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px] cursor-pointer hover:bg-secondary/50 hover:text-foreground transition-colors group md:shadow-[1px_0_0_rgba(0,0,0,0.05)]"
                     onClick={() => toggleSort("taskName")}
                   >
@@ -335,13 +336,13 @@ function TasksContent() {
               </thead>
               <tbody className="divide-y divide-border/30">
                 {filteredAndSortedTasks.map((task, index) => (
-                  <tr 
-                    key={task.taskName} 
+                  <tr
+                    key={task.taskName}
                     className="hover:bg-secondary/30 even:bg-secondary/5 transition-colors duration-200 group"
                   >
                     <td className="md:sticky left-0 z-20 bg-background border-r border-border/50 p-0 font-mono w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px] md:shadow-[1px_0_0_rgba(0,0,0,0.05)]">
-                      <a 
-                        href={`https://github.com/TabbyML/jj-benchmark/tree/main/tasks/${task.taskName}/instruction.md`}
+                      <a
+                        href={`${zealtConfig.github_repo}/tree/main/tasks/${task.taskName}/instruction.md`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group/task flex items-center gap-2 px-3 sm:px-6 py-2 w-full h-full text-foreground hover:text-primary transition-colors focus:outline-none bg-transparent group-even:bg-secondary/5 group-hover:bg-secondary/30"
@@ -439,7 +440,7 @@ export default function TasksPage() {
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary/20">
       {/* Background Gradient Effect */}
       <div className="fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 dark:opacity-40"></div>
-      
+
       <Suspense fallback={<div className="container mx-auto px-4 py-16 text-center text-muted-foreground">Loading tasks...</div>}>
         <TasksContent />
       </Suspense>

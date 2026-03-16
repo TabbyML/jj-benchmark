@@ -1,5 +1,6 @@
 import { Github, Terminal } from "lucide-react";
 import tasksData from "../../tasks.json";
+import zealtConfig from "../../../zealt.json";
 import LeaderboardTable, { type LeaderboardEntry } from "./components/leaderboard-table";
 
 export default function Home() {
@@ -79,16 +80,15 @@ export default function Home() {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50 pb-2">
-            JJ Benchmark
+            {zealtConfig.title}
           </h1>
 
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Performance results of AI coding models on Jujutsu tasks,
-            measuring success rate and execution time with high precision.
+            {zealtConfig.description}
           </p>
 
           <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground pt-4">
-            <a href="https://github.com/TabbyML/jj-benchmark" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
+            <a href={zealtConfig.github_repo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
               <Github className="w-4 h-4" />
               <span>View on GitHub</span>
             </a>

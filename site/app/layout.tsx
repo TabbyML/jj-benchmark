@@ -2,13 +2,15 @@ import "./globals.css";
 
 import type { Metadata } from 'next';
 import { Inter } from "next/font/google";
+import zealtConfig from "../../zealt.json";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'JJ Benchmark',
-  description: 'Performance results of AI coding models on JJ integration and usage tasks.',
+  title: zealtConfig.title,
+  description: zealtConfig.description,
 };
+
 
 export default function RootLayout({
   children,
