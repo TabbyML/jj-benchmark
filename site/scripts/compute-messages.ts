@@ -39,6 +39,8 @@ function parseJsonLines(content: string, filePath: string): any[] {
       parsed.push(JSON.parse(line));
     } catch (e) {
       console.error(`Error parsing JSONL line in ${filePath}:`);
+      // Any invalid line invalidates the whole JSONL payload
+      return [];
     }
   }
   return parsed;
