@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
+import zealtConfig from "../../../../../../../zealt.json";
 
 type TrajectoryPageProps = {
   name: string;
@@ -40,7 +41,7 @@ export function TrajectoryPage({ name, jobName }: TrajectoryPageProps) {
       return;
     }
 
-    const fallback = `https://github.com/TabbyML/jj-benchmark/blob/main/jobs/${jobName}/${name}/result.json`;
+    const fallback = `${zealtConfig.github_repo}/blob/main/jobs/${jobName}/${name}/result.json`;
     fallbackUrlRef.current = fallback;
 
     const processRedirect = async () => {
