@@ -5,7 +5,7 @@ type TrialEntry = {
   jobName: string;
   trialName: string;
   trialDir: string;
-  stdoutPath: string;
+  trajectoryJsonlPath: string;
   trajectoryIdPath: string;
 };
 
@@ -107,11 +107,11 @@ async function getTrialEntries(jobsDir: string): Promise<TrialEntry[]> {
 
       const trialName = trial.name;
       const trialDir = path.join(jobDir, trialName, 'agent', 'pochi');
-      const stdoutPath = path.join(trialDir, 'stdout.txt');
+      const trajectoryJsonlPath = path.join(trialDir, 'trajectory.jsonl');
       const trajectoryIdPath = path.join(trialDir, 'trajectory-id.txt');
 
       try {
-        await fs.access(stdoutPath);
+        await fs.access(trajectoryJsonlPath);
       } catch (_e) {
         continue;
       }
@@ -120,14 +120,14 @@ async function getTrialEntries(jobsDir: string): Promise<TrialEntry[]> {
         jobName,
         trialName,
         trialDir,
-        stdoutPath,
+        trajectoryJsonlPath,
         trajectoryIdPath,
       });
     }
   }
 
   // Keep ordering deterministic for repeatable runs.
-  entries.sort((a, b) => a.stdoutPath.localeCompare(b.stdoutPath));
+  entries.sort((a, b) => a.trajectoryJsonlPath.localeCompare(b.trajectoryJsonlPath));
   return entries;
 }
 
@@ -229,7 +229,7 @@ async function main() {
       continue;
     }
 
-    const content = await fs.readFile(entry.stdoutPath, 'utf-8');
+    const content = await fs.readFile(entry.trajectoryJsonlPath, 'utf-8');
     let messages: unknown[];
     try {
       messages = parseJsonLines(content);
