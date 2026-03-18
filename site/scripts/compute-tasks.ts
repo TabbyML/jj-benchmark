@@ -1,6 +1,17 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+async function readTrajectoryId(jobsDir: string, jobName: string, trialName: string): Promise<string | null> {
+  const trajectoryIdPath = path.join(jobsDir, jobName, trialName, 'agent', 'pochi', 'trajectory-id.txt');
+  try {
+    const content = await fs.readFile(trajectoryIdPath, 'utf-8');
+    const id = content.trim();
+    return id.length > 0 ? id : null;
+  } catch (_e) {
+    return null;
+  }
+}
+
 async function getResultFiles(dir: string): Promise<string[]> {
   const files: string[] = [];
   try {
@@ -75,10 +86,13 @@ async function main() {
 
     // Extract job directory name (e.g., 2026-03-08__16-54-33)
     const jobName = file.split('/')[0] || file.split('\\')[0];
+    const trialName = data.trial_name;
+    const trajectoryId = trialName ? await readTrajectoryId(jobsDir, jobName, trialName) : null;
 
     tasks[taskName].push({
       job_name: jobName,
-      trial_name: data.trial_name,
+      trial_name: trialName,
+      ...(trajectoryId ? { trajectory_id: trajectoryId } : {}),
       agent: agentName,
       model: model,
       provider: provider,

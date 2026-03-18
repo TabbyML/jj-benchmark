@@ -1,5 +1,4 @@
 import tasksData from "@/tasks.json";
-import trajectoryUrls from "@/trajectory.json";
 import { TrajectoryPage } from "./components/trajectory-page";
 import zealtConfig from "@/../zealt.json";
 
@@ -12,6 +11,7 @@ type RouteParams = {
 type TrialEntry = {
   trial_name: string;
   job_name: string;
+  trajectory_id?: string;
 };
 
 function buildFallbackUrl(jobName: string, trialName: string) {
@@ -29,21 +29,41 @@ function buildClipUrl(clipId: string, title: string): string {
   return url.toString();
 }
 
-function getTrajectoryEntry(jobName: string, trialName: string) {
-  const urlsByJob = trajectoryUrls as Record<
-    string,
-    Record<string, { clip_id?: string; error: string | null }> | undefined
-  >;
-  return urlsByJob[jobName]?.[trialName] || null;
-}
-
 function isTrialEntry(value: unknown): value is TrialEntry {
   if (typeof value !== "object" || value === null) {
     return false;
   }
 
   const trial = value as Record<string, unknown>;
-  return typeof trial.trial_name === "string" && typeof trial.job_name === "string";
+  if (typeof trial.trial_name !== "string" || typeof trial.job_name !== "string") {
+    return false;
+  }
+
+  if (typeof trial.trajectory_id === "undefined") {
+    return true;
+  }
+
+  return typeof trial.trajectory_id === "string";
+}
+
+function findTrialEntry(jobName: string, trialName: string): TrialEntry | null {
+  for (const trials of Object.values(tasksData as Record<string, unknown>)) {
+    if (!Array.isArray(trials)) {
+      continue;
+    }
+
+    for (const trial of trials) {
+      if (!isTrialEntry(trial)) {
+        continue;
+      }
+
+      if (trial.job_name === jobName && trial.trial_name === trialName) {
+        return trial;
+      }
+    }
+  }
+
+  return null;
 }
 
 export const dynamicParams = false;
@@ -78,8 +98,8 @@ export default async function TrajectoryRoutePage({
 }) {
   const resolvedParams = await params;
   const fallbackUrl = buildFallbackUrl(resolvedParams.jobName, resolvedParams.name);
-  const trajectoryEntry = getTrajectoryEntry(resolvedParams.jobName, resolvedParams.name);
-  const clipId = trajectoryEntry?.clip_id || null;
+  const trialEntry = findTrialEntry(resolvedParams.jobName, resolvedParams.name);
+  const clipId = trialEntry?.trajectory_id?.trim() || null;
   const trajectoryUrl = clipId ? buildClipUrl(clipId, resolvedParams.name) : null;
 
   return (
