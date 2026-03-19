@@ -309,7 +309,7 @@ function TasksContent() {
             rel="noopener noreferrer"
           >
             <ExternalLink className="h-4 w-4" />
-            Open external instruction.md
+            Open instruction.md
           </a>
         </Button>
       </div>
@@ -531,9 +531,7 @@ function TasksContent() {
             <div className="flex h-full min-h-0 flex-col">
               <SheetHeader className="border-b border-border/60 bg-card/80 px-7 py-5 pr-14">
                 <SheetTitle className="text-base">{selectedTask || "Task Instruction"}</SheetTitle>
-                <SheetDescription>
-                  Task instruction
-                </SheetDescription>
+                <SheetDescription className="sr-only">{selectedTask}</SheetDescription>
               </SheetHeader>
               {instructionBody}
             </div>
@@ -548,9 +546,7 @@ function TasksContent() {
                 <DrawerTitle className="text-base">
                   {selectedTask || "Task Instruction"}
                 </DrawerTitle>
-                <DrawerDescription className="sr-only">
-                  {selectedTask}
-                </DrawerDescription>
+                <SheetDescription className="sr-only">{selectedTask}</SheetDescription>
               </DrawerHeader>
               {instructionBody}
             </div>
