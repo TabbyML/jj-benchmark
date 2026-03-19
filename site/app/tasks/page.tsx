@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, Suspense } from "react";
+import { useState, useMemo, useEffect, Suspense, useCallback } from "react";
 import {
   Check,
   X as XIcon,
@@ -119,15 +119,7 @@ function TasksContent() {
 
   const hasActiveFilters = selectedStatuses.length > 0 || selectedModels.length > 0 || selectedAgents.length > 0 || searchQuery !== "" || querySort !== "default";
 
-  // Debounce search query to URL
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updateParams({ q: searchQuery });
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
-
-  const updateParams = (updates: Record<string, string | null>) => {
+  const updateParams = useCallback((updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
     Object.entries(updates).forEach(([key, value]) => {
       if (value === null || value === "" || value === "all" || (key === "sort" && value === "default")) {
@@ -136,8 +128,27 @@ function TasksContent() {
         params.set(key, value);
       }
     });
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  };
+    const nextQuery = params.toString();
+    const currentQuery = searchParams.toString();
+    if (nextQuery === currentQuery) {
+      return;
+    }
+
+    const nextUrl = nextQuery ? `${pathname}?${nextQuery}` : pathname;
+    router.replace(nextUrl, { scroll: false });
+  }, [pathname, router, searchParams]);
+
+  // Debounce search query to URL
+  useEffect(() => {
+    if (searchQuery === queryQ) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      updateParams({ q: searchQuery });
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [queryQ, searchQuery, updateParams]);
 
   const activeCombos = useMemo(() => {
     const combos = allCombos.filter(combo => {
