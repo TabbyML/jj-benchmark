@@ -34,8 +34,15 @@ function getServerBaseUrl() {
   return process.env.CLIPS_BASE_URL || 'https://cc.getpochi.com';
 }
 
-function buildClipUrl(clipId: string, title: string): string {
-  const url = new URL(`/e/${clipId}`, getServerBaseUrl());
+function getGithubOwnerRepo(): string {
+  const repoUrl = zealtConfig.github_repo;
+  const match = repoUrl.match(/github\.com\/(.+?\/[^/]+)/);
+  return match ? match[1] : repoUrl;
+}
+
+function buildClipUrl(clipId: string, jobName: string, trialName: string, title: string): string {
+  const ownerRepo = getGithubOwnerRepo();
+  const url = new URL(`/f/raw.githubusercontent.com/${ownerRepo}/refs/heads/main/jobs/${jobName}/${trialName}/agent/pochi/trajectory.jsonl`, getServerBaseUrl());
   url.searchParams.set("title", title);
   url.searchParams.set("theme", "dark");
   return url.toString();
@@ -131,7 +138,9 @@ export default async function TrajectoryRoutePage({
     ? buildFallbackUrl(trialEntry.job_name, trialEntry.trial_name)
     : null;
   const clipId = trialEntry?.trajectory_id?.trim() || null;
-  const trajectoryUrl = clipId ? buildClipUrl(clipId, resolvedParams.name) : null;
+  const trajectoryUrl = clipId && trialEntry
+    ? buildClipUrl(clipId, trialEntry.job_name, trialEntry.trial_name, resolvedParams.name)
+    : null;
 
   return (
     <div className="w-full h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-hidden">
