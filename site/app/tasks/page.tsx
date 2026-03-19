@@ -43,83 +43,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MultiSelect } from "./components/multi-select";
 import { BackToTop } from "./components/back-to-top";
 
-type TaskTrial = {
-  job_name: string;
-  trial_name: string;
-  trajectory_id?: string;
-  agent: string;
-  model: string;
-  provider: string;
-  passed: boolean;
-  reward: number | null;
-  error: boolean;
-  latency_sec: number | null;
-  latency_breakdown?: {
-    env_setup?: number | null;
-    agent_setup?: number | null;
-    agent_exec?: number | null;
-    verifier?: number | null;
-  };
-  tokens: {
-    input: number;
-    output: number;
-    cache: number;
-  };
-};
-
-type TaskEntry = {
-  instruction: string;
-  trials: TaskTrial[];
-};
-
-type NormalizedTrial = TaskTrial & {
-  exec_duration: number;
-};
-
-type NormalizedTask = {
-  taskName: string;
-  instruction: string;
-  trials: NormalizedTrial[];
-};
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-function normalizeTasksData(raw: unknown): NormalizedTask[] {
-  if (typeof raw !== "object" || raw === null) {
-    return [];
-  }
-
-  return Object.entries(raw as Record<string, unknown>).map(([taskName, value]) => {
-    let instruction = "";
-    let trials: TaskTrial[] = [];
-
-    if (Array.isArray(value)) {
-      trials = value as TaskTrial[];
-    } else if (typeof value === "object" && value !== null) {
-      const taskEntry = value as Partial<TaskEntry>;
-      instruction = typeof taskEntry.instruction === "string" ? taskEntry.instruction : "";
-      trials = Array.isArray(taskEntry.trials) ? taskEntry.trials : [];
-    }
-
-    return {
-      taskName,
-      instruction,
-      trials: trials.map((t) => ({
-        ...t,
-        model: t.model.split('/').pop() || t.model,
-        agent: t.agent.charAt(0).toUpperCase() + t.agent.slice(1),
-        exec_duration: t.latency_breakdown?.agent_exec || t.latency_sec || 0,
-      })),
-    };
-  }).sort((a, b) => a.taskName.localeCompare(b.taskName));
-}
-
 // Convert object to array and sort by task name
-const tasksData = Object.entries(tasksDataRaw).map(([taskName, trials]) => {
+const tasksData = Object.entries(tasksDataRaw).map(([taskName, { trials, instruction }]) => {
   return {
     taskName,
+    instruction,
     trials: (trials as any[]).map(t => {
       const trialNameParts = String(t.trial_name ?? "").split("__");
       const taskName = trialNameParts[0] || "";
@@ -237,7 +170,7 @@ function TasksContent() {
 
   const filteredAndSortedTasks = useMemo(() => {
     const result = tasksData.map(task => {
-      const comboMap: Record<string, NormalizedTrial> = {};
+      const comboMap: Record<string, any> = {};
       let hasMatchingTrial = false;
       let selectedModelMatchesStatus = false;
       let hasSelectedModelTrial = false;
