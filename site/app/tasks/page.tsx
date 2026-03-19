@@ -24,12 +24,20 @@ function cn(...inputs: ClassValue[]) {
 const tasksData = Object.entries(tasksDataRaw).map(([taskName, trials]) => {
   return {
     taskName,
-    trials: (trials as any[]).map(t => ({
-      ...t,
-      model: t.model.split('/').pop() || t.model,
-      agent: t.agent.charAt(0).toUpperCase() + t.agent.slice(1),
-      exec_duration: t.latency_breakdown?.agent_exec || t.latency_sec || 0
-    })),
+    trials: (trials as any[]).map(t => {
+      const trialNameParts = String(t.trial_name ?? "").split("__");
+      const taskName = trialNameParts[0] || "";
+      const jobId = trialNameParts[trialNameParts.length - 1] || "";
+
+      return {
+        ...t,
+        model: t.model.split('/').pop() || t.model,
+        agent: t.agent.charAt(0).toUpperCase() + t.agent.slice(1),
+        exec_duration: t.latency_breakdown?.agent_exec || t.latency_sec || 0,
+        taskName,
+        jobId,
+      };
+    }),
   };
 }).sort((a, b) => a.taskName.localeCompare(b.taskName));
 
@@ -344,7 +352,7 @@ function TasksContent() {
                             <HoverCard openDelay={200} closeDelay={0}>
                               <HoverCardTrigger asChild>
                                 <Link 
-                                  href={`/tasks/${encodeURIComponent(trial.trial_name)}/${encodeURIComponent(trial.job_name)}/trajectory`}
+                                  href={`/tasks/${encodeURIComponent(trial.taskName)}/${encodeURIComponent(trial.jobId)}/trajectory`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="absolute inset-0 flex items-center justify-start gap-1.5 md:gap-2 px-3 sm:px-6 w-full h-full cursor-pointer hover:bg-secondary/50 transition-colors group/cell focus:outline-none text-left bg-transparent border-none m-0 p-0"

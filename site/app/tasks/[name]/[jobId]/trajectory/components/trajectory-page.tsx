@@ -10,7 +10,7 @@ type TrajectoryPageProps = {
 };
 
 export function TrajectoryPage({ title, trajectoryUrl, fallbackUrl }: TrajectoryPageProps) {
-  const [iframeLoading, setIframeLoading] = useState(false);
+  const [iframeLoading, setIframeLoading] = useState(true);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export function TrajectoryPage({ title, trajectoryUrl, fallbackUrl }: Trajectory
       if (iframeRef.current) {
         iframeRef.current.style.opacity = "1";
       }
-    }, 200);
+    }, 300);
   };
 
   const handleIframeError = () => {
