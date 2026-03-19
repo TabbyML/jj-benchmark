@@ -23,6 +23,10 @@ type TaskTrial = {
     output: number;
     cache: number;
   };
+  stderr_text?: string | null;
+  stderr_line_count?: number;
+  verifier_text?: string | null;
+  verifier_line_count?: number;
 };
 
 type TaskRecord = {
@@ -95,6 +99,29 @@ async function readTaskInstruction(repoRoot: string, taskName: string): Promise<
   }
 }
 
+function countLines(text: string): number {
+  if (text.length === 0) {
+    return 0;
+  }
+
+  return text.split(/\r?\n/).length;
+}
+
+async function readOptionalTextFile(filePath: string): Promise<{ text: string | null; lineCount: number }> {
+  try {
+    const text = await fs.readFile(filePath, 'utf-8');
+    return {
+      text,
+      lineCount: countLines(text),
+    };
+  } catch (_e) {
+    return {
+      text: null,
+      lineCount: 0,
+    };
+  }
+}
+
 async function main() {
   const siteRoot = process.cwd();
   const repoRoot = path.join(siteRoot, '..');
@@ -152,6 +179,16 @@ async function main() {
     const trialName = data.trial_name || 'unknown-trial';
     const trajectoryId = trialName ? await readTrajectoryId(jobsDir, jobName, trialName) : null;
 
+    const stderrPath = path.join(jobsDir, jobName, trialName, 'agent', agentName, 'stderr.txt');
+    const fallbackStderrPath = path.join(jobsDir, jobName, trialName, 'agent', 'pochi', 'stderr.txt');
+    const verifierLogPath = path.join(jobsDir, jobName, trialName, 'verifier', 'test-stdout.txt');
+
+    const stderrResult = await readOptionalTextFile(stderrPath);
+    const resolvedStderrResult = stderrResult.text === null && stderrPath !== fallbackStderrPath
+      ? await readOptionalTextFile(fallbackStderrPath)
+      : stderrResult;
+    const verifierResult = await readOptionalTextFile(verifierLogPath);
+
     tasks[taskName].trials.push({
       job_name: jobName,
       trial_name: trialName,
@@ -173,7 +210,11 @@ async function main() {
         input: data.agent_result?.n_input_tokens || 0,
         output: data.agent_result?.n_output_tokens || 0,
         cache: data.agent_result?.n_cache_tokens || 0,
-      }
+      },
+      stderr_text: resolvedStderrResult.text,
+      stderr_line_count: resolvedStderrResult.lineCount,
+      verifier_text: verifierResult.text,
+      verifier_line_count: verifierResult.lineCount,
     });
   }
 
