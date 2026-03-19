@@ -578,7 +578,7 @@ function TasksContent() {
         </Sheet>
       ) : (
         <Drawer open={isInstructionOpen} onOpenChange={setIsInstructionOpen} direction="bottom">
-          <DrawerContent className="inset-x-0 bottom-0 h-[76dvh] max-h-[76dvh] rounded-t-2xl border-t border-border/70 bg-card/95 p-0">
+          <DrawerContent className="inset-x-0 bottom-0 h-[76dvh] max-h-[76dvh] rounded-t-2xl border-t border-border/70 bg-background/60 p-0">
             <div className="mx-auto mt-3 h-1.5 w-14 rounded-full bg-muted-foreground/40" />
             <div className="flex h-full min-h-0 flex-col">
               <DrawerHeader className="border-b border-border/60 px-5 pb-4">
