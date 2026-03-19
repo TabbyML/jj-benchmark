@@ -9,7 +9,7 @@ mkdir -p ~/.pochi && cat << EOF > ~/.pochi/config.jsonc
         "zai-org/GLM-4.7-Flash": {
           "name": "glm-4.7-flash"
         },
-        "moonshotai/Kimi-K2.5": {
+        "moonshotai/kimi-k2.5": {
           "name": "kimi-K2.5"
         },
         "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
@@ -40,7 +40,7 @@ mkdir -p ~/.pochi && cat << EOF > ~/.pochi/config.jsonc
   }
 }
 EOF
-sed -i 's/OPENAI_API_KEY/'$OPENAI_API_KEY'/g' ~/.pochi/config.jsonc && sed -i 's/DEEPINFRA_API_KEY/'$DEEPINFRA_API_KEY'/g' ~/.pochi/config.jsonc && sed -i 's/ANTHROPIC_API_KEY/'$ANTHROPIC_API_KEY'/g' ~/.pochi/config.jsonc && pochi --model deepinfra/moonshotai/Kimi-K2.5 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --stream-json /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+sed -i 's/OPENAI_API_KEY/'$OPENAI_API_KEY'/g' ~/.pochi/config.jsonc && sed -i 's/DEEPINFRA_API_KEY/'$DEEPINFRA_API_KEY'/g' ~/.pochi/config.jsonc && sed -i 's/ANTHROPIC_API_KEY/'$ANTHROPIC_API_KEY'/g' ~/.pochi/config.jsonc && pochi --model deepinfra/moonshotai/kimi-k2.5 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --stream-json /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
 # Initialize a Jujutsu Repository and Configure User Identity
 
 You are a developer who has recently switched from Git to Jujutsu (jj). You have an existing project directory at `/home/user/myproject` that you want to bring under jj version control. Your goal is to initialise a jj repository in that directory and set your user identity in the global jj configuration so that commits are attributed to you.
