@@ -1,5 +1,0 @@
-{
-  "task_name": "jj_undo_mistaken_rebase",
-  "task_description": "You are a developer migrating from Git. You accidentally rebased the `feature` bookmark onto the wrong commit (`dev` instead of `main`).\n\nYour task is to:\n1. Use the operation log to undo the mistaken rebase operation.\n2. Correctly rebase the `feature` bookmark onto the `main` bookmark.\n3. Verify the `feature` bookmark is now a direct child of `main`.\n4. Run `jj log -r 'main..feature' -T 'bookmarks ++ \"\n\"' > /home/user/rebase_verification.log` to save the verification output.\n",
-  "truth": "The final state must have:\n1. The `feature` bookmark is a direct child of the `main` bookmark.\n2. The `feature` bookmark is NOT a child of `dev`.\n3. A file `/home/user/rebase_verification.log` containing `feature`.\n\nSetup required before task:\n- Initialize a jj repository at `/home/user/repo`.\n- Create a `main` commit and bookmark.\n- Create a `dev` commit and bookmark.\n- Create a `feature` commit and bookmark (originally off `main`'s parent).\n- Perform a `jj rebase -b feature -d dev` to simulate the mistake.\n"
-}
