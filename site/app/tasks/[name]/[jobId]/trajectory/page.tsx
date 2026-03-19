@@ -5,7 +5,7 @@ import zealtConfig from "@/../zealt.json";
 
 type RouteParams = {
   name: string;
-  jobName: string;
+  jobId: string;
 };
 
 type TrialEntry = {
@@ -16,6 +16,18 @@ type TrialEntry = {
 
 function buildFallbackUrl(jobName: string, trialName: string) {
   return `${zealtConfig.github_repo}/blob/main/jobs/${jobName}/${trialName}/result.json`
+}
+
+function splitTrialName(trialName: string): { taskName: string; jobId: string } | null {
+  const separatorIndex = trialName.lastIndexOf("__");
+  if (separatorIndex <= 0 || separatorIndex >= trialName.length - 2) {
+    return null;
+  }
+
+  return {
+    taskName: trialName.slice(0, separatorIndex),
+    jobId: trialName.slice(separatorIndex + 2),
+  };
 }
 
 function getServerBaseUrl() {
@@ -39,14 +51,10 @@ function isTrialEntry(value: unknown): value is TrialEntry {
     return false;
   }
 
-  if (typeof trial.trajectory_id === "undefined") {
-    return true;
-  }
-
-  return typeof trial.trajectory_id === "string";
+  return true;
 }
 
-function findTrialEntry(jobName: string, trialName: string): TrialEntry | null {
+function findTrialEntry(taskName: string, jobId: string): TrialEntry | null {
   for (const trials of Object.values(tasksData as Record<string, unknown>)) {
     if (!Array.isArray(trials)) {
       continue;
@@ -57,7 +65,12 @@ function findTrialEntry(jobName: string, trialName: string): TrialEntry | null {
         continue;
       }
 
-      if (trial.job_name === jobName && trial.trial_name === trialName) {
+      const splitName = splitTrialName(trial.trial_name);
+      if (!splitName) {
+        continue;
+      }
+
+      if (splitName.taskName === taskName && splitName.jobId === jobId) {
         return trial;
       }
     }
@@ -81,9 +94,14 @@ export function generateStaticParams(): RouteParams[] {
         continue;
       }
 
+      const splitName = splitTrialName(trial.trial_name);
+      if (!splitName) {
+        continue;
+      }
+
       params.push({
-        name: trial.trial_name,
-        jobName: trial.job_name,
+        name: splitName.taskName,
+        jobId: splitName.jobId,
       });
     }
   }
@@ -97,8 +115,11 @@ export default async function TrajectoryRoutePage({
   params: Promise<RouteParams>;
 }) {
   const resolvedParams = await params;
-  const fallbackUrl = buildFallbackUrl(resolvedParams.jobName, resolvedParams.name);
-  const trialEntry = findTrialEntry(resolvedParams.jobName, resolvedParams.name);
+
+  const trialEntry = findTrialEntry(resolvedParams.name, resolvedParams.jobId);
+  const fallbackUrl = trialEntry
+    ? buildFallbackUrl(trialEntry.job_name, trialEntry.trial_name)
+    : null;
   const clipId = trialEntry?.trajectory_id?.trim() || null;
   const trajectoryUrl = clipId ? buildClipUrl(clipId, resolvedParams.name) : null;
 
@@ -108,7 +129,7 @@ export default async function TrajectoryRoutePage({
       <TrajectoryPage
         title={resolvedParams.name}
         trajectoryUrl={trajectoryUrl}
-        fallbackUrl={fallbackUrl}
+        fallbackUrl={fallbackUrl ?? ""}
       />
     </div>
   );
