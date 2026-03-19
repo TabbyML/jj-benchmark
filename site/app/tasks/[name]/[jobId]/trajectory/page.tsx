@@ -1,6 +1,7 @@
 import tasksData from "@/tasks.json";
 import { TrajectoryPage } from "./components/trajectory-page";
 import zealtConfig from "@/../zealt.json";
+import { redirect } from "next/navigation";
 
 
 type RouteParams = {
@@ -11,7 +12,12 @@ type RouteParams = {
 type TrialEntry = {
   trial_name: string;
   job_name: string;
+  agent: string;
   trajectory_id?: string;
+  stderr_text?: string | null;
+  stderr_line_count?: number;
+  verifier_text?: string | null;
+  verifier_line_count?: number;
 };
 
 function buildFallbackUrl(jobName: string, trialName: string) {
@@ -54,7 +60,11 @@ function isTrialEntry(value: unknown): value is TrialEntry {
   }
 
   const trial = value as Record<string, unknown>;
-  if (typeof trial.trial_name !== "string" || typeof trial.job_name !== "string") {
+  if (
+    typeof trial.trial_name !== "string" ||
+    typeof trial.job_name !== "string" ||
+    typeof trial.agent !== "string"
+  ) {
     return false;
   }
 
@@ -138,17 +148,38 @@ export default async function TrajectoryRoutePage({
     ? buildFallbackUrl(trialEntry.job_name, trialEntry.trial_name)
     : null;
   const clipId = trialEntry?.trajectory_id?.trim() || null;
+  const headerTitle = `${resolvedParams.name}__${resolvedParams.jobId}`;
+  const contentTopOffsetClassName = "top-20";
+  
   const trajectoryUrl = clipId && trialEntry
     ? buildClipUrl(clipId, trialEntry.job_name, trialEntry.trial_name, resolvedParams.name)
     : null;
+  
+  // FIXME
+  if (!trajectoryUrl) {
+    redirect(fallbackUrl ?? '/tasks');
+  }
+  const stderrText = trialEntry?.stderr_text ?? null;
+  const verifierText = trialEntry?.verifier_text ?? null;
 
   return (
     <div className="w-full h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-hidden">
       <div className="fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 dark:opacity-40"></div>
+      <div className="fixed inset-x-0 top-0 z-40 border-b border-border/50 bg-background/85 backdrop-blur-sm">
+        <div className="mx-auto w-full max-w-[1400px] px-4 py-4 sm:px-7 lg:px-10">
+          <span className="flex items-center gap-1">
+            <h1 className="truncate whitespace-nowrap font-bold text-2xl">
+              {headerTitle}
+            </h1>
+          </span>
+        </div>
+      </div>
       <TrajectoryPage
-        title={resolvedParams.name}
         trajectoryUrl={trajectoryUrl}
-        fallbackUrl={fallbackUrl ?? ""}
+        fallbackUrl={fallbackUrl ?? ''}
+        stderrText={stderrText}
+        verifierText={verifierText}
+        topOffsetClassName={contentTopOffsetClassName}
       />
     </div>
   );
