@@ -46,6 +46,25 @@ function formatStartTime(jobName: string): string {
   return localDate.toLocaleString();
 }
 
+function formatStartTimeShort(jobName: string): string {
+  const match = jobName.match(/^(\d{4})-(\d{2})-(\d{2})__(\d{2})-(\d{2})-(\d{2})$/);
+  if (!match) {
+    return "Unknown";
+  }
+
+  const [, year, month, day, hour, minute, second] = match;
+  const localDate = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute), Number(second));
+  if (Number.isNaN(localDate.getTime())) {
+    return "Unknown";
+  }
+
+  const monthLabel = String(localDate.getMonth() + 1);
+  const dayLabel = String(localDate.getDate());
+  const hourLabel = String(localDate.getHours()).padStart(2, "0");
+  const minuteLabel = String(localDate.getMinutes()).padStart(2, "0");
+  return `${monthLabel}/${dayLabel} ${hourLabel}:${minuteLabel}`;
+}
+
 function formatDuration(durationSec: number | null | undefined): string {
   if (durationSec == null || Number.isNaN(durationSec)) {
     return "Unknown";
@@ -242,6 +261,7 @@ export default async function TrajectoryRoutePage({
   const clipId = trialEntry?.trajectory_id?.trim() || null;
   const headerTitle = `${resolvedParams.name}__${resolvedParams.jobId}`;
   const startedAt = trialEntry ? formatStartTime(trialEntry.job_name) : "Unknown";
+  const startedAtShort = trialEntry ? formatStartTimeShort(trialEntry.job_name) : "Unknown";
   const executionDurationLabel = formatDuration(trialEntry?.latency_breakdown?.agent_exec ?? null);
   const verifyDurationLabel = formatDuration(trialEntry?.latency_breakdown?.verifier ?? null);
   const trialStatus = getTrialStatus(trialEntry);
@@ -274,18 +294,13 @@ export default async function TrajectoryRoutePage({
               {headerTitle}
             </h1>
             <div className="mt-2 text-xs sm:text-sm">
-              <div className="space-y-1.5 sm:hidden">
-                <div className="flex items-center gap-3">
-                  <span className={`inline-flex shrink-0 items-center gap-1.5 font-medium ${statusMeta.className}`}>
-                    <StatusIcon className="h-3.5 w-3.5" />
-                    <span>Status: {statusMeta.label}</span>
-                  </span>
-                  <span className="min-w-0 truncate text-muted-foreground">Started: {startedAt}</span>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 sm:hidden">
+                <div className={`font-medium ${statusMeta.className}`}>
+                  Status: {statusMeta.label}
                 </div>
-                <div className="grid grid-cols-2 gap-x-3 text-muted-foreground">
-                  <span className="truncate">Execution: {executionDurationLabel}</span>
-                  <span className="truncate">Verify: {verifyDurationLabel}</span>
-                </div>
+                <div className="text-muted-foreground">Started: {startedAtShort}</div>
+                <div className="text-muted-foreground">Execution: {executionDurationLabel}</div>
+                <div className="text-muted-foreground">Test: {verifyDurationLabel}</div>
               </div>
 
               <div className="hidden items-center gap-4 sm:flex">
@@ -295,7 +310,7 @@ export default async function TrajectoryRoutePage({
                 </span>
                 <span className="text-muted-foreground">Started: {startedAt}</span>
                 <span className="text-muted-foreground truncate">Execution: {executionDurationLabel}</span>
-                <span className="text-muted-foreground truncate">Verify: {verifyDurationLabel}</span>
+                <span className="text-muted-foreground truncate">Test: {verifyDurationLabel}</span>
               </div>
             </div>
           </div>
