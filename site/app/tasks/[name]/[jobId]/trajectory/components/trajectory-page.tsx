@@ -15,7 +15,9 @@ export function TrajectoryPage({ title, trajectoryUrl, fallbackUrl }: Trajectory
 
   useEffect(() => {
     if (!trajectoryUrl) {
-      window.location.replace(fallbackUrl);
+      if (fallbackUrl) {
+        window.location.replace(fallbackUrl);
+      }
       return;
     }
 
@@ -32,7 +34,9 @@ export function TrajectoryPage({ title, trajectoryUrl, fallbackUrl }: Trajectory
   };
 
   const handleIframeError = () => {
-    window.location.replace(fallbackUrl);
+    if (fallbackUrl) {
+      window.location.replace(fallbackUrl);
+    }
   }
 
   if (trajectoryUrl) {

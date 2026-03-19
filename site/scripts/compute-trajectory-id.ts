@@ -16,6 +16,11 @@ type TaskTrialEntry = {
   [key: string]: unknown;
 };
 
+type TaskEntry = {
+  instruction?: string;
+  trials?: unknown;
+};
+
 const RETRY_ATTEMPTS = 3;
 const RETRY_BASE_DELAY_MS = 700;
 
@@ -169,7 +174,12 @@ async function updateTasksJson(tasksPath: string, trajectoryIdByTrial: Map<strin
   const tasks = parsed as Record<string, unknown>;
   let updatedCount = 0;
 
-  for (const taskEntries of Object.values(tasks)) {
+  for (const taskValue of Object.values(tasks)) {
+    if (typeof taskValue !== 'object' || taskValue === null) {
+      continue;
+    }
+
+    const taskEntries = (taskValue as TaskEntry).trials;
     if (!Array.isArray(taskEntries)) {
       continue;
     }

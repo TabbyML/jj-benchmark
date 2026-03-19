@@ -3,6 +3,17 @@ import tasksData from "../../tasks.json";
 import zealtConfig from "../../../zealt.json";
 import LeaderboardTable, { type LeaderboardEntry } from "./components/leaderboard-table";
 
+type TaskTrial = {
+  agent: string;
+  model: string;
+  passed: boolean;
+  latency_sec: number | null;
+};
+
+type TaskValue = {
+  trials?: TaskTrial[];
+};
+
 export default function Home() {
   // Process tasks.json to compute leaderboard stats directly on the server
   const statsMap = new Map<string, {
@@ -14,8 +25,16 @@ export default function Home() {
     agent: string;
   }>();
 
-  Object.values(tasksData).forEach((trials: any[]) => {
-    trials.forEach(trial => {
+  Object.values(tasksData as Record<string, unknown>).forEach((taskValue) => {
+    let trials: TaskTrial[] = [];
+    if (Array.isArray(taskValue)) {
+      trials = taskValue as TaskTrial[];
+    } else if (typeof taskValue === "object" && taskValue !== null) {
+      const task = taskValue as TaskValue;
+      trials = Array.isArray(task.trials) ? task.trials : [];
+    }
+
+    trials.forEach((trial) => {
       // Simplify model name
       const modelName = trial.model.split('/').pop() || trial.model;
       const agentName = trial.agent.charAt(0).toUpperCase() + trial.agent.slice(1);
@@ -33,7 +52,10 @@ export default function Home() {
         });
       }
       
-      const stats = statsMap.get(key)!;
+      const stats = statsMap.get(key);
+      if (!stats) {
+        return;
+      }
       stats.total += 1;
       if (trial.passed) {
         stats.passed += 1;

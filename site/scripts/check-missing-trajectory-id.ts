@@ -9,6 +9,10 @@ type TaskTrialEntry = {
   trajectory_id?: unknown;
 };
 
+type TaskEntry = {
+  trials?: unknown;
+};
+
 async function main() {
   const tasksPath = path.join(process.cwd(), 'site', 'tasks.json');
   const raw = await fs.readFile(tasksPath, 'utf-8');
@@ -21,7 +25,12 @@ async function main() {
   const tasks = parsed as Record<string, unknown>;
   const missing: Array<{ taskName: string; jobName: string; trialName: string }> = [];
 
-  for (const [taskName, entries] of Object.entries(tasks)) {
+  for (const [taskName, taskValue] of Object.entries(tasks)) {
+    if (typeof taskValue !== 'object' || taskValue === null) {
+      continue;
+    }
+
+    const entries = (taskValue as TaskEntry).trials;
     if (!Array.isArray(entries)) {
       continue;
     }
