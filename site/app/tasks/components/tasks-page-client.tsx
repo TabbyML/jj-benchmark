@@ -17,7 +17,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import zealtConfig from "@/../zealt.json";
+import zealtConfig from "@/zealt/config.json";
 import {
   HoverCard,
   HoverCardContent,

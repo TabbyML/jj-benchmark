@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
-import tasksData from "@/tasks.json";
+import tasksData from "@/zealt/tasks.json";
 import { TrajectoryPage } from "./components/trajectory-page";
-import zealtConfig from "@/../zealt.json";
+import zealtConfig from "@/zealt/config.json";
 import { redirect } from "next/navigation";
 import { AlertTriangle, Check, HelpCircle, X as XIcon } from "lucide-react";
 
@@ -294,23 +294,13 @@ export default async function TrajectoryRoutePage({
               {headerTitle}
             </h1>
             <div className="mt-2 text-xs sm:text-sm">
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 sm:hidden">
-                <div className={`font-medium ${statusMeta.className}`}>
-                  Status: {statusMeta.label}
-                </div>
-                <div className="text-muted-foreground">Started: {startedAtShort}</div>
-                <div className="text-muted-foreground">Execution: {executionDurationLabel}</div>
-                <div className="text-muted-foreground">Test: {verifyDurationLabel}</div>
-              </div>
-
-              <div className="hidden items-center gap-4 sm:flex">
-                <span className={`inline-flex shrink-0 items-center gap-1.5 font-medium ${statusMeta.className}`}>
-                  <StatusIcon className="h-3.5 w-3.5" />
-                  <span>Status: {statusMeta.label}</span>
+              <div className="flex flex-col gap-1 sm:flex-row sm:gap-4">
+                <span className={`inline-flex shrink-0 items-center gap-0 font-medium`}>
+                  <StatusIcon className={`h-3.5 w-3.5 ${statusMeta.className}`} />
+                  <span className={`${statusMeta.className} ml-0.5`}>{statusMeta.label}</span>
+                  <span className="text-muted-foreground ml-0.5">@{startedAt}</span>
                 </span>
-                <span className="text-muted-foreground">Started: {startedAt}</span>
-                <span className="text-muted-foreground truncate">Execution: {executionDurationLabel}</span>
-                <span className="text-muted-foreground truncate">Test: {verifyDurationLabel}</span>
+                <span className="text-muted-foreground truncate">Duration: {executionDurationLabel}</span>
               </div>
             </div>
           </div>
