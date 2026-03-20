@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, type ReactNode } from "react";
 import {
   Check,
   X as XIcon,
@@ -90,6 +90,23 @@ function useMediaQuery(query: string) {
   }, [query]);
 
   return matches;
+}
+
+type TableWrapperProps = {
+  hasRows: boolean;
+  children: ReactNode;
+};
+
+function TableWrapper({ hasRows, children }: TableWrapperProps) {
+  if (!hasRows) {
+    return (
+      <div className="text-center py-12 text-muted-foreground flex-1 flex items-center justify-center">
+        No tasks found matching your filters
+      </div>
+    );
+  }
+
+  return <div className="overflow-auto relative custom-scrollbar">{children}</div>;
 }
 
 export function TasksPageClient({ tasksData }: TasksPageClientProps) {
@@ -237,7 +254,29 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
     return combos;
   }, [allCombos, selectedModels.join(","), selectedAgents.join(",")]);
 
-  const filteredAndSortedTasks = useMemo(() => {
+  const noTrials = activeCombos.length === 0;
+
+  const tableTasks = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    if (noTrials) {
+      const filtered = query
+        ? tasksData.filter((task) => task.taskName.toLowerCase().includes(query))
+        : tasksData;
+
+      return [...filtered]
+        .map((task) => ({
+          taskName: task.taskName,
+          comboMap: {} as Record<string, CompactTrial>,
+          avgDuration: 0,
+        }))
+        .sort((a, b) =>
+          queryOrder === "desc"
+            ? b.taskName.localeCompare(a.taskName)
+            : a.taskName.localeCompare(b.taskName),
+        );
+    }
+
     const result = tasksData
       .map((task) => {
         const comboMap: Record<string, CompactTrial> = {};
@@ -300,7 +339,7 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
       })
       .filter((task) => {
         if (!task.hasMatchingTrial) return false;
-        if (searchQuery && !task.taskName.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+        if (query && !task.taskName.toLowerCase().includes(query)) return false;
         return true;
       });
 
@@ -314,9 +353,10 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
         : b.taskName.localeCompare(a.taskName);
     });
 
-    return result;
+    return result.map(({ taskName, comboMap, avgDuration }) => ({ taskName, comboMap, avgDuration }));
   }, [
     activeCombos,
+    noTrials,
     queryOrder,
     querySort,
     searchQuery,
@@ -473,12 +513,50 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
       </div>
 
       <div className="rounded-xl border border-border bg-card/50 backdrop-blur-sm shadow-sm overflow-hidden animate-in fade-in duration-500 relative flex flex-col max-h-full pb-1">
-        {filteredAndSortedTasks.length === 0 ? (
-          <div className="text-center py-12 text-muted-foreground flex-1 flex items-center justify-center">
-            No tasks found matching your filters
-          </div>
+        {noTrials ? (
+          <TableWrapper hasRows={tableTasks.length > 0}>
+            <table className="w-full text-sm text-left border-collapse">
+              <thead className="sticky top-0 z-30 text-muted-foreground font-medium border-b border-border select-none shadow-sm">
+                <tr>
+                  <th className="md:sticky left-0 z-40 bg-secondary/95 backdrop-blur md:bg-[#f6f6f6] dark:md:bg-[#0f0f0f] border-r border-border/50 px-3 sm:px-6 py-3 w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px]">
+                    <div className="flex items-center gap-1 sm:gap-2">
+                      <span className="truncate">Task Name ({tableTasks.length} tasks)</span>
+                    </div>
+                  </th>
+                  <th className="p-0 min-w-[220px] border-0 bg-transparent"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/30">
+                {tableTasks.map((task, index) => (
+                  <tr key={task.taskName} className="transition-colors duration-200">
+                    <td className="md:sticky left-0 z-20 bg-background border-r border-border/50 p-0 font-mono w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px] md:shadow-[1px_0_0_rgba(0,0,0,0.05)]">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedTask(task.taskName);
+                          setIsInstructionOpen(true);
+                        }}
+                        className="group/task flex items-center gap-2 px-3 sm:px-6 py-2 w-full h-full text-foreground hover:text-primary transition-colors focus:outline-none bg-transparent even:bg-secondary/5 hover:bg-secondary/30 cursor-pointer text-left"
+                        title={`View ${task.taskName} instruction`}
+                      >
+                        <span className="truncate w-full block group-hover/task:underline text-xs md:text-sm">{task.taskName}</span>
+                      </button>
+                    </td>
+                    {index === 0 ? (
+                      <td
+                        rowSpan={tableTasks.length}
+                        className="px-3 sm:px-6 pt-10 pb-2 border-l border-border/50 min-w-[220px] text-xs md:text-sm align-top text-center"
+                      >
+                          <span className="font-medium text-foreground/90">No evaluation data yet</span>
+                      </td>
+                    ) : null}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </TableWrapper>
         ) : (
-          <div className="overflow-auto relative custom-scrollbar">
+          <TableWrapper hasRows={tableTasks.length > 0}>
             <table className="w-full text-sm text-left border-collapse">
               <thead className="sticky top-0 z-30 bg-secondary/95 backdrop-blur text-muted-foreground font-medium border-b border-border select-none shadow-sm">
                 <tr>
@@ -487,7 +565,7 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
                     onClick={() => toggleSort("taskName")}
                   >
                     <div className="flex items-center gap-1 sm:gap-2">
-                      <span className="truncate">Task Name ({filteredAndSortedTasks.length} tasks)</span>
+                      <span className="truncate">Task Name ({tableTasks.length} tasks)</span>
                       {renderSortIcon("taskName")}
                     </div>
                   </th>
@@ -503,7 +581,7 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/30">
-                {filteredAndSortedTasks.map((task) => (
+                {tableTasks.map((task) => (
                   <tr key={task.taskName} className="hover:bg-secondary/30 even:bg-secondary/5 transition-colors duration-200 group">
                     <td className="md:sticky left-0 z-20 bg-background border-r border-border/50 p-0 font-mono w-[200px] min-w-[200px] max-w-[200px] md:w-[350px] md:min-w-[350px] md:max-w-[350px] md:shadow-[1px_0_0_rgba(0,0,0,0.05)]">
                       <button
@@ -594,7 +672,7 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
                 ))}
               </tbody>
             </table>
-          </div>
+          </TableWrapper>
         )}
       </div>
 
