@@ -10,7 +10,6 @@ type TrajectoryPageProps = {
   fallbackUrl: string;
   stderrText: string | null;
   verifierText: string | null;
-  topOffsetClassName?: string;
 };
 
 export function TrajectoryPage({
@@ -18,7 +17,6 @@ export function TrajectoryPage({
   fallbackUrl,
   stderrText,
   verifierText,
-  topOffsetClassName = "top-28",
 }: TrajectoryPageProps) {
   const [iframeLoading, setIframeLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("trajectory");
@@ -54,16 +52,15 @@ export function TrajectoryPage({
   };
 
   return (
-    <div className="fixed inset-0 w-full h-full">
-      <div className={`absolute inset-x-0 ${topOffsetClassName} bottom-4 sm:bottom-6`}>
-        <div className="mx-auto h-full w-full max-w-[1400px] px-4 sm:px-7 lg:px-10">
+    <div className="h-full w-full pb-4 pt-4 sm:pb-6 sm:pt-5">
+      <div className="mx-auto h-full w-full max-w-[1400px] px-4 sm:px-7 lg:px-10">
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
-            className="h-full gap-0 overflow-hidden rounded-xl border border-border bg-background/70 backdrop-blur-sm shadow-sm"
+            className="flex h-full min-h-0 flex-col gap-0 overflow-hidden rounded-xl border border-border bg-background/70 backdrop-blur-sm shadow-sm"
           >
             <div className="border-b border-border bg-background/40 px-3 py-3 sm:px-4">
-              <TabsList className="grid h-11 w-[300px] max-w-full grid-cols-3 items-stretch gap-1 rounded-xl bg-muted/30 p-1">
+              <TabsList className="grid h-11 w-[300px] max-w-full grid-cols-3 items-stretch gap-1 rounded-xl bg-muted/55 p-1">
                 <TabsTrigger
                   value="trajectory"
                   className="h-full w-full cursor-pointer rounded-lg border-0 py-0 leading-none text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground data-[state=active]:bg-primary/18 data-[state=active]:text-foreground data-[state=active]:shadow-none"
@@ -85,7 +82,7 @@ export function TrajectoryPage({
               </TabsList>
             </div>
 
-            <TabsContent value="trajectory" className="relative min-h-0 overflow-hidden" forceMount>
+            <TabsContent value="trajectory" className="relative min-h-0 flex-1 overflow-hidden" forceMount>
               {iframeLoading && (
                 <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-6 bg-background/80 backdrop-blur-sm">
                   <div className="relative flex items-center justify-center">
@@ -106,7 +103,7 @@ export function TrajectoryPage({
               />
             </TabsContent>
 
-            <TabsContent value="log" className="min-h-0 overflow-hidden" forceMount>
+            <TabsContent value="log" className="min-h-0 flex-1 overflow-hidden" forceMount>
               <ScrollArea className="h-full w-full">
                 <div className="px-3 pb-4 pt-2 sm:px-4 sm:pb-5 sm:pt-3">
                   {renderLogContent(stderrText, "No stderr content available for this trial.")}
@@ -114,7 +111,7 @@ export function TrajectoryPage({
               </ScrollArea>
             </TabsContent>
 
-            <TabsContent value="test" className="min-h-0 overflow-hidden" forceMount>
+            <TabsContent value="test" className="min-h-0 flex-1 overflow-hidden" forceMount>
               <ScrollArea className="h-full w-full">
                 <div className="px-3 pb-4 pt-2 sm:px-4 sm:pb-5 sm:pt-3">
                   {renderLogContent(verifierText, "No verifier test output available for this trial.")}
@@ -122,7 +119,6 @@ export function TrajectoryPage({
               </ScrollArea>
             </TabsContent>
           </Tabs>
-        </div>
       </div>
     </div>
   );

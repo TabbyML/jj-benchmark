@@ -266,7 +266,6 @@ export default async function TrajectoryRoutePage({
   const trialStatus = getTrialStatus(trialEntry);
   const statusMeta = getStatusMeta(trialStatus);
   const StatusIcon = statusMeta.Icon;
-  const contentTopOffsetClassName = "top-36 sm:top-32 lg:top-28";
   
   const trajectoryUrl = clipId && trialEntry
     ? buildClipUrl(trialEntry.job_name, trialEntry.trial_name, resolvedParams.name)
@@ -280,9 +279,9 @@ export default async function TrajectoryRoutePage({
   const verifierText = trialEntry?.verifier_text ?? null;
 
   return (
-    <div className="w-full h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-hidden">
+    <div className="flex h-screen w-full flex-col overflow-hidden bg-background text-foreground font-sans selection:bg-primary/20">
       <div className="fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 dark:opacity-40"></div>
-      <div className="fixed inset-x-0 top-0 z-40 bg-background/85 backdrop-blur-sm">
+      <div className="z-40 shrink-0 bg-background/85 backdrop-blur-sm">
         <div className="mx-auto w-full max-w-[1400px] px-4 py-4 sm:px-7 lg:px-10">
           <div className="flex flex-col gap-1">
             <h1 className="truncate whitespace-nowrap font-bold text-2xl">
@@ -301,13 +300,14 @@ export default async function TrajectoryRoutePage({
           </div>
         </div>
       </div>
-      <TrajectoryPage
-        trajectoryUrl={trajectoryUrl}
-        fallbackUrl={fallbackUrl ?? ''}
-        stderrText={stderrText}
-        verifierText={verifierText}
-        topOffsetClassName={contentTopOffsetClassName}
-      />
+      <div className="min-h-0 flex-1">
+        <TrajectoryPage
+          trajectoryUrl={trajectoryUrl}
+          fallbackUrl={fallbackUrl ?? ''}
+          stderrText={stderrText}
+          verifierText={verifierText}
+        />
+      </div>
     </div>
   );
 }

@@ -349,7 +349,7 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
   };
 
   const selectedTaskInstructionUrl = selectedTask
-    ? `${zealtConfig.github_repo}/tree/main/tasks/${selectedTask}/instruction.md`
+    ? `${zealtConfig.github_repo}/tree/main/tasks/${selectedTask}`
     : "";
 
   const selectedTaskInstruction = selectedTask
@@ -378,7 +378,7 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
         <Button variant="outline" asChild className="h-8 w-full text-xs sm:h-9 sm:w-auto sm:text-sm">
           <a href={selectedTaskInstructionUrl} target="_blank" rel="noopener noreferrer">
             <ExternalLink className="h-4 w-4" />
-            Open instruction.md
+            Open
           </a>
         </Button>
       </div>
