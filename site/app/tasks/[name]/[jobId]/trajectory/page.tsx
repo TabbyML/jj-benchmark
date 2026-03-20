@@ -2,7 +2,7 @@ import tasksData from "@/zealt/tasks.json";
 import { TrajectoryPage } from "./components/trajectory-page";
 import zealtConfig from "@/zealt/config.json";
 import { redirect } from "next/navigation";
-import { AlertTriangle, Check, HelpCircle, X as XIcon } from "lucide-react";
+import { AlertTriangle, ArrowUpRight, BookOpenText, Check, FlaskConical, HelpCircle, X as XIcon } from "lucide-react";
 
 
 type RouteParams = {
@@ -132,6 +132,14 @@ function getStatusMeta(status: "error" | "passed" | "failed" | "unknown") {
 
 function buildFallbackUrl(jobName: string, trialName: string) {
   return `${zealtConfig.github_repo}/blob/main/jobs/${jobName}/${trialName}/result.json`
+}
+
+function buildInstructionUrl(taskName: string) {
+  return `${zealtConfig.github_repo}/blob/main/tasks/${encodeURIComponent(taskName)}/instruction.md`;
+}
+
+function buildVerifierDirUrl(jobName: string, trialName: string) {
+  return `${zealtConfig.github_repo}/tree/main/jobs/${encodeURIComponent(jobName)}/${encodeURIComponent(trialName)}/verifier`;
 }
 
 function splitTrialName(trialName: string): { taskName: string; jobId: string } | null {
@@ -266,6 +274,10 @@ export default async function TrajectoryRoutePage({
   const trialStatus = getTrialStatus(trialEntry);
   const statusMeta = getStatusMeta(trialStatus);
   const StatusIcon = statusMeta.Icon;
+  const instructionUrl = buildInstructionUrl(resolvedParams.name);
+  const testsDirUrl = trialEntry
+    ? buildVerifierDirUrl(trialEntry.job_name, trialEntry.trial_name)
+    : `${zealtConfig.github_repo}/tree/main/tasks/${encodeURIComponent(resolvedParams.name)}/tests`;
   
   const trajectoryUrl = clipId && trialEntry
     ? buildClipUrl(trialEntry.job_name, trialEntry.trial_name, resolvedParams.name)
