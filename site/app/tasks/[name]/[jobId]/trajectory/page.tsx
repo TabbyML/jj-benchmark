@@ -275,18 +275,16 @@ export default async function TrajectoryRoutePage({
   const statusMeta = getStatusMeta(trialStatus);
   const StatusIcon = statusMeta.Icon;
   const instructionUrl = buildInstructionUrl(resolvedParams.name);
-  const testsDirUrl = trialEntry
-    ? buildVerifierDirUrl(trialEntry.job_name, trialEntry.trial_name)
-    : `${zealtConfig.github_repo}/tree/main/tasks/${encodeURIComponent(resolvedParams.name)}/tests`;
   
   const trajectoryUrl = clipId && trialEntry
     ? buildClipUrl(trialEntry.job_name, trialEntry.trial_name, resolvedParams.name)
     : null;
   
   // FIXME
-  if (!trajectoryUrl) {
+  if (!trajectoryUrl || !trialEntry) {
     redirect(fallbackUrl ?? '/tasks');
   }
+  const testsDirUrl = buildVerifierDirUrl(trialEntry.job_name, trialEntry.trial_name);
   const stderrText = trialEntry?.stderr_text ?? null;
   const verifierText = trialEntry?.verifier_text ?? null;
 
