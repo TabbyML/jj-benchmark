@@ -100,7 +100,7 @@ async function main() {
     });
   }
 
-  const outputPath = path.join(process.cwd(), 'tasks.json');
+  const outputPath = path.join(process.cwd(), '../site.data/tasks.json');
   
   await fs.writeFile(outputPath, JSON.stringify(tasks, null, 2));
   console.log(`Computed ${Object.keys(tasks).length} tasks into ${outputPath}`);

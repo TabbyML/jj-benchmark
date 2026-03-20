@@ -1,5 +1,5 @@
 import { Github, Terminal } from "lucide-react";
-import tasksData from "../../tasks.json";
+import tasksData from "@/data/tasks.json";
 import LeaderboardTable, { type LeaderboardEntry } from "./components/leaderboard-table";
 
 export default function Home() {

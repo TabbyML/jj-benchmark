@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import tasksDataRaw from "../../tasks.json";
+import tasksDataRaw from "@/data/tasks.json"
 import {
   HoverCard,
   HoverCardContent,
