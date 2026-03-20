@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type TrajectoryPageProps = {
   trajectoryUrl: string;
@@ -84,13 +84,8 @@ export function TrajectoryPage({
 
             <TabsContent value="trajectory" className="relative min-h-0 flex-1 overflow-hidden" forceMount>
               {iframeLoading && (
-                <div className="absolute inset-0 z-10 flex flex-col items-center justify-center space-y-6 bg-background/80 backdrop-blur-sm">
-                  <div className="relative flex items-center justify-center">
-                    <Loader2 className="relative z-10 h-12 w-12 animate-spin text-primary" />
-                  </div>
-                  <div className="space-y-2 text-center">
-                    <h2 className="text-lg font-semibold tracking-tight text-foreground">Loading</h2>
-                  </div>
+                <div className="absolute inset-0 z-10 overflow-auto bg-background/80 backdrop-blur-sm">
+                  <TrajectorySkeleton />
                 </div>
               )}
               <iframe
@@ -119,6 +114,32 @@ export function TrajectoryPage({
               </ScrollArea>
             </TabsContent>
           </Tabs>
+      </div>
+    </div>
+  );
+}
+
+function TrajectorySkeleton() {
+  return (
+    <div className="animate-pulse space-y-2 p-4">
+      <div className="flex items-center space-x-3">
+        <Skeleton className="size-6 rounded-full" />
+        <Skeleton className="h-4 w-16" />
+      </div>
+      <div className="space-y-2 pt-1">
+        <Skeleton className="h-4 w-[80%]" />
+        <Skeleton className="h-4 w-[50%]" />
+      </div>
+      <div className="mt-8 flex items-center space-x-3">
+        <div className="flex items-center space-x-3">
+          <Skeleton className="size-6 rounded-full" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+      </div>
+      <div className="space-y-2 pt-1">
+        <Skeleton className="h-4 w-[80%]" />
+        <Skeleton className="h-4 w-[80%]" />
+        <Skeleton className="h-4 w-[50%]" />
       </div>
     </div>
   );

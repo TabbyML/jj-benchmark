@@ -280,10 +280,11 @@ export default async function TrajectoryRoutePage({
     ? buildClipUrl(trialEntry.job_name, trialEntry.trial_name, resolvedParams.name)
     : null;
   
-  // FIXME
+  // Redirect
   if (!trajectoryUrl || !trialEntry) {
     redirect(fallbackUrl ?? '/tasks');
   }
+
   const testsDirUrl = buildVerifierDirUrl(trialEntry.job_name, trialEntry.trial_name);
   const stderrText = trialEntry?.stderr_text ?? null;
   const verifierText = trialEntry?.verifier_text ?? null;
