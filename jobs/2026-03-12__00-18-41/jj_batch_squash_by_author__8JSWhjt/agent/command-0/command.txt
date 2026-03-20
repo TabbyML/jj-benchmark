@@ -1,4 +1,0 @@
-pochi --model anthropic/claude-4-6-sonnet --stream-json > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
-The repository at `/home/user/repo` contains 12 commits interleaved between a human author and `bot@company.com`. Consecutive bot commits should be squashed into single commits with descriptions in the format `chore: [bot] squashed N automated commits`. Human commits must remain untouched. After rewriting, update the `main` bookmark and write a squash log to `/home/user/squash_log.txt` showing which original commits were merged into each squashed commit.
-
-EOF

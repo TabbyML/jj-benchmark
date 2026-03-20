@@ -42,16 +42,17 @@ jobs:
         id: setup_pages
         uses: actions/configure-pages@v5
 
-      - name: Set preview base uri
-        if: github.event_name == 'pull_request'
+      - name: Set base uri
         run: |
-          echo "NEXT_PUBLIC_BASE_PATH=${{ steps.setup_pages.outputs.base_path }}/pr-preview/pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "NEXT_PUBLIC_BASE_PATH=${{ steps.setup_pages.outputs.base_path }}/pr-preview/pr-${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
+          else
+            echo "NEXT_PUBLIC_BASE_PATH=${{ steps.setup_pages.outputs.base_path }}" >> "$GITHUB_ENV"
+          fi
 
       - name: Build with Next.js
         run: bun run build
         working-directory: site
-        env:
-          NEXT_PUBLIC_BASE_PATH: ${{ steps.setup_pages.outputs.base_path }}
 
       - name: Deploy preview
         if: github.event_name == 'pull_request'

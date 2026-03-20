@@ -1,9 +1,0 @@
-pochi --model google/gemini-3-flash --stream-json > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
-'You are an OS engineer comparing `jj` to Git behavior. You have a repository at `/home/user/repo` that was created with `jj git init`. There are three commits above the root in a linear history. The commits are described as '"'"'first'"'"', '"'"'second'"'"', and '"'"'third'"'"'. There is a bookmark (branch) named `feature` currently pointing to the '"'"'first'"'"' commit. In Git, you would use `git branch -f feature <rev>` to move it. In `jj`, you need to move the `feature` bookmark to point to the '"'"'third'"'"' commit, and then create a new bookmark named `bugfix` pointing to the '"'"'second'"'"' commit. Finally, you must make the '"'"'second'"'"' commit the current working copy commit.
-
-Your task:
-1. Move the `feature` bookmark to the '"'"'third'"'"' commit.
-2. Create a new bookmark named `bugfix` at the '"'"'second'"'"' commit.
-3. Checkout (edit) the '"'"'second'"'"' commit so it becomes the current working copy.
-'
-EOF

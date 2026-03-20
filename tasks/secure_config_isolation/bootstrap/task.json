@@ -1,0 +1,5 @@
+{
+  "task_name": "secure_config_isolation",
+  "task_description": "You are a repo maintainer enforcing secure configuration for your team's jj repository.\nYou need to isolate the repository's configuration so that it overrides the global configuration with specific security settings.\n\nSpecifically, you must:\n1. Initialize a new jj repository in `/home/user/secure_repo`.\n2. Configure the repository-level config (`.jj/repo/config.toml`) to enforce signing by setting `signing.behavior = \"own\"` and `signing.backend = \"gpg\"`.\n3. Set the repository-level user name to \"Security Admin\" and email to \"admin@security.local\".\n4. Create a new commit with an empty file named `audit.log` and verify that `jj log` shows the commit successfully.\n\nPlease complete these steps using only `jj` commands where possible.\n",
+  "truth": "\nThe task is successful if:\n1. The repository `/home/user/secure_repo` exists.\n2. The file `/home/user/secure_repo/.jj/repo/config.toml` contains `behavior = \"own\"` and `backend = \"gpg\"` under `[signing]`, as well as the user name and email under `[user]`.\n3. The `audit.log` file exists in the working copy.\n"
+}

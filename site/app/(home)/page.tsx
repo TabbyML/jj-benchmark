@@ -1,6 +1,18 @@
 import { Github, Terminal } from "lucide-react";
-import tasksData from "@/data/tasks.json";
+import tasksData from "@/zealt/tasks.json";
+import zealtConfig from "@/zealt/config.json";
 import LeaderboardTable, { type LeaderboardEntry } from "./components/leaderboard-table";
+
+type TaskTrial = {
+  agent: string;
+  model: string;
+  passed: boolean;
+  latency_sec: number | null;
+};
+
+type TaskValue = {
+  trials?: TaskTrial[];
+};
 
 export default function Home() {
   // Process tasks.json to compute leaderboard stats directly on the server
@@ -13,8 +25,16 @@ export default function Home() {
     agent: string;
   }>();
 
-  Object.values(tasksData).forEach((trials: any[]) => {
-    trials.forEach(trial => {
+  Object.values(tasksData as Record<string, unknown>).forEach((taskValue) => {
+    let trials: TaskTrial[] = [];
+    if (Array.isArray(taskValue)) {
+      trials = taskValue as TaskTrial[];
+    } else if (typeof taskValue === "object" && taskValue !== null) {
+      const task = taskValue as TaskValue;
+      trials = Array.isArray(task.trials) ? task.trials : [];
+    }
+
+    trials.forEach((trial) => {
       // Simplify model name
       const modelName = trial.model.split('/').pop() || trial.model;
       const agentName = trial.agent.charAt(0).toUpperCase() + trial.agent.slice(1);
@@ -32,7 +52,10 @@ export default function Home() {
         });
       }
       
-      const stats = statsMap.get(key)!;
+      const stats = statsMap.get(key);
+      if (!stats) {
+        return;
+      }
       stats.total += 1;
       if (trial.passed) {
         stats.passed += 1;
@@ -79,16 +102,15 @@ export default function Home() {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/50 pb-2">
-            JJ Benchmark
+            {zealtConfig.title}
           </h1>
 
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Performance results of AI coding models on Jujutsu tasks,
-            measuring success rate and execution time with high precision.
+            {zealtConfig.description}
           </p>
 
           <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground pt-4">
-            <a href="https://github.com/TabbyML/jj-benchmark" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
+            <a href={zealtConfig.github_repo} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
               <Github className="w-4 h-4" />
               <span>View on GitHub</span>
             </a>

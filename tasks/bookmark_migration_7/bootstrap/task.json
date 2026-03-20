@@ -1,0 +1,5 @@
+{
+  "task_name": "bookmark_migration_7",
+  "task_description": "You are a developer migrating from Git. You have a repository at `/home/user/repo` with a `main` bookmark and a `feature-x` bookmark that is currently pointing to an older commit.\n\nYour task is to:\n1. Move the `feature-x` bookmark to point to the current working copy commit.\n2. Create a new bookmark named `bugfix-y` pointing to the commit immediately preceding the current working copy.\n3. Verify the bookmarks and save the output of `jj log -r 'bugfix-y..feature-x' -T 'bookmarks ++ \"\\n\"'` to `/home/user/bookmark_verification.log`.",
+  "truth": "The final state must have:\n1. The `feature-x` bookmark pointing to the working copy commit.\n2. The `bugfix-y` bookmark pointing to the parent of the working copy commit.\n3. A file `/home/user/bookmark_verification.log` containing `feature-x`.\n\nSetup required before task:\n- Initialize a jj repository at `/home/user/repo`.\n- Create a `main` bookmark.\n- Create a `feature-x` bookmark on an older commit.\n- Add some commits so the working copy is ahead of `main`."
+}

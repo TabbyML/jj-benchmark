@@ -1,0 +1,5 @@
+{
+  "task_name": "git_remote_migration",
+  "task_description": "You are a developer migrating a project from Git to Jujutsu (jj).\nThe repository is located at `/home/user/project` and is currently a standard Git repository.\nThere is also a bare Git repository at `/home/user/upstream.git` that serves as the upstream remote.\n\nYou need to:\n1. Initialize jj in the existing Git repository to enable co-location.\n2. Add a new Git remote named `upstream` pointing to `/home/user/upstream.git`.\n3. Fetch from the `upstream` remote.\n4. Rebase your current working copy onto the `main@upstream` branch.",
+  "truth": "The repository must be a co-located jj/git repository.\nThere must be a git remote named `upstream` pointing to `/home/user/upstream.git`.\nThe current working copy must be a direct child of the commit pointed to by `main@upstream`.\n\nSetup required before task:\n- Create a bare Git repository at `/home/user/upstream.git` with a commit on the `main` branch.\n- Create a standard Git repository at `/home/user/project` with some commits on the `main` branch."
+}
