@@ -2,7 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from 'next';
 import { Inter } from "next/font/google";
-import zealtConfig from "../../zealt.json";
+import zealtConfig from "@/zealt/config.json";
 
 const inter = Inter({ subsets: ["latin"] });
 
