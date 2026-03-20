@@ -290,9 +290,20 @@ export default async function TrajectoryRoutePage({
       <div className="z-40 shrink-0 bg-background/85 backdrop-blur-sm">
         <div className="mx-auto w-full max-w-[1400px] px-4 py-4 sm:px-7 lg:px-10">
           <div className="flex flex-col gap-1">
-            <h1 className="truncate whitespace-nowrap font-bold text-2xl">
-              {headerTitle}
-            </h1>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+              <h1 className="min-w-0 truncate whitespace-nowrap font-bold text-2xl sm:flex-1 sm:pr-4">
+                {headerTitle}
+              </h1>
+              <a
+                href={taskDirUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex w-fit shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md border border-border/70 bg-background/40 px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:bg-secondary/45 hover:text-foreground sm:text-sm"
+              >
+                <ExternalLink className="h-4 w-4" />
+                <span>Task</span>
+              </a>
+            </div>
             <div className="mt-2 text-xs sm:text-sm">
               <div className="flex flex-col gap-1 sm:flex-row sm:gap-4">
                 <span className={`inline-flex shrink-0 items-center gap-0 font-medium`}>
