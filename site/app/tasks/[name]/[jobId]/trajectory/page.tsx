@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import tasksData from "@/zealt/tasks.json";
 import { TrajectoryPage } from "./components/trajectory-page";
 import zealtConfig from "@/zealt/config.json";
@@ -148,7 +147,7 @@ function splitTrialName(trialName: string): { taskName: string; jobId: string } 
 }
 
 function getServerBaseUrl() {
-  return process.env.CLIPS_BASE_URL || 'https://cc.getpochi.com';
+  return process.env.CLIPS_BASE_URL || 'https://fletch.getpochi.com';
 }
 
 function getGithubOwnerRepo(): string {
@@ -279,15 +278,11 @@ export default async function TrajectoryRoutePage({
   }
   const stderrText = trialEntry?.stderr_text ?? null;
   const verifierText = trialEntry?.verifier_text ?? null;
-  const pageThemeVars = {
-    "--background": "oklch(0.268 0.004 106.643)",
-    "--border": "oklch(0.362 0.01 106.893)",
-  } as CSSProperties;
 
   return (
-    <div style={pageThemeVars} className="w-full h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-hidden">
+    <div className="w-full h-screen bg-background text-foreground font-sans selection:bg-primary/20 overflow-hidden">
       <div className="fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 dark:opacity-40"></div>
-      <div className="fixed inset-x-0 top-0 z-40 border-b border-border/50 bg-background/85 backdrop-blur-sm">
+      <div className="fixed inset-x-0 top-0 z-40 bg-background/85 backdrop-blur-sm">
         <div className="mx-auto w-full max-w-[1400px] px-4 py-4 sm:px-7 lg:px-10">
           <div className="flex flex-col gap-1">
             <h1 className="truncate whitespace-nowrap font-bold text-2xl">

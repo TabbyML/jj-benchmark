@@ -60,25 +60,25 @@ export function TrajectoryPage({
           <Tabs
             value={activeTab}
             onValueChange={setActiveTab}
-            className="h-full gap-0 overflow-hidden rounded-xl border border-border/60 bg-background/70 backdrop-blur-sm shadow-sm"
+            className="h-full gap-0 overflow-hidden rounded-xl border border-border bg-background/70 backdrop-blur-sm shadow-sm"
           >
-            <div className="border-b border-border/50 bg-background/50 px-3 py-3 sm:px-4">
-              <TabsList className="grid h-11 w-[300px] max-w-full grid-cols-3 items-stretch gap-1 border border-border/40 bg-background/60 p-1">
+            <div className="border-b border-border bg-background/40 px-3 py-3 sm:px-4">
+              <TabsList className="grid h-11 w-[300px] max-w-full grid-cols-3 items-stretch gap-1 rounded-xl bg-muted/30 p-1">
                 <TabsTrigger
                   value="trajectory"
-                  className="h-full w-full cursor-pointer border border-transparent py-0 leading-none text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground data-[state=active]:border-primary/35 data-[state=active]:bg-primary/18 data-[state=active]:text-foreground data-[state=active]:shadow-none"
+                  className="h-full w-full cursor-pointer rounded-lg border-0 py-0 leading-none text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground data-[state=active]:bg-primary/18 data-[state=active]:text-foreground data-[state=active]:shadow-none"
                 >
                   Trajectory
                 </TabsTrigger>
                 <TabsTrigger
                   value="log"
-                  className="h-full w-full cursor-pointer border border-transparent py-0 leading-none text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground data-[state=active]:border-primary/35 data-[state=active]:bg-primary/18 data-[state=active]:text-foreground data-[state=active]:shadow-none"
+                  className="h-full w-full cursor-pointer rounded-lg border-0 py-0 leading-none text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground data-[state=active]:bg-primary/18 data-[state=active]:text-foreground data-[state=active]:shadow-none"
                 >
                   Log
                 </TabsTrigger>
                 <TabsTrigger
                   value="test"
-                  className="h-full w-full cursor-pointer border border-transparent py-0 leading-none text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground data-[state=active]:border-primary/35 data-[state=active]:bg-primary/18 data-[state=active]:text-foreground data-[state=active]:shadow-none"
+                  className="h-full w-full cursor-pointer rounded-lg border-0 py-0 leading-none text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground data-[state=active]:bg-primary/18 data-[state=active]:text-foreground data-[state=active]:shadow-none"
                 >
                   Test
                 </TabsTrigger>
