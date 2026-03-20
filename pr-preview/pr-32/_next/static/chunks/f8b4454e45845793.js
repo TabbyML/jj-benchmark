@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,49944,e=>{"use strict";var t=e.i(87420),o=e.i(65582);function s({className:e,...s}){return(0,t.jsx)("div",{"data-slot":"skeleton",className:(0,o.cn)("animate-pulse rounded-md bg-muted",e),...s})}e.s(["Skeleton",()=>s])}]);
