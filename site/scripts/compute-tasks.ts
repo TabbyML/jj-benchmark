@@ -4,7 +4,6 @@ import path from 'path';
 type TaskTrial = {
   job_name: string;
   trial_name: string;
-  trajectory_id?: string;
   agent: string;
   model: string;
   provider: string;
@@ -53,17 +52,6 @@ type ParsedResult = {
     n_cache_tokens?: number;
   };
 };
-
-async function readTrajectoryId(jobsDir: string, jobName: string, trialName: string): Promise<string | null> {
-  const trajectoryIdPath = path.join(jobsDir, jobName, trialName, 'agent', 'pochi', 'trajectory-id.txt');
-  try {
-    const content = await fs.readFile(trajectoryIdPath, 'utf-8');
-    const id = content.trim();
-    return id.length > 0 ? id : null;
-  } catch (_e) {
-    return null;
-  }
-}
 
 async function getResultFiles(dir: string): Promise<string[]> {
   const files: string[] = [];
@@ -177,7 +165,6 @@ async function main() {
     // Extract job directory name (e.g., 2026-03-08__16-54-33)
     const jobName = file.split('/')[0] || file.split('\\')[0];
     const trialName = data.trial_name || 'unknown-trial';
-    const trajectoryId = trialName ? await readTrajectoryId(jobsDir, jobName, trialName) : null;
 
     const stderrPath = path.join(jobsDir, jobName, trialName, 'agent', agentName, 'stderr.txt');
     const fallbackStderrPath = path.join(jobsDir, jobName, trialName, 'agent', 'pochi', 'stderr.txt');
@@ -192,7 +179,6 @@ async function main() {
     tasks[taskName].trials.push({
       job_name: jobName,
       trial_name: trialName,
-      ...(trajectoryId ? { trajectory_id: trajectoryId } : {}),
       agent: agentName,
       model: model,
       provider: provider,

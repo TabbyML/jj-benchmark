@@ -45,25 +45,6 @@ function formatStartTime(jobName: string): string {
   return localDate.toLocaleString();
 }
 
-function formatStartTimeShort(jobName: string): string {
-  const match = jobName.match(/^(\d{4})-(\d{2})-(\d{2})__(\d{2})-(\d{2})-(\d{2})$/);
-  if (!match) {
-    return "Unknown";
-  }
-
-  const [, year, month, day, hour, minute, second] = match;
-  const localDate = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute), Number(second));
-  if (Number.isNaN(localDate.getTime())) {
-    return "Unknown";
-  }
-
-  const monthLabel = String(localDate.getMonth() + 1);
-  const dayLabel = String(localDate.getDate());
-  const hourLabel = String(localDate.getHours()).padStart(2, "0");
-  const minuteLabel = String(localDate.getMinutes()).padStart(2, "0");
-  return `${monthLabel}/${dayLabel} ${hourLabel}:${minuteLabel}`;
-}
-
 function formatDuration(durationSec: number | null | undefined): string {
   if (durationSec == null || Number.isNaN(durationSec)) {
     return "Unknown";
@@ -260,18 +241,15 @@ export default async function TrajectoryRoutePage({
   const fallbackUrl = trialEntry
     ? buildFallbackUrl(trialEntry.job_name, trialEntry.trial_name)
     : null;
-  const clipId = trialEntry?.trajectory_id?.trim() || null;
   const headerTitle = `${resolvedParams.name}__${resolvedParams.jobId}`;
   const startedAt = trialEntry ? formatStartTime(trialEntry.job_name) : "Unknown";
-  const startedAtShort = trialEntry ? formatStartTimeShort(trialEntry.job_name) : "Unknown";
   const executionDurationLabel = formatDuration(trialEntry?.latency_breakdown?.agent_exec ?? null);
-  const verifyDurationLabel = formatDuration(trialEntry?.latency_breakdown?.verifier ?? null);
   const trialStatus = getTrialStatus(trialEntry);
   const statusMeta = getStatusMeta(trialStatus);
   const StatusIcon = statusMeta.Icon;
   const taskDirUrl = buildTaskDirUrl(resolvedParams.name);
   
-  const trajectoryUrl = clipId && trialEntry
+  const trajectoryUrl = trialEntry
     ? buildClipUrl(trialEntry.job_name, trialEntry.trial_name, resolvedParams.name)
     : null;
   
