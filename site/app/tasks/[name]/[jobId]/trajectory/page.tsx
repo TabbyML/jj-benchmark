@@ -227,6 +227,11 @@ export function generateStaticParams(): RouteParams[] {
     }
   }
 
+  // If no params found, add a dummy one to satisfy next.js output: export requirement if it exists
+  if (params.length === 0) {
+    return [{ name: "dummy", jobId: "dummy" }];
+  }
+
   return params;
 }
 
