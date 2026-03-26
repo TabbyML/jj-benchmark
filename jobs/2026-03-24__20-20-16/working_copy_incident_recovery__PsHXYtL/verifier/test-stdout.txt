@@ -1,0 +1,85 @@
+Hit:1 https://deb.nodesource.com/node_20.x nodistro InRelease
+Hit:2 http://ports.ubuntu.com/ubuntu-ports noble InRelease
+Hit:3 http://ports.ubuntu.com/ubuntu-ports noble-updates InRelease
+Hit:4 http://ports.ubuntu.com/ubuntu-ports noble-backports InRelease
+Hit:5 http://ports.ubuntu.com/ubuntu-ports noble-security InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (8.5.0-2ubuntu10.8).
+0 upgraded, 0 newly installed, 0 to remove and 14 not upgraded.
+downloading uv 0.9.7 aarch64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 6 packages in 5ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 5 items
+
+tests/test_final_state.py ..FFF                                          [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_commit_description ____________________________
+
+    def test_commit_description():
+        result = run_jj(["log", "--no-graph", "-r", "@", "-T", 'description'])
+        assert result.returncode == 0
+>       assert "chore: update settings for incident recovery" in result.stdout, "Expected commit description not found"
+E       AssertionError: Expected commit description not found
+E       assert 'chore: update settings for incident recovery' in ''
+E        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', '@', '-T', 'description'], returncode=0, stdout='', stderr='').stdout
+
+tests/test_final_state.py:29: AssertionError
+_________________________ test_settings_yaml_in_commit _________________________
+
+    def test_settings_yaml_in_commit():
+        # The commit should have modified config/settings.yaml
+        result = run_jj(["show", "-r", "@", "--stat"])
+        assert result.returncode == 0
+>       assert "config/settings.yaml" in result.stdout, "config/settings.yaml was not committed"
+E       AssertionError: config/settings.yaml was not committed
+E       assert 'config/settings.yaml' in 'Commit ID: 814686ac762a4d806ff7b8391706885a74c6ab0e\nChange ID: pyrskxrpzmzkuxynqzonzmrtytoppzwr\nAuthor   : Test Use...t@example.com> (2026-03-25 03:39:21)\n\n    (no description set)\n\n0 files changed, 0 insertions(+), 0 deletions(-)\n'
+E        +  where 'Commit ID: 814686ac762a4d806ff7b8391706885a74c6ab0e\nChange ID: pyrskxrpzmzkuxynqzonzmrtytoppzwr\nAuthor   : Test Use...t@example.com> (2026-03-25 03:39:21)\n\n    (no description set)\n\n0 files changed, 0 insertions(+), 0 deletions(-)\n' = CompletedProcess(args=['jj', 'show', '-r', '@', '--stat'], returncode=0, stdout='Commit ID: 814686ac762a4d806ff7b83917...m> (2026-03-25 03:39:21)\n\n    (no description set)\n\n0 files changed, 0 insertions(+), 0 deletions(-)\n', stderr='').stdout
+
+tests/test_final_state.py:35: AssertionError
+__________________________ test_recovery_status_file ___________________________
+
+    def test_recovery_status_file():
+        assert os.path.exists(STATUS_FILE), f"{STATUS_FILE} does not exist"
+        with open(STATUS_FILE, "r") as f:
+            commit_id = f.read().strip()
+    
+        # Check that this commit ID matches the current commit
+        result = run_jj(["log", "--no-graph", "-r", "@", "-T", 'commit_id'])
+        assert result.returncode == 0
+        expected_id = result.stdout.strip()
+    
+        # We can check if the commit ID starts with the one in the file, or matches exactly
+>       assert commit_id and expected_id.startswith(commit_id), f"Commit ID in {STATUS_FILE} does not match current commit ID"
+E       AssertionError: Commit ID in /home/user/recovery_status.txt does not match current commit ID
+E       assert ('4dfe9ee368130af5c095662bd49fdc7065299a1e' and False)
+E        +  where False = <built-in method startswith of str object at 0xe52cd51caa30>('4dfe9ee368130af5c095662bd49fdc7065299a1e')
+E        +    where <built-in method startswith of str object at 0xe52cd51caa30> = '814686ac762a4d806ff7b8391706885a74c6ab0e'.startswith
+
+tests/test_final_state.py:48: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_cache_bin_restored
+PASSED tests/test_final_state.py::test_deploy_sh_unmodified
+FAILED tests/test_final_state.py::test_commit_description - AssertionError: E...
+FAILED tests/test_final_state.py::test_settings_yaml_in_commit - AssertionErr...
+FAILED tests/test_final_state.py::test_recovery_status_file - AssertionError:...
+========================= 3 failed, 2 passed in 0.67s ==========================

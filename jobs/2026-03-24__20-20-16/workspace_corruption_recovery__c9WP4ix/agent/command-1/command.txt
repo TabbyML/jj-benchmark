@@ -1,0 +1,6 @@
+pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --stream-json /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+The repository at `/home/user/repo` has two workspaces, but the secondary workspace at `/home/user/secondary-ws` is stale.
+
+Fix the stale workspace, verify both workspaces are healthy, and write a recovery status report to `/home/user/recovery_status.txt`.
+
+EOF

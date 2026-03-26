@@ -1,0 +1,110 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 9,
+            "passed": 6,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774409796.1260517,
+            "stop": 1774409797.1419892
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_log_file_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0005807009874843061,
+                "start": 1774409796.131135,
+                "stop": 1774409796.1363454,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_file_exists():\n>       assert os.path.isfile(LOG_FILE), f\"{LOG_FILE} does not exist\"\nE       AssertionError: /home/user/divergence_log.txt does not exist\nE       assert False\nE        +  where False = <function isfile at 0xf3f7ee0d0220>('/home/user/divergence_log.txt')\nE        +    where <function isfile at 0xf3f7ee0d0220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_outputs.py:17: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_log_file_has_required_keys",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00025828799698501825,
+                "start": 1774409796.1364257,
+                "stop": 1774409796.137386,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_file_has_required_keys():\n>       content = open(LOG_FILE).read()\n                  ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_log.txt'\n\n/tests/test_outputs.py:21: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_log_change_ids_nonempty",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00019562302622944117,
+                "start": 1774409796.137449,
+                "stop": 1774409796.138516,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_log_change_ids_nonempty():\n>       content = open(LOG_FILE).read()\n                  ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_log.txt'\n\n/tests/test_outputs.py:30: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_outputs.py::test_patch_bookmark_exists",
+                "status": "passed",
+                "duration": 0.1793581270321738,
+                "start": 1774409796.1385725,
+                "stop": 1774409796.3181634,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_patch_has_no_conflicts",
+                "status": "passed",
+                "duration": 0.16328144603176042,
+                "start": 1774409796.318285,
+                "stop": 1774409796.4817882,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_patch_py_has_apply_patch_v1",
+                "status": "passed",
+                "duration": 0.16286307704285719,
+                "start": 1774409796.4818897,
+                "stop": 1774409796.6450193,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_patch_py_has_apply_patch_v2",
+                "status": "passed",
+                "duration": 0.16349427701788954,
+                "start": 1774409796.645122,
+                "stop": 1774409796.8088787,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_patch_py_no_conflict_markers",
+                "status": "passed",
+                "duration": 0.1693331650167238,
+                "start": 1774409796.808987,
+                "stop": 1774409796.9785948,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_canonical_commit_description_is_fix_patch",
+                "status": "passed",
+                "duration": 0.16289899297407828,
+                "start": 1774409796.9786992,
+                "stop": 1774409797.1418333,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}

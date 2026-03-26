@@ -1,0 +1,13 @@
+pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --stream-json /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+You are a developer migrating a project from Git to Jujutsu (jj). You have an existing Git repository located at `/home/user/my-project`. It contains a branch called `feature-x` that you've been working on.
+
+You've just initialized jj in this repository using `jj git init --colocate`.
+
+Your task is to:
+1. Create a new jj bookmark called `jj-feature-y` pointing to the same commit as `feature-x`.
+2. Make a new commit on `jj-feature-y` by creating a file `new_feature.txt` with the content `Hello jj` and recording the change with the description `Add new feature`.
+3. Export the jj bookmarks to the underlying Git repository so that Git can see the new branch `jj-feature-y`.
+4. Verify the export by running `git branch` and redirecting the output to a file named `git_branches.log` in the repository root.
+
+Ensure you are working in the `/home/user/my-project` directory.
+EOF

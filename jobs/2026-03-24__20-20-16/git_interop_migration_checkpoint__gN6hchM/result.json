@@ -1,0 +1,87 @@
+{
+    "id": "8a252397-ba7f-4048-9c76-abceb201da2d",
+    "task_name": "git_interop_migration_checkpoint",
+    "trial_name": "git_interop_migration_checkpoint__gN6hchM",
+    "trial_uri": "file:///Users/warrenlow/Documents/projects/pochi-harbor/jobs/2026-03-24__20-20-16/git_interop_migration_checkpoint__gN6hchM",
+    "task_id": {
+        "path": "tasks/git_interop_migration_checkpoint"
+    },
+    "source": "tasks",
+    "task_checksum": "a75666c685e2870d1257eba31e73ba4365780d7e6309e4734f140fc921ced1c5",
+    "config": {
+        "task": {
+            "path": "tasks/git_interop_migration_checkpoint",
+            "git_url": null,
+            "git_commit_id": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "tasks"
+        },
+        "trial_name": "git_interop_migration_checkpoint__gN6hchM",
+        "trials_dir": "jobs/2026-03-24__20-20-16",
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": null,
+            "import_path": "agents.pochi:Pochi",
+            "model_name": "google/gemini-3.1-pro",
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "kwargs": {},
+            "env": {
+                "POCHI_CUSTOM_INSTRUCTIONS": "You are a JJ agent, please use /onevcat-jj skill in order to solve JJ tasks"
+            }
+        },
+        "environment": {
+            "type": "docker",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "suppress_override_warnings": false,
+            "kwargs": {}
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "job_id": "1e4f9ed1-8662-4773-aa0d-dd87e05b9ef0"
+    },
+    "agent_info": {
+        "name": "pochi",
+        "version": "v0.6.2",
+        "model_info": {
+            "name": "gemini-3.1-pro",
+            "provider": "google"
+        }
+    },
+    "agent_result": null,
+    "verifier_result": null,
+    "exception_info": {
+        "exception_type": "RuntimeError",
+        "exception_message": "Agent setup failed with exit code 1. See logs in jobs/2026-03-24__20-20-16/git_interop_migration_checkpoint__gN6hchM/agent/setup",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/trial/trial.py\", line 480, in run\n    await self._setup_agent()\n  File \"/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/trial/trial.py\", line 240, in _setup_agent\n    await asyncio.wait_for(\n  File \"/Users/warrenlow/.local/share/uv/python/cpython-3.12.10-macos-aarch64-none/lib/python3.12/asyncio/tasks.py\", line 520, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/agents/installed/base.py\", line 124, in setup\n    raise RuntimeError(\nRuntimeError: Agent setup failed with exit code 1. See logs in jobs/2026-03-24__20-20-16/git_interop_migration_checkpoint__gN6hchM/agent/setup\n",
+        "occurred_at": "2026-03-24T20:52:54.971905"
+    },
+    "started_at": "2026-03-25T03:52:22.586905Z",
+    "finished_at": "2026-03-25T03:53:05.706458Z",
+    "environment_setup": {
+        "started_at": "2026-03-25T03:52:22.592133Z",
+        "finished_at": "2026-03-25T03:52:23.858142Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-03-25T03:52:23.858213Z",
+        "finished_at": "2026-03-25T03:52:54.969595Z"
+    },
+    "agent_execution": null,
+    "verifier": null
+}

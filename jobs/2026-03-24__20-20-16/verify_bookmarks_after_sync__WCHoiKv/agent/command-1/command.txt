@@ -1,0 +1,12 @@
+pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --stream-json /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+You are a developer migrating from Git who just pulled the latest changes from a remote repository. The local repository is located at `/home/user/repo` and is cloned from a remote at `/home/user/remote_repo`.
+
+After running `jj git fetch`, you notice that the bookmark `feature-x` has diverged because both you and a teammate pushed conflicting commits to the same bookmark. You need to verify the local and remote bookmarks after the sync, and resolve the divergence by forcing the local `feature-x` bookmark to point to the remote's version (`feature-x@origin`), discarding your local changes to that bookmark.
+
+Your tasks are:
+1. Change directory to `/home/user/repo`.
+2. Fetch the latest changes from the remote `origin`.
+3. Resolve the diverged bookmark `feature-x` so that it points exactly to the commit of `feature-x@origin`.
+4. Ensure that the bookmark `feature-x` no longer has a conflict/divergence.
+
+EOF

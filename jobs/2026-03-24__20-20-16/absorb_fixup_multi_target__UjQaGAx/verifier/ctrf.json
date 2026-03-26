@@ -1,0 +1,86 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 6,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774410145.1437986,
+            "stop": 1774410146.2723017
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_commit_1_has_strip_parser",
+                "status": "passed",
+                "duration": 0.19042002901551314,
+                "start": 1774410145.1490836,
+                "stop": 1774410145.339789,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_commit_3_has_improved_formatter",
+                "status": "passed",
+                "duration": 0.16549133500666358,
+                "start": 1774410145.3399045,
+                "stop": 1774410145.5056403,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_commit_5_has_none_check_runner",
+                "status": "passed",
+                "duration": 0.18402048700954765,
+                "start": 1774410145.5057456,
+                "stop": 1774410145.6900537,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_working_copy_is_clean",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.219202619016869,
+                "start": 1774410145.6901758,
+                "stop": 1774410145.9191086,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_working_copy_is_clean():\n        result = jj(\"diff\", \"-r\", \"@\")\n        assert result.returncode == 0\n>       assert result.stdout.strip() == \"\", \\\n            \"Working copy should be empty after absorb\"\nE       AssertionError: Working copy should be empty after absorb\nE       assert 'Added regula...n       10: }' == ''\nE         \nE         + Added regular file .agents/skills/onevcat-jj/SKILL.md:\nE         +         1: ---\nE         +         2: name: onevcat-jj\nE         +         3: description: \"Use jj (Jujutsu) for local version control instead of git. Activate when: the repo has a .jj/ directory, the user or project config mentions jj, the user says 'use jj', or any version control operation is needed in a jj-managed repo. Also use this skill when the user asks to commit, branch, stash, rebase, or perform any git-like operation in a repo that uses jj. If unsure whether the repo uses jj, check for a .jj/ directory.\"\nE         +         4: ---\nE         +         5: ...\nE         \nE         ...Full output truncated (255 lines hidden), use '-vv' to show\n\n/tests/test_outputs.py:45: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_commit_2_unchanged",
+                "status": "passed",
+                "duration": 0.18373065104242414,
+                "start": 1774410145.9192038,
+                "stop": 1774410146.103175,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_commit_4_unchanged",
+                "status": "passed",
+                "duration": 0.1678674389841035,
+                "start": 1774410146.1032927,
+                "stop": 1774410146.2714381,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_absorb_report_exists",
+                "status": "passed",
+                "duration": 0.0003922019968740642,
+                "start": 1774410146.2715554,
+                "stop": 1774410146.2720964,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}
