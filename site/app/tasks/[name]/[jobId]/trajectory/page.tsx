@@ -108,12 +108,7 @@ function getStatusMeta(status: "error" | "passed" | "failed" | "unknown") {
 }
 
 function getGithubBranchName(): string {
-  const branch = process.env.GITHUB_BRANCH;
-  if (!branch || branch.trim().length === 0) {
-    return "main";
-  }
-
-  return branch;
+  return process.env.GITHUB_HEAD_REF || "main";
 }
 
 function buildFallbackUrl(jobName: string, trialName: string) {
