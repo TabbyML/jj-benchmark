@@ -50,6 +50,9 @@ jobs:
             echo "NEXT_PUBLIC_BASE_PATH=${{ steps.setup_pages.outputs.base_path }}" >> "$GITHUB_ENV"
           fi
 
+      - name: Set github branch
+        run: echo "GITHUB_BRANCH=${{ github.head_ref || github.ref_name }}" >> "$GITHUB_ENV"
+
       - name: Build with Next.js
         run: bun run build
         working-directory: site

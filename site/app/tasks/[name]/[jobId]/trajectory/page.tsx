@@ -107,12 +107,23 @@ function getStatusMeta(status: "error" | "passed" | "failed" | "unknown") {
   };
 }
 
+function getGithubBranchName(): string {
+  const branch = process.env.GITHUB_BRANCH;
+  if (!branch || branch.trim().length === 0) {
+    return "main";
+  }
+
+  return branch;
+}
+
 function buildFallbackUrl(jobName: string, trialName: string) {
-  return `${zealtConfig.github_repo}/blob/main/jobs/${jobName}/${trialName}/result.json`
+  const branch = getGithubBranchName();
+  return `${zealtConfig.github_repo}/blob/${branch}/jobs/${jobName}/${trialName}/result.json`
 }
 
 function buildTaskDirUrl(taskName: string) {
-  return `${zealtConfig.github_repo}/tree/main/tasks/${encodeURIComponent(taskName)}`;
+  const branch = getGithubBranchName();
+  return `${zealtConfig.github_repo}/tree/${branch}/tasks/${encodeURIComponent(taskName)}`;
 }
 
 function splitTrialName(trialName: string): { taskName: string; jobId: string } | null {
@@ -139,14 +150,16 @@ function getGithubOwnerRepo(): string {
 
 function buildClipUrl(jobName: string, trialName: string, title: string): string {
   const ownerRepo = getGithubOwnerRepo();
-  const url = new URL(`/f/raw.githubusercontent.com/${ownerRepo}/refs/heads/main/jobs/${jobName}/${trialName}/agent/pochi/trajectory.jsonl`, getServerBaseUrl());
+  const branch = getGithubBranchName();
+  const url = new URL(`/f/raw.githubusercontent.com/${ownerRepo}/refs/heads/${branch}/jobs/${jobName}/${trialName}/agent/pochi/trajectory.jsonl`, getServerBaseUrl());
   url.searchParams.set("title", title);
   return url.toString();
 }
 
 function buildRawGithubContentUrl(jobName: string, trialName: string, filePath: string): string {
   const ownerRepo = getGithubOwnerRepo();
-  return `https://raw.githubusercontent.com/${ownerRepo}/refs/heads/main/jobs/${jobName}/${trialName}/${filePath}`;
+  const branch = getGithubBranchName();
+  return `https://raw.githubusercontent.com/${ownerRepo}/refs/heads/${branch}/jobs/${jobName}/${trialName}/${filePath}`;
 }
 
 function isTrialEntry(value: unknown): value is TrialEntry {
