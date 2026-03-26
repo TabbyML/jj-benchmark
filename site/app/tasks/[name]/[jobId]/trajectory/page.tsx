@@ -24,10 +24,6 @@ type TrialEntry = {
     verifier?: number | null;
   };
   trajectory_id?: string;
-  stderr_text?: string | null;
-  stderr_line_count?: number;
-  verifier_text?: string | null;
-  verifier_line_count?: number;
 };
 
 function formatStartTime(jobName: string): string {
@@ -148,6 +144,11 @@ function buildClipUrl(jobName: string, trialName: string, title: string): string
   return url.toString();
 }
 
+function buildRawGithubContentUrl(jobName: string, trialName: string, filePath: string): string {
+  const ownerRepo = getGithubOwnerRepo();
+  return `https://raw.githubusercontent.com/${ownerRepo}/refs/heads/main/jobs/${jobName}/${trialName}/${filePath}`;
+}
+
 function isTrialEntry(value: unknown): value is TrialEntry {
   if (typeof value !== "object" || value === null) {
     return false;
@@ -263,8 +264,12 @@ export default async function TrajectoryRoutePage({
     redirect(fallbackUrl ?? '/tasks');
   }
 
-  const stderrText = trialEntry?.stderr_text ?? null;
-  const verifierText = trialEntry?.verifier_text ?? null;
+  const stderrLogUrl = trialEntry
+    ? buildRawGithubContentUrl(trialEntry.job_name, trialEntry.trial_name, `agent/${trialEntry.agent}/stderr.txt`)
+    : null;
+  const verifierLogUrl = trialEntry
+    ? buildRawGithubContentUrl(trialEntry.job_name, trialEntry.trial_name, "verifier/test-stdout.txt")
+    : null;
 
   return (
     <div className="flex h-screen w-full flex-col overflow-hidden bg-background text-foreground font-sans selection:bg-primary/20">
@@ -303,8 +308,8 @@ export default async function TrajectoryRoutePage({
         <TrajectoryPage
           trajectoryUrl={trajectoryUrl}
           fallbackUrl={fallbackUrl ?? ''}
-          stderrText={stderrText}
-          verifierText={verifierText}
+          stderrLogUrl={stderrLogUrl}
+          verifierLogUrl={verifierLogUrl}
         />
       </div>
     </div>
