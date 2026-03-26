@@ -1,0 +1,64 @@
+Hit:1 https://deb.nodesource.com/node_20.x nodistro InRelease
+Hit:2 http://ports.ubuntu.com/ubuntu-ports noble InRelease
+Hit:3 http://ports.ubuntu.com/ubuntu-ports noble-updates InRelease
+Hit:4 http://ports.ubuntu.com/ubuntu-ports noble-backports InRelease
+Hit:5 http://ports.ubuntu.com/ubuntu-ports noble-security InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (8.5.0-2ubuntu10.8).
+0 upgraded, 0 newly installed, 0 to remove and 14 not upgraded.
+downloading uv 0.9.7 aarch64-unknown-linux-gnu
+no checksums to verify
+installing to /home/user/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 6 packages in 7ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 7 items
+
+../../../tests/test_outputs.py ...F...                                   [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_working_copy_is_clean __________________________
+
+    def test_working_copy_is_clean():
+        result = jj("diff", "-r", "@")
+        assert result.returncode == 0
+>       assert result.stdout.strip() == "", \
+            "Working copy should be empty after absorb"
+E       AssertionError: Working copy should be empty after absorb
+E       assert 'Added regula...n       10: }' == ''
+E         
+E         + Added regular file .agents/skills/onevcat-jj/SKILL.md:
+E         +         1: ---
+E         +         2: name: onevcat-jj
+E         +         3: description: "Use jj (Jujutsu) for local version control instead of git. Activate when: the repo has a .jj/ directory, the user or project config mentions jj, the user says 'use jj', or any version control operation is needed in a jj-managed repo. Also use this skill when the user asks to commit, branch, stash, rebase, or perform any git-like operation in a repo that uses jj. If unsure whether the repo uses jj, check for a .jj/ directory."
+E         +         4: ---
+E         +         5: ...
+E         
+E         ...Full output truncated (255 lines hidden), use '-vv' to show
+
+/tests/test_outputs.py:45: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../../../tests/test_outputs.py::test_commit_1_has_strip_parser
+PASSED ../../../tests/test_outputs.py::test_commit_3_has_improved_formatter
+PASSED ../../../tests/test_outputs.py::test_commit_5_has_none_check_runner
+PASSED ../../../tests/test_outputs.py::test_commit_2_unchanged
+PASSED ../../../tests/test_outputs.py::test_commit_4_unchanged
+PASSED ../../../tests/test_outputs.py::test_absorb_report_exists
+FAILED ../../../tests/test_outputs.py::test_working_copy_is_clean - Assertion...
+========================= 1 failed, 6 passed in 1.13s ==========================

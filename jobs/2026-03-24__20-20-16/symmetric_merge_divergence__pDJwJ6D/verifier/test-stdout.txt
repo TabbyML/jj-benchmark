@@ -1,0 +1,73 @@
+Hit:1 https://deb.nodesource.com/node_20.x nodistro InRelease
+Hit:2 http://ports.ubuntu.com/ubuntu-ports noble InRelease
+Hit:3 http://ports.ubuntu.com/ubuntu-ports noble-updates InRelease
+Hit:4 http://ports.ubuntu.com/ubuntu-ports noble-backports InRelease
+Hit:5 http://ports.ubuntu.com/ubuntu-ports noble-security InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (8.5.0-2ubuntu10.8).
+0 upgraded, 0 newly installed, 0 to remove and 14 not upgraded.
+downloading uv 0.9.7 aarch64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 6 packages in 8ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 9 items
+
+../../../tests/test_outputs.py FFF......                                 [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_log_file_exists _____________________________
+
+    def test_log_file_exists():
+>       assert os.path.isfile(LOG_FILE), f"{LOG_FILE} does not exist"
+E       AssertionError: /home/user/divergence_log.txt does not exist
+E       assert False
+E        +  where False = <function isfile at 0xf3f7ee0d0220>('/home/user/divergence_log.txt')
+E        +    where <function isfile at 0xf3f7ee0d0220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+
+/tests/test_outputs.py:17: AssertionError
+_______________________ test_log_file_has_required_keys ________________________
+
+    def test_log_file_has_required_keys():
+>       content = open(LOG_FILE).read()
+                  ^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_log.txt'
+
+/tests/test_outputs.py:21: FileNotFoundError
+_________________________ test_log_change_ids_nonempty _________________________
+
+    def test_log_change_ids_nonempty():
+>       content = open(LOG_FILE).read()
+                  ^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_log.txt'
+
+/tests/test_outputs.py:30: FileNotFoundError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../../../tests/test_outputs.py::test_patch_bookmark_exists
+PASSED ../../../tests/test_outputs.py::test_patch_has_no_conflicts
+PASSED ../../../tests/test_outputs.py::test_patch_py_has_apply_patch_v1
+PASSED ../../../tests/test_outputs.py::test_patch_py_has_apply_patch_v2
+PASSED ../../../tests/test_outputs.py::test_patch_py_no_conflict_markers
+PASSED ../../../tests/test_outputs.py::test_canonical_commit_description_is_fix_patch
+FAILED ../../../tests/test_outputs.py::test_log_file_exists - AssertionError:...
+FAILED ../../../tests/test_outputs.py::test_log_file_has_required_keys - File...
+FAILED ../../../tests/test_outputs.py::test_log_change_ids_nonempty - FileNot...
+========================= 3 failed, 6 passed in 1.02s ==========================
