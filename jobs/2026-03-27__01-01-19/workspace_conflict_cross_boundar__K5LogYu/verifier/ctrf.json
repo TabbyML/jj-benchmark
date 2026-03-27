@@ -1,0 +1,95 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 8,
+            "passed": 7,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774599237.7478647,
+            "stop": 1774599237.8739374
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_feature_b_has_feature_a_as_ancestor",
+                "status": "passed",
+                "duration": 0.016215596348047256,
+                "start": 1774599237.7595725,
+                "stop": 1774599237.7760365,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_api_py_at_feature_b_has_no_conflicts",
+                "status": "passed",
+                "duration": 0.017008766531944275,
+                "start": 1774599237.7773435,
+                "stop": 1774599237.794581,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_api_py_has_users_endpoint",
+                "status": "passed",
+                "duration": 0.0169659610837698,
+                "start": 1774599237.7947817,
+                "stop": 1774599237.8119314,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_api_py_has_products_endpoint",
+                "status": "passed",
+                "duration": 0.016383472830057144,
+                "start": 1774599237.8121374,
+                "stop": 1774599237.8286746,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_main_has_both_features_as_ancestors",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.016133032739162445,
+                "start": 1774599237.8288467,
+                "stop": 1774599237.8560088,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_main_has_both_features_as_ancestors():\n        result = run_jj(\n            [\"log\", \"--no-graph\", \"-r\", \"ancestors(main)\", \"-T\", 'description ++ \"\\n\"']\n        )\n        assert result.returncode == 0, f\"jj log ancestors(main) failed: {result.stderr}\"\n        assert \"feat: add users endpoint\" in result.stdout, \\\n            \"main ancestry missing feat: add users endpoint.\"\n>       assert \"feat: add products endpoint\" in result.stdout, \\\n            \"main ancestry missing feat: add products endpoint.\"\nE       AssertionError: main ancestry missing feat: add products endpoint.\nE       assert 'feat: add products endpoint' in '\\nresolve conflict: keep both endpoints and hello world\\n\\nfeat: add users endpoint\\n\\nadd base api\\n\\n\\n'\nE        +  where '\\nresolve conflict: keep both endpoints and hello world\\n\\nfeat: add users endpoint\\n\\nadd base api\\n\\n\\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'ancestors(main)', '-T', 'description ++ \"\\n\"'], returncode=0,...'\\nresolve conflict: keep both endpoints and hello world\\n\\nfeat: add users endpoint\\n\\nadd base api\\n\\n\\n', stderr='').stdout\n\n/tests/test_outputs.py:52: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_main_is_merge_commit",
+                "status": "passed",
+                "duration": 0.016468344256281853,
+                "start": 1774599237.8561893,
+                "stop": 1774599237.8728428,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_log_file_exists",
+                "status": "passed",
+                "duration": 0.00026017241179943085,
+                "start": 1774599237.873053,
+                "stop": 1774599237.8734016,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_log_file_content",
+                "status": "passed",
+                "duration": 0.00023601390421390533,
+                "start": 1774599237.8735087,
+                "stop": 1774599237.8738174,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}

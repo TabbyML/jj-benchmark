@@ -1,0 +1,43 @@
+Traceback (most recent call last):
+  File "/Users/warrenlow/.local/share/uv/python/cpython-3.12.10-macos-aarch64-none/lib/python3.12/asyncio/tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/agents/installed/base.py", line 156, in run
+    result = await environment.exec(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/environments/daytona.py", line 1058, in exec
+    return await self._strategy.exec(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/environments/daytona.py", line 255, in exec
+    return await self._env._sandbox_exec(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/environments/daytona.py", line 939, in _sandbox_exec
+    result = await self._poll_response(session_id, response.cmd_id)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/environments/daytona.py", line 880, in _poll_response
+    await asyncio.sleep(1)
+  File "/Users/warrenlow/.local/share/uv/python/cpython-3.12.10-macos-aarch64-none/lib/python3.12/asyncio/tasks.py", line 665, in sleep
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/trial/trial.py", line 259, in _execute_agent
+    await asyncio.wait_for(
+  File "/Users/warrenlow/.local/share/uv/python/cpython-3.12.10-macos-aarch64-none/lib/python3.12/asyncio/tasks.py", line 519, in wait_for
+    async with timeouts.timeout(timeout):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/warrenlow/.local/share/uv/python/cpython-3.12.10-macos-aarch64-none/lib/python3.12/asyncio/timeouts.py", line 115, in __aexit__
+    raise TimeoutError from exc_val
+TimeoutError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/trial/trial.py", line 483, in run
+    await self._execute_agent()
+  File "/Users/warrenlow/Documents/projects/pochi-harbor/.venv/lib/python3.12/site-packages/harbor/trial/trial.py", line 268, in _execute_agent
+    raise AgentTimeoutError(
+harbor.trial.trial.AgentTimeoutError: Agent execution timed out after 600.0 seconds

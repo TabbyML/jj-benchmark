@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774600068.2404466,
+            "stop": 1774600068.2993598
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_no_divergent_commits",
+                "status": "passed",
+                "duration": 0.01792275346815586,
+                "start": 1774600068.2480662,
+                "stop": 1774600068.2662523,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_resolved_change_id_file",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.018671125173568726,
+                "start": 1774600068.266465,
+                "stop": 1774600068.2987213,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_resolved_change_id_file():\n        assert os.path.isfile(RESOLVED_CHANGE_ID_FILE), f\"{RESOLVED_CHANGE_ID_FILE} does not exist.\"\n        with open(RESOLVED_CHANGE_ID_FILE, \"r\") as f:\n            written_id = f.read().strip()\n    \n        # Get the actual change ID of the feature bookmark\n        result = run_jj([\"log\", \"-r\", \"feature\", \"--no-graph\", \"-T\", \"change_id\"])\n        assert result.returncode == 0, f\"Failed to get change ID for 'feature': {result.stderr}\"\n        actual_id = result.stdout.strip()\n    \n>       assert written_id == actual_id, f\"Expected change ID '{actual_id}', but found '{written_id}' in {RESOLVED_CHANGE_ID_FILE}.\"\nE       AssertionError: Expected change ID 'zppyqorrmqowstwtyrwzxmzsttxsulxz', but found 'zppyqorr' in /home/user/resolved_change_id.txt.\nE       assert 'zppyqorr' == 'zppyqorrmqow...zxmzsttxsulxz'\nE         \nE         - zppyqorrmqowstwtyrwzxmzsttxsulxz\nE         + zppyqorr\n\n/tests/test_final_state.py:31: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_main_content_file",
+                "status": "passed",
+                "duration": 0.0002993508242070675,
+                "start": 1774600068.298869,
+                "stop": 1774600068.299253,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

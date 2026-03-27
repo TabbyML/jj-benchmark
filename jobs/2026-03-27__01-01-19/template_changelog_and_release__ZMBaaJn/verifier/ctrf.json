@@ -1,0 +1,95 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 8,
+            "passed": 7,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774599293.3789172,
+            "stop": 1774599293.5698361
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_changelog_file_exists",
+                "status": "passed",
+                "duration": 0.00032507628202438354,
+                "start": 1774599293.3891084,
+                "stop": 1774599293.3895788,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_changelog_content",
+                "status": "passed",
+                "duration": 0.00025772862136363983,
+                "start": 1774599293.3897023,
+                "stop": 1774599293.3900452,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_contributor_stats_file_exists",
+                "status": "passed",
+                "duration": 0.00020454265177249908,
+                "start": 1774599293.3901594,
+                "stop": 1774599293.3904388,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_contributor_stats_content",
+                "status": "passed",
+                "duration": 0.0002271793782711029,
+                "start": 1774599293.390535,
+                "stop": 1774599293.390835,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_release_commit_exists",
+                "status": "passed",
+                "duration": 0.016814766451716423,
+                "start": 1774599293.3909297,
+                "stop": 1774599293.4079194,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_v1_1_bookmark_points_to_release_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.07494975812733173,
+                "start": 1774599293.4081175,
+                "stop": 1774599293.494281,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_v1_1_bookmark_points_to_release_commit():\n        result = run_jj([\"log\", \"--no-graph\", \"-r\", \"v1.1\", \"-T\", 'description'])\n>       assert result.returncode == 0, f\"v1.1 bookmark not found: {result.stderr}\"\nE       AssertionError: v1.1 bookmark not found: Error: Revision `v1.1` doesn't exist\nE         Hint: Did you mean `v1.0`?\nE         \nE       assert 1 == 0\nE        +  where 1 = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'v1.1', '-T', 'description'], returncode=1, stdout='', stderr=\"Error: Revision `v1.1` doesn't exist\\nHint: Did you mean `v1.0`?\\n\").returncode\n\n/tests/test_outputs.py:60: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_changelog_in_repo_at_release_commit",
+                "status": "passed",
+                "duration": 0.07451886683702469,
+                "start": 1774599293.4944263,
+                "stop": 1774599293.5691261,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_changelog_has_correct_sections",
+                "status": "passed",
+                "duration": 0.0002912469208240509,
+                "start": 1774599293.5693383,
+                "stop": 1774599293.5697162,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}

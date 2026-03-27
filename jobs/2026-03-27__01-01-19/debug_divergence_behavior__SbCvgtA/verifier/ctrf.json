@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774598830.628633,
+            "stop": 1774598830.6850357
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_no_divergent_commits",
+                "status": "passed",
+                "duration": 0.018041325267404318,
+                "start": 1774598830.6362002,
+                "stop": 1774598830.6544938,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_resolved_change_id_file",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.018243384547531605,
+                "start": 1774598830.6547058,
+                "stop": 1774598830.6844006,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_resolved_change_id_file():\n        assert os.path.isfile(RESOLVED_CHANGE_ID_FILE), f\"{RESOLVED_CHANGE_ID_FILE} does not exist.\"\n        with open(RESOLVED_CHANGE_ID_FILE, \"r\") as f:\n            written_id = f.read().strip()\n    \n        # Get the actual change ID of the feature bookmark\n        result = run_jj([\"log\", \"-r\", \"feature\", \"--no-graph\", \"-T\", \"change_id\"])\n        assert result.returncode == 0, f\"Failed to get change ID for 'feature': {result.stderr}\"\n        actual_id = result.stdout.strip()\n    \n>       assert written_id == actual_id, f\"Expected change ID '{actual_id}', but found '{written_id}' in {RESOLVED_CHANGE_ID_FILE}.\"\nE       AssertionError: Expected change ID 'vnuzzvvkkkmzyzsprxvyqqsytruwmmww', but found 'vnuzzvvk' in /home/user/resolved_change_id.txt.\nE       assert 'vnuzzvvk' == 'vnuzzvvkkkmz...yqqsytruwmmww'\nE         \nE         - vnuzzvvkkkmzyzsprxvyqqsytruwmmww\nE         + vnuzzvvk\n\n/tests/test_final_state.py:31: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_main_content_file",
+                "status": "passed",
+                "duration": 0.00029368093237280846,
+                "start": 1774598830.6845438,
+                "stop": 1774598830.68492,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

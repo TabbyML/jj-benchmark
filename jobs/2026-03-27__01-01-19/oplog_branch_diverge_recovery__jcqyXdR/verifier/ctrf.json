@@ -1,0 +1,113 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 10,
+            "passed": 9,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774599219.6118703,
+            "stop": 1774599219.6555696
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_divergence_report_exists",
+                "status": "passed",
+                "duration": 0.00029358104802668095,
+                "start": 1774599219.6234424,
+                "stop": 1774599219.623874,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_analysis_log_exists",
+                "status": "passed",
+                "duration": 0.00022038002498447895,
+                "start": 1774599219.6239953,
+                "stop": 1774599219.6243045,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_analysis_log_content",
+                "status": "passed",
+                "duration": 0.00022270088084042072,
+                "start": 1774599219.6244044,
+                "stop": 1774599219.6247003,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_section_headings",
+                "status": "passed",
+                "duration": 0.00021146086510270834,
+                "start": 1774599219.6247969,
+                "stop": 1774599219.625077,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_commit_description",
+                "status": "passed",
+                "duration": 0.0002081200946122408,
+                "start": 1774599219.6251786,
+                "stop": 1774599219.625456,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_change_id",
+                "status": "passed",
+                "duration": 0.00020345114171504974,
+                "start": 1774599219.625545,
+                "stop": 1774599219.625814,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_divergence_op_id",
+                "status": "passed",
+                "duration": 0.00020980089902877808,
+                "start": 1774599219.6259,
+                "stop": 1774599219.6261861,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_first_develop_commit",
+                "status": "passed",
+                "duration": 0.00019681104458868504,
+                "start": 1774599219.6262774,
+                "stop": 1774599219.6265385,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_report_has_first_main_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00032733206171542406,
+                "start": 1774599219.6266236,
+                "stop": 1774599219.6375432,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_report_has_first_main_commit():\n        with open(REPORT_FILE) as f:\n            content = f.read()\n        assert \"first_main_only_commit:\" in content, \"report missing first_main_only_commit\"\n>       assert \"release: v1.1\" in content, \\\n            \"report should identify 'release: v1.1' as first main-only commit\"\nE       AssertionError: report should identify 'release: v1.1' as first main-only commit\nE       assert 'release: v1.1' in '# Branch Divergence Report\\n\\n## Common Ancestor\\ncommit_description: feat: shared-utils\\nchange_id_short: lyrzrtuq\\n...ue Commits After Split\\nfirst_develop_only_commit: feat: feature-x-start\\nfirst_main_only_commit: fix: hotfix-critical'\n\n/tests/test_outputs.py:90: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_common_ancestor_is_correct",
+                "status": "passed",
+                "duration": 0.017572005977854133,
+                "start": 1774599219.6376696,
+                "stop": 1774599219.655412,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}
