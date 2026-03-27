@@ -1,53 +1,82 @@
 import os
 import subprocess
-import sys
+import pytest
 
-def run_cmd(cmd, cwd="/home/user/repo"):
-    result = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
-    if result.returncode != 0:
-        print(f"Command failed: {' '.join(cmd)}\n{result.stderr}")
-        sys.exit(1)
-    return result.stdout.strip()
+REPO_DIR = "/home/user/repo"
 
-def main():
-    repo_dir = "/home/user/repo"
-    
-    # 1. Check author of current commit
-    author_name = run_cmd(["jj", "log", "-r", "@", "-T", "author.name()", "--no-graph"])
-    author_email = run_cmd(["jj", "log", "-r", "@", "-T", "author.email()", "--no-graph"])
-    
-    if author_name != "Trainer" or author_email != "trainer@example.com":
-        print(f"Author is incorrect: {author_name} <{author_email}>")
-        sys.exit(1)
-        
-    # 2. Check template alias
-    config = run_cmd(["jj", "config", "get", "template-aliases.training_log"])
-    if 'commit_id.short() ++ " - " ++ author.email() ++ " - " ++ description.first_line() ++ "\\n"' not in config and "commit_id.short() ++ ' - ' ++ author.email() ++ ' - ' ++ description.first_line() ++ '\\n'" not in config:
-        print(f"Template alias is incorrect: {config}")
-        sys.exit(1)
-        
-    # 3. Check formatted_log.txt
-    log_file = "/home/user/repo/formatted_log.txt"
-    if not os.path.exists(log_file):
-        print(f"Log file {log_file} does not exist.")
-        sys.exit(1)
-        
-    with open(log_file, "r") as f:
-        log_content = f.read().strip().splitlines()
-        
-    if len(log_content) != 2:
-        print(f"Log file has {len(log_content)} lines, expected 2.")
-        sys.exit(1)
-        
-    if "trainer@example.com - WIP commit" not in log_content[0]:
-        print(f"First line of log file is incorrect: {log_content[0]}")
-        sys.exit(1)
-        
-    if "default@example.com - Base commit" not in log_content[1]:
-        print(f"Second line of log file is incorrect: {log_content[1]}")
-        sys.exit(1)
-        
-    print("Final state is correct.")
 
-if __name__ == "__main__":
-    main()
+def run_jj(args, cwd=REPO_DIR):
+    result = subprocess.run(
+        ["jj"] + args,
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+    )
+    return result
+
+
+def test_author_name_is_trainer():
+    result = run_jj(["log", "-r", "@", "-T", "author.name()", "--no-graph"])
+    assert result.returncode == 0, f"jj log failed: {result.stderr}"
+    assert result.stdout.strip() == "Trainer", (
+        f"Expected author name 'Trainer', got: {result.stdout.strip()}"
+    )
+
+
+def test_author_email_is_trainer():
+    result = run_jj(["log", "-r", "@", "-T", "author.email()", "--no-graph"])
+    assert result.returncode == 0, f"jj log failed: {result.stderr}"
+    assert result.stdout.strip() == "trainer@example.com", (
+        f"Expected author email 'trainer@example.com', got: {result.stdout.strip()}"
+    )
+
+
+def test_template_alias_training_log_exists():
+    result = run_jj(["config", "get", "template-aliases.training_log"])
+    assert result.returncode == 0, (
+        f"Template alias 'training_log' not found in jj config: {result.stderr}"
+    )
+    config = result.stdout.strip()
+    assert "commit_id.short()" in config, (
+        f"Template alias must include commit_id.short(), got: {config}"
+    )
+    assert "author.email()" in config, (
+        f"Template alias must include author.email(), got: {config}"
+    )
+    assert "description.first_line()" in config, (
+        f"Template alias must include description.first_line(), got: {config}"
+    )
+
+
+def test_formatted_log_file_exists():
+    log_file = os.path.join(REPO_DIR, "formatted_log.txt")
+    assert os.path.exists(log_file), (
+        f"formatted_log.txt must exist at {log_file}"
+    )
+
+
+def test_formatted_log_has_two_lines():
+    log_file = os.path.join(REPO_DIR, "formatted_log.txt")
+    with open(log_file) as f:
+        lines = [l for l in f.read().strip().splitlines() if l.strip()]
+    assert len(lines) == 2, (
+        f"formatted_log.txt should have 2 lines, got {len(lines)}: {lines}"
+    )
+
+
+def test_formatted_log_contains_trainer_wip():
+    log_file = os.path.join(REPO_DIR, "formatted_log.txt")
+    with open(log_file) as f:
+        content = f.read()
+    assert "trainer@example.com" in content and "WIP commit" in content, (
+        f"First entry should contain trainer@example.com and 'WIP commit', got: {content}"
+    )
+
+
+def test_formatted_log_contains_default_base():
+    log_file = os.path.join(REPO_DIR, "formatted_log.txt")
+    with open(log_file) as f:
+        content = f.read()
+    assert "default@example.com" in content and "Base commit" in content, (
+        f"Second entry should contain default@example.com and 'Base commit', got: {content}"
+    )
