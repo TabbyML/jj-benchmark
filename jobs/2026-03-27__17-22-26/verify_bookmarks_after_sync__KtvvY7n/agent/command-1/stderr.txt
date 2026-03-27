@@ -1,0 +1,36 @@
+[37m2026-03-27 09:44:26.065[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37mnative:1[39m[0m[0m[1m[37m	Pochi[39m[22m[0m[0m	pochi v0.6.5
+[37m2026-03-27 09:44:26.070[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37mnative:7[39m[0m[0m[1m[37m	PochiConfigManager[39m[22m[0m[0m	add workspace config: /root/.pochi/config.jsonc
+[37m2026-03-27 09:44:26.301[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m/$bunfs/pochi:503317[39m[0m[0m[1m[37m	loadAgents[39m[22m[0m[0m	Loaded 5 custom agents (5 valid, 0 invalid)
+[37m2026-03-27 09:44:26.305[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m/$bunfs/pochi:503318[39m[0m[0m[1m[37m	loadSkills[39m[22m[0m[0m	Loaded 2 skills (2 valid, 0 invalid)
+[37m2026-03-27 09:44:26.383[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m/$bunfs/pochi:439423[39m[0m[0m[1m[37m	PochiVendor[39m[22m[0m[0m	JWT is expiring or missing, fetching a new one
+============================================================
+Bun v1.3.4 (5eb2145b) Linux x64
+Linux Kernel v6.8.0 | glibc v2.39
+CPU: sse42 popcnt avx avx2 avx512
+Args: "pochi" "--model" "deepinfra/moonshotai/kimi-k2.5" "--max-steps" "200" "--max-retries" "10" "--blobs-dir" "/logs/agent/pochi/blobs" "--stream-json" "/logs/agent/pochi/trajectory.jsonl"
+Features: Bun.stderr(2) Bun.stdin(2) Bun.stdout(2) fetch(2) jsc standalone_executable 
+Builtins: "bun:main" "node:assert" "node:async_hooks" "node:buffer" "node:child_process" "node:console" "node:crypto" "node:dns" "node:events" "node:fs" "node:fs/promises" "node:http" "node:https" "node:module" "node:net" "node:os" "node:path" "node:perf_hooks" "node:process" "node:querystring" "node:readline" "node:readline/promises" "node:stream" "node:stream/promises" "node:string_decoder" "node:tty" "node:url" "node:util" "node:zlib" "node:worker_threads" "undici" "ws" "node:v8" "node:inspector" 
+Elapsed: 2703ms | User: 1029ms | Sys: 288ms
+RSS: 1.08GB | Peak: 0.25GB | Commit: 1.08GB | Faults: 0 | Machine: 0.41TB
+
+panic(main thread): Segmentation fault at address 0x788655555554
+oh no: Bun has crashed. This indicates a bug in Bun, not your code.
+
+To send a redacted crash report to Bun's team,
+please file a GitHub issue using the link below:
+
+ https://bun.report/1.3.4/l_15eb2145EugogCkyo8vE+ypRmx2ghEmx2ghE_6w31gEy911gE8mt1gE8mt1gE____8mt1gEy911gE8mt1gEy911gE8mt1gE_0rztgEA2so8Bo1q1q1C
+
+bash: line 12:   433 Illegal instruction     (core dumped) pochi --model deepinfra/moonshotai/kimi-k2.5 --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --stream-json /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt 1>&2) <<'EOF'
+You are a developer migrating from Git who just pulled the latest changes from a remote repository. The local repository is located at `/home/user/repo` and is cloned from a remote at `/home/user/remote_repo`.
+
+After running `jj git fetch`, you notice that the bookmark `feature-x` has diverged because both you and a teammate pushed conflicting commits to the same bookmark. You need to verify the local and remote bookmarks after the sync, and resolve the divergence by forcing the local `feature-x` bookmark to point to the remote's version (`feature-x@origin`), discarding your local changes to that bookmark.
+
+Your tasks are:
+1. Change directory to `/home/user/repo`.
+2. Fetch the latest changes from the remote `origin`.
+3. Resolve the diverged bookmark `feature-x` so that it points exactly to the commit of `feature-x@origin`.
+4. Ensure that the bookmark `feature-x` no longer has a conflict/divergence.
+
+EOF
+

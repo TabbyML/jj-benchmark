@@ -1,0 +1,44 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 0,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774604491.4566193,
+            "stop": 1774604491.4775863
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_alias_configured_correctly",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00045872852206230164,
+                "start": 1774604491.464806,
+                "stop": 1774604491.4757607,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_alias_configured_correctly():\n>       assert os.path.isfile(CONFIG_FILE), f\"Repo-specific config file {CONFIG_FILE} does not exist.\"\nE       AssertionError: Repo-specific config file /home/user/repo/.jj/repo/config.toml does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x7f9a6cce4220>('/home/user/repo/.jj/repo/config.toml')\nE        +    where <function isfile at 0x7f9a6cce4220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:13: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_formatted_log_file_exists_and_correct",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00033112242817878723,
+                "start": 1774604491.475901,
+                "stop": 1774604491.4774735,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_formatted_log_file_exists_and_correct():\n>       assert os.path.isfile(LOG_OUTPUT_FILE), f\"Formatted log file {LOG_OUTPUT_FILE} does not exist.\"\nE       AssertionError: Formatted log file /home/user/repo/formatted_log.txt does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x7f9a6cce4220>('/home/user/repo/formatted_log.txt')\nE        +    where <function isfile at 0x7f9a6cce4220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:37: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

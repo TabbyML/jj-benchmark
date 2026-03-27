@@ -1,0 +1,62 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 2,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774603890.8675709,
+            "stop": 1774603891.0240204
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_login_bookmark_exists_and_not_conflicted",
+                "status": "passed",
+                "duration": 0.025979971513152122,
+                "start": 1774603890.8758042,
+                "stop": 1774603890.902035,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_feature_login_points_to_my_local_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.016515715047717094,
+                "start": 1774603890.9022474,
+                "stop": 1774603890.9296196,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_login_points_to_my_local_commit():\n        result = run_jj([\"log\", \"--no-graph\", \"-r\", \"feature-login\", \"-T\", 'description'])\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"My local commit\" in result.stdout, \\\n            f\"Expected 'feature-login' to point to 'My local commit', got: {result.stdout.strip()}\"\nE       AssertionError: Expected 'feature-login' to point to 'My local commit', got: My local rebased commit\nE       assert 'My local commit' in 'My local rebased commit\\n'\nE        +  where 'My local rebased commit\\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'feature-login', '-T', 'description'], returncode=0, stdout='My local rebased commit\\n', stderr='').stdout\n\n/tests/test_final_state.py:19: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_login_parent_is_coworker_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.020809819921851158,
+                "start": 1774603890.9297652,
+                "stop": 1774603890.9523687,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_login_parent_is_coworker_commit():\n        result = run_jj([\"log\", \"--no-graph\", \"-r\", \"feature-login-\", \"-T\", 'description'])\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"Coworker commit\" in result.stdout, \\\n            f\"Expected parent of 'feature-login' to be 'Coworker commit', got: {result.stdout.strip()}\"\nE       AssertionError: Expected parent of 'feature-login' to be 'Coworker commit', got: Base feature commit\nE       assert 'Coworker commit' in 'Base feature commit\\n'\nE        +  where 'Base feature commit\\n' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'feature-login-', '-T', 'description'], returncode=0, stdout='Base feature commit\\n', stderr='').stdout\n\n/tests/test_final_state.py:25: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_feature_login_pushed_to_origin",
+                "status": "passed",
+                "duration": 0.07103998400270939,
+                "start": 1774603890.9525223,
+                "stop": 1774603891.0238008,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

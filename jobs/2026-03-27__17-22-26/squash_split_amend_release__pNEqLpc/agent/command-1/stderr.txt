@@ -1,0 +1,59 @@
+[37m2026-03-27 09:41:02.190[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37mnative:1[39m[0m[0m[1m[37m	Pochi[39m[22m[0m[0m	pochi v0.6.5
+[37m2026-03-27 09:41:02.533[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m/$bunfs/root/pochi:503317[39m[0m[0m[1m[37m	loadAgents[39m[22m[0m[0m	Loaded 5 custom agents (5 valid, 0 invalid)
+[37m2026-03-27 09:41:02.534[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m/$bunfs/root/pochi:503318[39m[0m[0m[1m[37m	loadSkills[39m[22m[0m[0m	Loaded 2 skills (2 valid, 0 invalid)
+[37m2026-03-27 09:41:02.664[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m/$bunfs/root/pochi:439423[39m[0m[0m[1m[37m	PochiVendor[39m[22m[0m[0m	JWT is expiring or missing, fetching a new one
+65617 |   UnknownError2 = class UnknownError2 extends exports_Schema2.TaggedError()("LiveStore.UnknownError", {
+65618 |     cause: exports_Schema2.Defect,
+65619 |     note: exports_Schema2.optional(exports_Schema2.String),
+65620 |     payload: exports_Schema2.optional(exports_Schema2.Any)
+65621 |   }) {
+65622 |     static mapToUnknownError = (effect4) => effect4.pipe(exports_Effect2.mapError((cause3) => exports_Schema2.is(UnknownError2)(cause3) ? cause3 : new UnknownError2({ cause: cause3 })), exports_Effect2.catchAllDefect((cause3) => new UnknownError2({ cause: cause3 })));
+                                                                                                                                                                                                                                                              ^
+(FiberFailure) LiveStore.UnknownError: { "cause": LiveStore.SqliteError: { "query": {"sql":"SELECT * FROM eventlog \nWHERE seqNumGlobal > $seqNumGlobal OR (seqNumGlobal = $seqNumGlobal AND seqNumClient > $seqNumClient)\nORDER BY seqNumGlobal ASC, seqNumClient ASC\nLIMIT 100\n","bindValues":{}}, "code": undefined, "cause": RuntimeError: access to a null reference (evaluating 'func(...cArgs)'), "note": undefined } (cause: RuntimeError: access to a null reference (evaluating 'func(...cArgs)')), "note": undefined, "payload": undefined }
+ effect/Runtime/FiberFailure: Symbol(effect/Runtime/FiberFailure),
+ effect/Runtime/FiberFailure/Cause: {
+  _tag: "Fail",
+  error: LiveStore.UnknownError: { "cause": LiveStore.SqliteError: { "query": {"sql":"SELECT * FROM eventlog \nWHERE seqNumGlobal > $seqNumGlobal OR (seqNumGlobal = $seqNumGlobal AND seqNumClient > $seqNumClient)\nORDER BY seqNumGlobal ASC, seqNumClient ASC\nLIMIT 100\n","bindValues":{}}, "code": undefined, "cause": RuntimeError: access to a null reference (evaluating 'func(...cArgs)'), "note": undefined } (cause: RuntimeError: access to a null reference (evaluating 'func(...cArgs)')), "note": undefined, "payload": undefined }
+    at <anonymous> (/$bunfs/root/pochi:65622:247) {
+  [cause]: LiveStore.SqliteError: { "query": {"sql":"SELECT * FROM eventlog \nWHERE seqNumGlobal > $seqNumGlobal OR (seqNumGlobal = $seqNumGlobal AND seqNumClient > $seqNumClient)\nORDER BY seqNumGlobal ASC, seqNumClient ASC\nLIMIT 100\n","bindValues":{}}, "code": undefined, "cause": RuntimeError: access to a null reference (evaluating 'func(...cArgs)'), "note": undefined }
+      at prepare (/$bunfs/root/pochi:475191:30)
+      at <anonymous> (/$bunfs/root/pochi:69886:34)
+      at @livestore/common:rematerializeFromEventlog (/$bunfs/root/pochi:69908:120)
+      at @livestore/common:leader-thread:recreateDb (/$bunfs/root/pochi:469553:57)
+      at @livestore/common:leader-thread:boot (/$bunfs/root/pochi:469642:33)
+      at @livestore/common:leader-thread (/$bunfs/root/pochi:469642:105)
+      at @livestore/adapter-node:adapter (/$bunfs/root/pochi:476127:33)
+      at createStore:makeAdapter (/$bunfs/root/pochi:451506:102)
+      at createStore (/$bunfs/root/pochi:451536:35)
+      at createStore (/$bunfs/root/pochi:451467:33) {
+    [cause]: RuntimeError: access to a null reference (evaluating 'func(...cArgs)')
+        at unknown
+        at unknown
+        at unknown
+        at unknown
+        at unknown
+        at unknown
+        at unknown
+        at unknown
+        at ccall (/$bunfs/root/pochi:472884:19)
+        at <anonymous> (/$bunfs/root/pochi:474161:25)
+        at prepare (/$bunfs/root/pochi:475121:41)
+        at <anonymous> (/$bunfs/root/pochi:69886:34)
+  }
+},
+  [Symbol(effect/Cause)]: [Object ...],
+  [Symbol(effect/Hash)]: [Function],
+  [Symbol(effect/Equal)]: [Function],
+  pipe: [Function: pipe],
+  toJSON: [Function: toJSON],
+  toString: [Function: toString],
+  [Symbol(nodejs.util.inspect.custom)]: [Function],
+},
+
+      at /$bunfs/root/pochi:65622:247
+      at @livestore/adapter-node:adapter (/$bunfs/root/pochi:476127:33)
+      at createStore:makeAdapter (/$bunfs/root/pochi:451506:102)
+      at createStore (/$bunfs/root/pochi:451536:35)
+      at createStore (/$bunfs/root/pochi:451467:33)
+
+Bun v1.3.4 (Linux x64)

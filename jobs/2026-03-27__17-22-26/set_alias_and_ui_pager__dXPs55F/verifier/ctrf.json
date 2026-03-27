@@ -1,0 +1,68 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 4,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774604460.5190089,
+            "stop": 1774604460.580153
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_config_file_has_aliases_st",
+                "status": "passed",
+                "duration": 0.000640910817310214,
+                "start": 1774604460.5307546,
+                "stop": 1774604460.53159,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_config_file_has_ui_paginate_never",
+                "status": "passed",
+                "duration": 0.00034682080149650574,
+                "start": 1774604460.531739,
+                "stop": 1774604460.5322115,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_alias_st_runs_as_status",
+                "status": "passed",
+                "duration": 0.01750307041220367,
+                "start": 1774604460.5323582,
+                "stop": 1774604460.5501094,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_jj_config_list_shows_paginate_never",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.014739468926563859,
+                "start": 1774604460.550341,
+                "stop": 1774604460.5793753,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_jj_config_list_shows_paginate_never():\n        result = subprocess.run(\n            [\"jj\", \"--no-pager\", \"config\", \"list\", \"--user\"],\n            cwd=REPO_PATH,\n            capture_output=True,\n            text=True,\n            env={**os.environ, \"HOME\": HOME, \"JJ_CONFIG\": CONFIG_PATH},\n        )\n        assert result.returncode == 0, f\"jj config list failed: {result.stderr}\"\n>       assert \"ui.paginate\" in result.stdout, (\n            f\"ui.paginate not found in jj config list output: {result.stdout}\"\n        )\nE       AssertionError: ui.paginate not found in jj config list output: aliases.st = [\"status\"]\nE         \nE       assert 'ui.paginate' in 'aliases.st = [\"status\"]\\n'\nE        +  where 'aliases.st = [\"status\"]\\n' = CompletedProcess(args=['jj', '--no-pager', 'config', 'list', '--user'], returncode=0, stdout='aliases.st = [\"status\"]\\n', stderr='').stdout\n\n/tests/test_final_state.py:102: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_user_identity_preserved",
+                "status": "passed",
+                "duration": 0.000355791300535202,
+                "start": 1774604460.5795584,
+                "stop": 1774604460.5800197,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

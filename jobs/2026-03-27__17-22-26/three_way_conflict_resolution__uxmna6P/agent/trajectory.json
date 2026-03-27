@@ -1,0 +1,154 @@
+{
+  "schema_version": "ATIF-v1.6",
+  "session_id": "dda7e7a5-4364-48e7-b586-f35d381b8add",
+  "agent": {
+    "name": "pochi",
+    "version": "unknown",
+    "model_name": "deepinfra/moonshotai/kimi-k2.5"
+  },
+  "steps": [
+    {
+      "step_id": 1,
+      "source": "user",
+      "message": "<system-reminder># System Information\n\nOperating System: linux\nDefault Shell: \nHome Directory: /home/user\nCurrent Working Directory: /home/user/repo\nCurrent Time: Fri Mar 27 2026 09:44:21 GMT+0000 (Coordinated Universal Time)\n\n# Current Working Directory (/home/user/repo) Files\n.jj\nsrc\nsrc/config.py\n\n# GIT STATUS\nCurrent branch: HEAD\nMain branch (you will usually use this for PRs): \n\nStatus:\nUU src/config.py\n\nRecent commits:\n284484c branch-a: update database config\nc998c6b base: initial config\n\n# TODOs\nNo TODOs yet, if you are working on tasks that would benefit from a todo list please use the todoWrite tool to create one.</system-reminder>\nThe repository at `/home/user/repo` has a merge commit `merge-ab` that merges two branches (`branch-a` and `branch-b`) which both modified `src/config.py` from a common base. The merge has conflicts.\n\nResolve all conflicts in `src/config.py` keeping the database settings (host, port, name, max connections) from `branch-a` and the logging/timeout settings (LOG\\_LEVEL, TIMEOUT) from `branch-b`. Mark the resolution complete so no conflicts remain. Write a conflict resolution summary to `/home/user/resolution_summary.md`."
+    },
+    {
+      "step_id": 2,
+      "source": "agent",
+      "model_name": "deepinfra/moonshotai/kimi-k2.5",
+      "message": "  ",
+      "reasoning_content": "The user wants me to resolve merge conflicts in `src/config.py`. Let me first read the file to understand the conflict markers and then resolve them according to the instructions:\n- Keep database settings (host, port, name, max connections) from `branch-a`\n- Keep logging/timeout settings (LOG_LEVEL, TIMEOUT) from `branch-b`\n\nLet me start by reading the conflicted file. ",
+      "tool_calls": [
+        {
+          "tool_call_id": "functions.readFile:0",
+          "function_name": "readFile",
+          "arguments": {
+            "path": "src/config.py"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "functions.readFile:0",
+            "content": "{'content': '# Configuration file\\n<<<<<<< conflict 1 of 1\\n+++++++ xtwvykyr 284484c7 \"branch-a: update database config\"\\nDATABASE_HOST = \"db.production.example.com\"\\nDATABASE_PORT = 5433\\nDATABASE_NAME = \"mydb_prod\"\\nLOG_LEVEL = \"INFO\"\\nMAX_CONNECTIONS = 50\\nTIMEOUT = 30\\n%%%%%%% diff from: okoknrmx c998c6bf \"base: initial config\"\\n\\\\\\\\\\\\\\\\\\\\\\\\\\\\        to: qxtkpqxn 662424cb \"branch-b: update logging and timeout\"\\n DATABASE_HOST = \"localhost\"\\n DATABASE_PORT = 5432\\n DATABASE_NAME = \"mydb\"\\n-LOG_LEVEL = \"INFO\"\\n+LOG_LEVEL = \"DEBUG\"\\n MAX_CONNECTIONS = 10\\n-TIMEOUT = 30\\n+TIMEOUT = 60\\n>>>>>>> conflict 1 of 1 ends\\n', 'isTruncated': False}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 3,
+      "source": "agent",
+      "model_name": "deepinfra/moonshotai/kimi-k2.5",
+      "message": "    ",
+      "reasoning_content": "Now I understand the conflict structure. Looking at the conflict markers:\n\n1. `+++++++ xtwvykr 284484c7 \"branch-a: update database config\"` - This is branch-a's changes\n   - DATABASE_HOST = \"db.production.example.com\"\n   - DATABASE_PORT = 5433\n   - DATABASE_NAME = \"mydb_prod\"\n   - LOG_LEVEL = \"INFO\"\n   - MAX_CONNECTIONS = 50\n   - TIMEOUT = 30\n\n2. The second part shows a diff from base (c998c6bf) to branch-b:\n   - DATABASE_HOST = \"localhost\" (from base)\n   - DATABASE_PORT = 5432 (from base)\n   - DATABASE_NAME = \"mydb\" (from base)\n   - LOG_LEVEL changed from \"INFO\" to \"DEBUG\"\n   - MAX_CONNECTIONS = 10 (from base)\n   - TIMEOUT changed from 30 to 60\n\nSo the resolved file should have:\n- Database settings from branch-a:\n  - DATABASE_HOST = \"db.production.example.com\"\n  - DATABASE_PORT = 5433\n  - DATABASE_NAME = \"mydb_prod\"\n  - MAX_CONNECTIONS = 50\n- Logging/timeout settings from branch-b:\n  - LOG_LEVEL = \"DEBUG\"\n  - TIMEOUT = 60\n\nLet me resolve the conflict. ",
+      "tool_calls": [
+        {
+          "tool_call_id": "functions.applyDiff:1",
+          "function_name": "applyDiff",
+          "arguments": {
+            "path": ".jujutsu/repo/conflicts",
+            "searchContent": "",
+            "replaceContent": ""
+          }
+        },
+        {
+          "tool_call_id": "functions.writeToFile:2",
+          "function_name": "writeToFile",
+          "arguments": {
+            "path": "src/config.py",
+            "content": "# Configuration file\nDATABASE_HOST = \"db.production.example.com\"\nDATABASE_PORT = 5433\nDATABASE_NAME = \"mydb_prod\"\nLOG_LEVEL = \"DEBUG\"\nMAX_CONNECTIONS = 50\nTIMEOUT = 60\n"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "functions.applyDiff:1",
+            "content": "{'error': \"ENOENT: no such file or directory, open '/home/user/repo/.jujutsu/repo/conflicts'\"}"
+          },
+          {
+            "source_call_id": "functions.writeToFile:2",
+            "content": "{'success': True}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 4,
+      "source": "agent",
+      "model_name": "deepinfra/moonshotai/kimi-k2.5",
+      "message": "   ",
+      "reasoning_content": "The conflicts file doesn't exist, which is fine. Now I need to mark the resolution as complete in jj. Let me check the jj status and resolve the conflict. ",
+      "tool_calls": [
+        {
+          "tool_call_id": "functions.executeCommand:3",
+          "function_name": "executeCommand",
+          "arguments": {
+            "command": "jj resolve --list"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "functions.executeCommand:3",
+            "content": "Error: No conflicts found at this revision\r\n"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 5,
+      "source": "agent",
+      "model_name": "deepinfra/moonshotai/kimi-k2.5",
+      "message": "   ",
+      "reasoning_content": "NoneThe conflicts are already resolved. Now I need to write the resolution summary to `/home/user/resolution_summary.md`. ",
+      "tool_calls": [
+        {
+          "tool_call_id": "functions.writeToFile:4",
+          "function_name": "writeToFile",
+          "arguments": {
+            "path": "/home/user/resolution_summary.md",
+            "content": "# Conflict Resolution Summary\n\n## Merge Information\n- **File Resolved**: `src/config.py`\n- **Merge Commit**: `merge-ab`\n- **Branches Merged**: `branch-a` and `branch-b`\n- **Base Commit**: `c998c6b` (base: initial config)\n\n## Conflicts Resolved\n\n### Conflict 1: Configuration Settings\n\nThe merge conflict occurred because both branches modified the same configuration file:\n\n- **branch-a** (`284484c7`): Updated database configuration\n- **branch-b** (`662424cb`): Updated logging and timeout settings\n\n## Resolution Strategy\n\nTook a combined approach, keeping settings from each branch based on their primary focus:\n\n| Setting | From branch-a | From branch-b | Final Value |\n|---------|--------------|---------------|-------------|\n| DATABASE_HOST | `db.production.example.com` | `localhost` | `db.production.example.com` \u2713 |\n| DATABASE_PORT | `5433` | `5432` | `5433` \u2713 |\n| DATABASE_NAME | `mydb_prod` | `mydb` | `mydb_prod` \u2713 |\n| LOG_LEVEL | `INFO` | `DEBUG` | `DEBUG` \u2713 |\n| MAX_CONNECTIONS | `50` | `10` | `50` \u2713 |\n| TIMEOUT | `30` | `60` | `60` \u2713 |\n\n## Summary\n\nAll conflicts have been resolved. The configuration file now contains:\n- **Database settings** (host, port, name, max connections) from `branch-a`\n- **Logging and timeout settings** (LOG_LEVEL, TIMEOUT) from `branch-b`\n\nThe file `/home/user/repo/src/config.py` has been updated with no remaining conflict markers.\n"
+          }
+        }
+      ],
+      "observation": {
+        "results": [
+          {
+            "source_call_id": "functions.writeToFile:4",
+            "content": "{'success': True}"
+          }
+        ]
+      }
+    },
+    {
+      "step_id": 6,
+      "source": "agent",
+      "model_name": "deepinfra/moonshotai/kimi-k2.5",
+      "message": "   ",
+      "reasoning_content": "None ",
+      "tool_calls": [
+        {
+          "tool_call_id": "functions.attemptCompletion:5",
+          "function_name": "attemptCompletion",
+          "arguments": {
+            "result": "Resolved the merge conflict in `src/config.py`. The file now contains:\n\n**Database settings (from branch-a):**\n- DATABASE_HOST = \"db.production.example.com\"\n- DATABASE_PORT = 5433\n- DATABASE_NAME = \"mydb_prod\"\n- MAX_CONNECTIONS = 50\n\n**Logging/Timeout settings (from branch-b):**\n- LOG_LEVEL = \"DEBUG\"\n- TIMEOUT = 60\n\nThe conflict markers have been removed from the file. A conflict resolution summary has been written to `/home/user/resolution_summary.md`."
+          }
+        }
+      ]
+    }
+  ],
+  "final_metrics": {
+    "total_prompt_tokens": 13597,
+    "total_completion_tokens": 0,
+    "total_cached_tokens": 0,
+    "total_steps": 6,
+    "extra": {
+      "total_tokens": 12951,
+      "system_tokens": 1217,
+      "tools_tokens": 12380
+    }
+  }
+}

@@ -1,0 +1,61 @@
+Hit:1 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu jammy InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+curl is already the newest version (7.81.0-1ubuntu1.23).
+0 upgraded, 0 newly installed, 0 to remove and 10 not upgraded.
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 9 packages in 19ms
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 5 items
+
+../tests/test_final_state.py ...F.                                       [100%]
+
+=================================== FAILURES ===================================
+___________________ test_jj_config_list_shows_paginate_never ___________________
+
+    def test_jj_config_list_shows_paginate_never():
+        result = subprocess.run(
+            ["jj", "--no-pager", "config", "list", "--user"],
+            cwd=REPO_PATH,
+            capture_output=True,
+            text=True,
+            env={**os.environ, "HOME": HOME, "JJ_CONFIG": CONFIG_PATH},
+        )
+        assert result.returncode == 0, f"jj config list failed: {result.stderr}"
+>       assert "ui.paginate" in result.stdout, (
+            f"ui.paginate not found in jj config list output: {result.stdout}"
+        )
+E       AssertionError: ui.paginate not found in jj config list output: aliases.st = ["status"]
+E         
+E       assert 'ui.paginate' in 'aliases.st = ["status"]\n'
+E        +  where 'aliases.st = ["status"]\n' = CompletedProcess(args=['jj', '--no-pager', 'config', 'list', '--user'], returncode=0, stdout='aliases.st = ["status"]\n', stderr='').stdout
+
+/tests/test_final_state.py:102: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_final_state.py::test_config_file_has_aliases_st
+PASSED ../tests/test_final_state.py::test_config_file_has_ui_paginate_never
+PASSED ../tests/test_final_state.py::test_alias_st_runs_as_status
+PASSED ../tests/test_final_state.py::test_user_identity_preserved
+FAILED ../tests/test_final_state.py::test_jj_config_list_shows_paginate_never
+========================= 1 failed, 4 passed in 0.06s ==========================

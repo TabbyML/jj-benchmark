@@ -1,0 +1,89 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 5,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774603755.4967325,
+            "stop": 1774603755.6329339
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_git_head_not_detached",
+                "status": "passed",
+                "duration": 0.0020687608048319817,
+                "start": 1774603755.5085583,
+                "stop": 1774603755.510876,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_config_py_committed",
+                "status": "passed",
+                "duration": 0.039443509886041284,
+                "start": 1774603755.511085,
+                "stop": 1774603755.5506802,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_readme_modification_preserved",
+                "status": "passed",
+                "duration": 0.01740651298314333,
+                "start": 1774603755.5508444,
+                "stop": 1774603755.5684278,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_jj_and_git_in_sync",
+                "status": "passed",
+                "duration": 0.020656056003645062,
+                "start": 1774603755.5686183,
+                "stop": 1774603755.5894494,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_core_py_still_present",
+                "status": "passed",
+                "duration": 0.018249533837661147,
+                "start": 1774603755.5896318,
+                "stop": 1774603755.6080935,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_sync_report_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0006856697145849466,
+                "start": 1774603755.608363,
+                "stop": 1774603755.62967,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_sync_report_exists():\n>       assert os.path.isfile(\"/home/user/sync_report.txt\"), \\\n            \"sync_report.txt does not exist\"\nE       AssertionError: sync_report.txt does not exist\nE       assert False\nE        +  where False = <function isfile at 0x732665f54220>('/home/user/sync_report.txt')\nE        +    where <function isfile at 0x732665f54220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:78: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_sync_report_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00046498002484440804,
+                "start": 1774603755.6298923,
+                "stop": 1774603755.632719,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_sync_report_content():\n>       with open(\"/home/user/sync_report.txt\") as f:\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/sync_report.txt'\n\n/tests/test_final_state.py:83: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

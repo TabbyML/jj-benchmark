@@ -1,0 +1,80 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 6,
+            "passed": 4,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774604946.516989,
+            "stop": 1774604946.6312795
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_stack_bookmark_points_to_correct_commit",
+                "status": "passed",
+                "duration": 0.01627333089709282,
+                "start": 1774604946.526684,
+                "stop": 1774604946.5432472,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_feature_stack_commit_contents",
+                "status": "passed",
+                "duration": 0.01645064214244485,
+                "start": 1774604946.5434752,
+                "stop": 1774604946.5600839,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_parent_of_feature_stack_description",
+                "status": "passed",
+                "duration": 0.016283812001347542,
+                "start": 1774604946.560248,
+                "stop": 1774604946.5767138,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_parent_of_feature_stack_contents",
+                "status": "passed",
+                "duration": 0.025441809091717005,
+                "start": 1774604946.5769126,
+                "stop": 1774604946.6024802,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_grandparent_of_feature_stack_is_main",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.015365309780463576,
+                "start": 1774604946.6026187,
+                "stop": 1774604946.629288,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_grandparent_of_feature_stack_is_main():\n        # The parent of the 'Add feature A complete' commit is the `main` bookmark.\n        # So main should be feature-stack--\n        result = run_jj([\"log\", \"--no-graph\", \"-r\", \"feature-stack--\", \"-T\", 'bookmarks'])\n        assert result.returncode == 0, f\"jj log failed: {result.stderr}\"\n>       assert \"main\" in result.stdout, f\"Expected grandparent of feature-stack to be 'main', got bookmarks: {result.stdout}\"\nE       AssertionError: Expected grandparent of feature-stack to be 'main', got bookmarks: \nE       assert 'main' in ''\nE        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-r', 'feature-stack--', '-T', 'bookmarks'], returncode=0, stdout='', stderr='').stdout\n\n/tests/test_final_state.py:39: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_final_log_file_exists_and_correct",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00034289201721549034,
+                "start": 1774604946.6294293,
+                "stop": 1774604946.6311638,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_final_log_file_exists_and_correct():\n>       assert os.path.isfile(FINAL_LOG_FILE), f\"The file {FINAL_LOG_FILE} was not created.\"\nE       AssertionError: The file /home/user/workspace/final_log.txt was not created.\nE       assert False\nE        +  where False = <function isfile at 0x79b33ad6c220>('/home/user/workspace/final_log.txt')\nE        +    where <function isfile at 0x79b33ad6c220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:42: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

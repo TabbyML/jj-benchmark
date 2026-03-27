@@ -1,0 +1,86 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 7,
+            "passed": 6,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774603968.9512696,
+            "stop": 1774603969.100089
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_squash_log_exists",
+                "status": "passed",
+                "duration": 0.00028387922793626785,
+                "start": 1774603968.9603791,
+                "stop": 1774603968.9607952,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_fewer_bot_commits",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02365813311189413,
+                "start": 1774603968.9609232,
+                "stop": 1774603968.995223,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_fewer_bot_commits():\n        result = run_jj([\"log\", \"--no-graph\", \"-r\", 'author(\"bot@company.com\")',\n                         \"-T\", \"description.first_line() ++ '\\n'\"])\n        assert result.returncode == 0\n        lines = [l for l in result.stdout.splitlines() if l.strip()]\n        # Originally 8 bot commits in 3 consecutive groups; after squashing should be fewer\n>       assert len(lines) < 8, f\"After squashing, should have fewer than 8 bot commits, got {len(lines)}\"\nE       AssertionError: After squashing, should have fewer than 8 bot commits, got 8\nE       assert 8 < 8\nE        +  where 8 = len(['chore: automated format fix 3', 'chore: automated lint fix 5', 'chore: automated lint fix 4', 'chore: automated format fix 2', 'chore: automated lint fix 3', 'chore: automated format fix 1', ...])\n\n/tests/test_final_state.py:29: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_human_commits_preserved",
+                "status": "passed",
+                "duration": 0.02183271199464798,
+                "start": 1774603968.9953868,
+                "stop": 1774603969.0173962,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_squashed_bot_commits_have_correct_format",
+                "status": "passed",
+                "duration": 0.017029239796102047,
+                "start": 1774603969.017582,
+                "stop": 1774603969.0347633,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_squash_log_mentions_merged_commits",
+                "status": "passed",
+                "duration": 0.0002715522423386574,
+                "start": 1774603969.0349374,
+                "stop": 1774603969.0352936,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_main_bookmark_still_valid",
+                "status": "passed",
+                "duration": 0.02623371873050928,
+                "start": 1774603969.0353925,
+                "stop": 1774603969.0617647,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_data_and_main_py_intact",
+                "status": "passed",
+                "duration": 0.037721455097198486,
+                "start": 1774603969.0619287,
+                "stop": 1774603969.0998423,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

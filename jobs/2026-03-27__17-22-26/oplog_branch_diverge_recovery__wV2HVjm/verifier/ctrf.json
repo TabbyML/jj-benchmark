@@ -1,0 +1,137 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 10,
+            "passed": 1,
+            "failed": 9,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774604082.1894674,
+            "stop": 1774604082.252311
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_divergence_report_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0004592310870066285,
+                "start": 1774604082.200926,
+                "stop": 1774604082.2119806,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_divergence_report_exists():\n>       assert os.path.isfile(REPORT_FILE), f\"Divergence report {REPORT_FILE} does not exist.\"\nE       AssertionError: Divergence report /home/user/divergence-report.md does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x7defc1334220>('/home/user/divergence-report.md')\nE        +    where <function isfile at 0x7defc1334220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_analysis_log_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00033467996399849653,
+                "start": 1774604082.212127,
+                "stop": 1774604082.2140095,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_analysis_log_exists():\n>       assert os.path.isfile(LOG_FILE), f\"Analysis log {LOG_FILE} does not exist.\"\nE       AssertionError: Analysis log /home/user/divergence_analysis_log.txt does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x7defc1334220>('/home/user/divergence_analysis_log.txt')\nE        +    where <function isfile at 0x7defc1334220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:24: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_analysis_log_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002505209995433688,
+                "start": 1774604082.214141,
+                "stop": 1774604082.2157862,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_analysis_log_content():\n>       with open(LOG_FILE) as f:\n             ^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence_analysis_log.txt'\n\n/tests/test_final_state.py:28: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_report_has_section_headings",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00023929006420075893,
+                "start": 1774604082.2159028,
+                "stop": 1774604082.2175152,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_report_has_section_headings():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_final_state.py:38: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_report_has_commit_description",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002377110067754984,
+                "start": 1774604082.2176304,
+                "stop": 1774604082.2192376,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_report_has_commit_description():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_final_state.py:48: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_report_has_change_id",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00023740006145089865,
+                "start": 1774604082.2193518,
+                "stop": 1774604082.2209551,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_report_has_change_id():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_final_state.py:57: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_report_has_divergence_op_id",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00025377993006259203,
+                "start": 1774604082.2210693,
+                "stop": 1774604082.2227,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_report_has_divergence_op_id():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_final_state.py:68: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_report_has_first_develop_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0002349211135879159,
+                "start": 1774604082.2228143,
+                "stop": 1774604082.2244093,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_report_has_first_develop_commit():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_final_state.py:79: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_report_has_first_main_commit",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00024656986352056265,
+                "start": 1774604082.2245212,
+                "stop": 1774604082.226136,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_report_has_first_main_commit():\n>       with open(REPORT_FILE) as f:\n             ^^^^^^^^^^^^^^^^^\nE       FileNotFoundError: [Errno 2] No such file or directory: '/home/user/divergence-report.md'\n\n/tests/test_final_state.py:87: FileNotFoundError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_common_ancestor_is_correct",
+                "status": "passed",
+                "duration": 0.025729860877618194,
+                "start": 1774604082.2262533,
+                "stop": 1774604082.252152,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

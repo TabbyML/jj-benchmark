@@ -1,0 +1,62 @@
+[37m2026-03-27 09:41:18.754[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37mnative:1[39m[0m[0m[1m[37m	Pochi[39m[22m[0m[0m	pochi v0.6.5
+[37m2026-03-27 09:41:19.019[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m/$bunfs/root/pochi:503317[39m[0m[0m[1m[37m	loadAgents[39m[22m[0m[0m	Loaded 5 custom agents (5 valid, 0 invalid)
+[37m2026-03-27 09:41:19.021[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m/$bunfs/root/pochi:503318[39m[0m[0m[1m[37m	loadSkills[39m[22m[0m[0m	Loaded 2 skills (2 valid, 0 invalid)
+[37m2026-03-27 09:41:19.075[39m[0m[0m	[32m[1mDEBUG[22m[39m[0m[0m	[37m/$bunfs/root/pochi:439423[39m[0m[0m[1m[37m	PochiVendor[39m[22m[0m[0m	JWT is expiring or missing, fetching a new one
+472879 |         } else {
+472880 |           cArgs[i6] = args2[i6];
+472881 |         }
+472882 |       }
+472883 |     }
+472884 |     var ret = func(...cArgs);
+         ^
+(FiberFailure) RuntimeError: Unreachable code should not be executed (evaluating 'func(...cArgs)')
+ effect/Runtime/FiberFailure: Symbol(effect/Runtime/FiberFailure),
+ effect/Runtime/FiberFailure/Cause: {
+  _tag: "Die",
+  defect: 472879 |         } else {
+472880 |           cArgs[i6] = args2[i6];
+472881 |         }
+472882 |       }
+472883 |     }
+472884 |     var ret = func(...cArgs);
+         ^
+RuntimeError: Unreachable code should not be executed (evaluating 'func(...cArgs)')
+      at unknown:1:1
+      at unknown:1:1
+      at unknown:1:1
+      at ccall (/$bunfs/root/pochi:472884:19)
+      at /$bunfs/root/pochi:474003:22
+      at makeInMemoryDb (/$bunfs/root/pochi:475101:40)
+      at /$bunfs/root/pochi:475698:64
+      at effect_internal_function (/$bunfs/root/pochi:5902:20)
+      at Iterator (/$bunfs/root/pochi:18824:35)
+      at runLoop (/$bunfs/root/pochi:19563:43)
+      at evaluateEffect (/$bunfs/root/pochi:19227:37)
+      at evaluateMessageWhileSuspended (/$bunfs/root/pochi:19209:30)
+      at drainQueueOnCurrentThread (/$bunfs/root/pochi:19053:116)
+      at run (/$bunfs/root/pochi:19593:37)
+      at starveInternal (/$bunfs/root/pochi:15000:18)
+      at processTicksAndRejections (native:7:39)
+,
+  [Symbol(effect/Cause)]: [Object ...],
+  [Symbol(effect/Hash)]: [Function],
+  [Symbol(effect/Equal)]: [Function],
+  pipe: [Function: pipe],
+  toJSON: [Function: toJSON],
+  toString: [Function: toString],
+  [Symbol(nodejs.util.inspect.custom)]: [Function],
+},
+
+      at unknown:1:1
+      at unknown:1:1
+      at unknown:1:1
+      at ccall (/$bunfs/root/pochi:472884:19)
+      at /$bunfs/root/pochi:474003:22
+      at makeInMemoryDb (/$bunfs/root/pochi:475101:40)
+      at /$bunfs/root/pochi:475698:64
+      at @livestore/adapter-node:adapter (/$bunfs/root/pochi:476127:33)
+      at createStore:makeAdapter (/$bunfs/root/pochi:451506:102)
+      at createStore (/$bunfs/root/pochi:451536:35)
+      at createStore (/$bunfs/root/pochi:451467:33)
+
+Bun v1.3.4 (Linux x64)
