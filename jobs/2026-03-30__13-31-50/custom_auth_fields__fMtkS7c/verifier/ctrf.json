@@ -1,0 +1,68 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 4,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774849065.2594883,
+            "stop": 1774849070.588865
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_main_wasp_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 3.0033747509587556,
+                "start": 1774849065.2714214,
+                "stop": 1774849068.287705,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_main_wasp_content():\n        main_wasp_path = os.path.join(PROJECT_DIR, \"main.wasp\")\n        assert os.path.isfile(main_wasp_path), \"main.wasp file is missing.\"\n        with open(main_wasp_path, \"r\") as f:\n            content = f.read()\n>       assert \"fullName String\" in content, \"fullName field missing from User entity in main.wasp.\"\nE       AssertionError: fullName field missing from User entity in main.wasp.\nE       assert 'fullName String' in 'app myAuthApp {\\n  wasp: {\\n    version: \"^0.21.1\"\\n  },\\n  title: \"My Auth App\",\\n  auth: {\\n    userEntity: User,\\n...oute { path: \"/login\", to: LoginPage }\\npage LoginPage {\\n  component: import { LoginPage } from \"@src/LoginPage\"\\n}\\n'\n\n/tests/test_final_state.py:64: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_signup_logic_content",
+                "status": "passed",
+                "duration": 0.0003043419565074146,
+                "start": 1774849068.2879193,
+                "stop": 1774849068.2883222,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_signup_page_customization",
+                "status": "passed",
+                "duration": 0.0002603620523586869,
+                "start": 1774849068.2884324,
+                "stop": 1774849068.2887714,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_main_page_display",
+                "status": "passed",
+                "duration": 0.00025625090347602963,
+                "start": 1774849068.2888725,
+                "stop": 1774849068.289204,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_browser_verification",
+                "status": "passed",
+                "duration": 8.51399963721633e-05,
+                "start": 1774849068.2893019,
+                "stop": 0,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

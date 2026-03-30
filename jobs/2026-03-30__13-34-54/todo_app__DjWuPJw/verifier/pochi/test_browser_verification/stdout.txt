@@ -1,0 +1,17 @@
+- Initializing MCP connections...
+You
+You are a software tester assigned to verify a test case using the "browser" agent. ## Critical Instructions - You **must** use the "browser" agent to perform all verification steps. - **Do NOT** attempt to start new processes or execute commands to open ports. If the verification steps reference a URL or port that cannot be accessed, immediately return a `"fail"` status. - If you encounter any verification step that you cannot execute, or are unsure how to proceed at any point, immediately return a `"fail"` status. - For example: If you see a login page but no login step exists in the instructions, stop and return `"fail"`. ## Reason for this test The Wasp Todo application should support multi-user authentication, task creation, and task toggling with data isolation. ## Verification Steps Follow these steps precisely and in order: 1. Navigate to http://localhost:3000/signup. Create an account with username 'testuser' and password 'password123'. 2. Navigate to http://localhost:3000/login. Login with the credentials created above. 3. On the main page, enter 'Buy milk' in the task description field and click 'Create task'. 4. Refresh the page. Verify that the task 'Buy milk' is still visible. 5. Click the checkbox next to 'Buy milk'. Verify that the state updates. 6. Logout and signup with a different user 'otheruser' and password 'password123'. 7. Verify that the task 'Buy milk' is NOT visible for 'otheruser'. 8. Click the 'Logout' button. Verify redirection to the login page. ## Result Format At the end of the test, respond with the following JSON: { "status": "pass" | "fail", "reason": "A detailed explanation describing why the test passed or failed." }   
+
+Pochi
+💭 Thinking for 727 characters   
+📋 Updating todo list (6 items) ✔ 
+💭 Thinking for 291 characters   
+❯ Verify Wasp Todo application test case (browser)
+| 💫 Executing agent-browser --version
+| 📋 Updating todo list (0 items)
+| 📋 Updating todo list (8 items)
+| 📋 Updating todo list (0 items)
+| 📋 Updating todo list (8 items)
+| 💫 Executing agent-browser open http://localhost:3000/signup
+| 💫 Executing agent-browser snapshot -i
+| 💫 Executing agent-browser fill @e4 "testuser" && agent-browser fill @e5 "password123" && agent-browser click @e6

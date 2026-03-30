@@ -1,0 +1,110 @@
+- Initializing MCP connections...
+You
+# Wasp Todo List Application ## Background Wasp is a declarative DSL for building full-stack web applications using React, Node.js, and Prisma. In this task, you will build a simple, multi-user Todo List application that demonstrates the core features of Wasp: Entities, Operations (Queries & Actions), and Authentication. ## Requirements * **Authentication**: Implement username and password authentication. * **Data Model**: * `User` entity to store user information. * `Task` entity with `description` (String) and `isDone` (Boolean) fields. * A one-to-many relationship between `User` and `Task`. * **Operations**: * `getTasks` Query: Fetch only the tasks belonging to the logged-in user. * `createTask` Action: Create a new task for the logged-in user. * `updateTask` Action: Toggle the `isDone` status of a specific task. * **Frontend**: * A login/signup page using Wasp's built-in Auth UI. * A main page (protected) that displays the user's tasks. * A form to add new tasks. * Checkboxes to mark tasks as completed. * A logout button. ## Implementation Guide 1. **Initialize Project**: * Create a new Wasp project in `/home/user/todo-app` using the minimal template: `wasp new todo-app -t minimal`. 2. **Define Schema**: * In `schema.prisma`, define the `User` and `Task` models with the appropriate relation. 3. **Configure App**: * In `main.wasp`, set up the `app` declaration with `auth` (using `usernameAndPassword`). * Define `route` and `page` for `MainPage`, `LoginPage`, and `SignupPage`. * Set `authRequired: true` for the `MainPage`. 4. **Implement Operations**: * Declare `query getTasks`, `action createTask`, and `action updateTask` in `main.wasp`. * Implement the logic in `src/queries.ts` and `src/actions.ts`, ensuring you use `context.user` for security. 5. **Build UI**: * Use Wasp's `LoginForm` and `SignupForm` for authentication pages. * Use `useQuery` and `useAction` hooks in `src/MainPage.tsx` to interact with the backend. 6. **Database Migration**: * Run `wasp db migrate-dev` to apply your schema changes. ## Constraints * **Project Path**: `/home/user/todo-app` * **Start Command**: `wasp start` * **Port**: 3000 * **Database**: SQLite (default)   
+
+Pochi
+💭 Thinking for 853 characters   
+📋 Updating todo list (7 items) ✔ 
+💭 Thinking for 258 characters   
+💫 Executing wasp --version && mkdir -p /home/user && cd /home/user && wasp new todo-app -t minimal ✖ "Command exited with code 1"
+💭 Thinking for 319 characters   
+💫 Executing wasp version && mkdir -p /home/user && cd /home/user && wasp new todo-app -t minimal ✔ 
+💭 Thinking for 213 characters   
+📋 Updating todo list (7 items) ✔ 
+💭 Thinking for 287 characters   
+📂 Listing files in /home/user/todo-app recursively ✔ 
+💭 Thinking for 229 characters   
+📖 Reading /home/user/todo-app/schema.prisma ✔ 
+💭 Thinking for 450 characters   
+📖 Reading /home/user/todo-app/main.wasp ✔ 
+💭 Thinking for 1139 characters   
+✏️  Writing /home/user/todo-app/schema.prisma ✔ 
+💭 Thinking for 182 characters   
+📋 Updating todo list (7 items) ✔ 
+💭 Thinking for 380 characters   
+✏️  Writing /home/user/todo-app/main.wasp ✔ 
+💭 Thinking for 171 characters   
+📋 Updating todo list (7 items) ✔ 
+💭 Thinking for 821 characters   
+✏️  Writing /home/user/todo-app/src/queries.ts ✔ 
+💭 Thinking for 726 characters   
+✏️  Writing /home/user/todo-app/src/actions.ts ✔ 
+💭 Thinking for 645 characters   
+📋 Updating todo list (7 items) ✔ 
+💭 Thinking for 265 characters   
+✏️  Writing /home/user/todo-app/src/LoginPage.tsx ✔ 
+💭 Thinking for 254 characters   
+✏️  Writing /home/user/todo-app/src/SignupPage.tsx ✔ 
+💭 Thinking for 362 characters   
+📖 Reading /home/user/todo-app/src/MainPage.tsx ✔ 
+💭 Thinking for 655 characters   
+✏️  Writing /home/user/todo-app/src/MainPage.tsx ✔ 
+💭 Thinking for 199 characters   
+📋 Updating todo list (7 items) ✔ 
+💫 Executing cd /home/user/todo-app && wasp db migrate-dev --name init ✖ "Command exited with code 1"
+💭 Thinking for 289 characters   
+💭 Thinking for 1907 characters   
+✏️  Writing /home/user/todo-app/src/queries.ts ✔ 
+💭 Thinking for 321 characters   
+✏️  Writing /home/user/todo-app/src/actions.ts ✔ 
+💭 Thinking for 288 characters   
+✏️  Writing /home/user/todo-app/src/MainPage.tsx ✔ 
+💭 Thinking for 282 characters   
+💫 Executing cd /home/user/todo-app && wasp db migrate-dev --name init ✔ 
+💭 Thinking for 708 characters   
+💫 Executing ls -l /home/user/todo-app/.wasp/out/db/dev.db ✔ 
+💭 Thinking for 273 characters   
+💫 Executing cd /home/user/todo-app && wasp db migrate-dev ✔ 
+💭 Thinking for 227 characters   
+<br> <details> <summary><b>Task List</b></summary> - [x] Initialize Wasp project - [x] Define Prisma schema (User and Task) - [x] Configure Wasp app (Auth, Routes, Pages, Operations) - [x] Implement backend operations (Queries and Actions) - [x] Build frontend UI (MainPage, Login, Signup) - [x] Run database migrations - [ ] Verify application state </details> <br> I'm now moving on to the final verification step. ---   
+💭 Thinking for 260 characters   
+📋 Updating todo list (7 items) ✔ 
+💭 Thinking for 651 characters   
+📖 Reading /home/user/todo-app/main.wasp ✔ 
+💭 Thinking for 644 characters   
+📖 Reading /home/user/todo-app/src/Main.css ✔ 
+💭 Thinking for 167 characters   
+📋 Updating todo list (7 items) ✔ 
+💭 Thinking for 210 characters   
+🎉 Task Completed
+I have successfully built the Wasp Todo List application in `/home/user/todo-app`.
+
+### Key Features Implemented:
+
+1.  **Authentication**:
+    *   Set up `usernameAndPassword` auth in `main.wasp`.
+    *   Created `LoginPage.tsx` and `SignupPage.tsx` using Wasp's built-in `LoginForm` and `SignupForm`.
+    *   Configured `MainPage` to require authentication (`authRequired: true`).
+
+2.  **Data Model**:
+    *   Defined `User` and `Task` entities in `schema.prisma` with a one-to-many relationship.
+    *   Each `Task` has a `description` (String) and `isDone` (Boolean).
+
+3.  **Operations**:
+    *   `getTasks` Query: Fetches tasks belonging only to the logged-in user.
+    *   `createTask` Action: Creates a new task for the logged-in user.
+    *   `updateTask` Action: Toggles the completion status of a specific task.
+
+4.  **Frontend UI**:
+    *   `MainPage.tsx` displays the task list, a form to add new tasks, and a logout button.
+    *   Used `useQuery` and `useAction` hooks to interact with the backend.
+    *   Used `logout` from `wasp/client/auth` for user logout.
+
+5.  **Database Migration**:
+    *   Ran `wasp db migrate-dev` to apply the schema changes and initialize the SQLite database.
+
+### Project Structure:
+*   `main.wasp`: App configuration, routes, and operations.
+*   `schema.prisma`: Database schema.
+*   `src/queries.ts`: Backend logic for fetching tasks.
+*   `src/actions.ts`: Backend logic for creating and updating tasks.
+*   `src/MainPage.tsx`: Main application UI.
+*   `src/LoginPage.tsx` / `src/SignupPage.tsx`: Auth pages.
+
+You can start the application by running:
+```bash
+cd /home/user/todo-app
+wasp start
+```
+The application will be available on port 3000.   
+  

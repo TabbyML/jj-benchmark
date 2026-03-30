@@ -1,0 +1,68 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 4,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774848992.9438217,
+            "stop": 1774849212.9612005
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_files_exist",
+                "status": "passed",
+                "duration": 0.0003389129415154457,
+                "start": 1774848992.9551404,
+                "stop": 1774848992.9556231,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_schema_definitions",
+                "status": "passed",
+                "duration": 0.0002529304474592209,
+                "start": 1774848992.955748,
+                "stop": 1774848992.9560874,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_main_wasp_config",
+                "status": "passed",
+                "duration": 0.00023767445236444473,
+                "start": 1774848992.9561908,
+                "stop": 1774848992.9565108,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_operation_security",
+                "status": "passed",
+                "duration": 0.00023712962865829468,
+                "start": 1774848992.956611,
+                "stop": 1774848992.9569218,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_browser_verification",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 219.9651801250875,
+                "start": 1774848992.957019,
+                "stop": 1774849212.960928,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "start_app = None\n\n    def test_browser_verification(start_app):\n        reason = \"The Wasp Todo application should support multi-user authentication, task creation, and task toggling with data isolation.\"\n        truth = (\n            \"1. Navigate to http://localhost:3000/signup. Create an account with username 'testuser' and password 'password123'. \"\n            \"2. Navigate to http://localhost:3000/login. Login with the credentials created above. \"\n            \"3. On the main page, enter 'Buy milk' in the task description field and click 'Create task'. \"\n            \"4. Refresh the page. Verify that the task 'Buy milk' is still visible. \"\n            \"5. Click the checkbox next to 'Buy milk'. Verify that the state updates. \"\n            \"6. Logout and signup with a different user 'otheruser' and password 'password123'. \"\n            \"7. Verify that the task 'Buy milk' is NOT visible for 'otheruser'. \"\n            \"8. Click the 'Logout' button. Verify redirection to the login page.\"\n        )\n    \n        verifier = PochiVerifier()\n>       result = verifier.verify(\n            reason=reason,\n            truth=truth,\n            use_browser_agent=True,\n            trajectory_dir=\"/logs/verifier/pochi/test_browser_verification\"\n        )\n\n/tests/test_final_state.py:105: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.cache/uv/archive-v0/eaADEIvCyTgTNlsV5SmeY/lib/python3.12/site-packages/pochi_verifier/verifier.py:149: in verify\n    return self._parse_result(proc.stdout, proc.stderr)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <pochi_verifier.verifier.PochiVerifier object at 0x7a5bad6cde50>\nstdout = '- Initializing MCP connections...\\nYou\\nYou are a software tester assigned to verify a test case using the \"browser\" ...uring user signup. This prevented the creation of the \\'testuser\\' and all subsequent verification steps.\"\\n}   \\n  \\n'\nstderr = '\\x1b[37m2026-03-30 05:36:44.191\\x1b[39m\\x1b[0m\\x1b[0m\\t\\x1b[32m\\x1b[1mDEBUG\\x1b[22m\\x1b[39m\\x1b[0m\\x1b[0m\\t\\x1b[37mna...b[0m\\t\\x1b[37mevents:98\\x1b[39m\\x1b[0m\\x1b[0m\\x1b[1m\\x1b[37m\\tMjpegToMp4\\x1b[39m\\x1b[22m\\x1b[0m\\x1b[0m\\t[ffmpeg] end\\n'\n\n    def _parse_result(self, stdout: str, stderr: str) -> VerificationResult:\n        \"\"\"Parses the stdout from pochi to extract the verification result.\"\"\"\n        # Find the JSON object that follows the `Task Completed` marker (with possible whitespace)\n        match = re.search(r\"Task Completed.*?(\\{.*)\", stdout, re.DOTALL)\n        if not match:\n            raise PochiOutputError(\"Cannot extract the JSON from the output message.\")\n        json_str = match.group(1)\n        # Extract the full JSON object, accounting for nested/escaped braces\n        brace_count = 0\n        in_string = False\n        escape = False\n        for i, c in enumerate(json_str):\n            if escape:\n                escape = False\n                continue\n            if c == '\\\\':\n                escape = True\n                continue\n            if c == '\"':\n                in_string = not in_string\n            if not in_string:\n                if c == '{':\n                    brace_count += 1\n                elif c == '}':\n                    brace_count -= 1\n                    if brace_count == 0:\n                        json_str = json_str[:i+1]\n                        break\n        try:\n            parsed_json = json.loads(json_str)\n        except json.JSONDecodeError as e:\n            raise PochiOutputError(f\"Failed to parse JSON from pochi output: {e}\") from e\n    \n        status = parsed_json.get(\"status\")\n        reason = parsed_json.get(\"reason\")\n    \n        if not status or not reason:\n            raise PochiOutputError(\"The result JSON is missing 'status' or 'reason'.\")\n    \n        if status == \"fail\":\n>           raise VerificationFailedError(f\"Verification failed: {reason}\")\nE           pochi_verifier.verifier.VerificationFailedError: Verification failed: The verification process failed at Step 1 due to a persistent database error in the application. Despite attempts to initialize and correctly place the SQLite database file, the application returned a 'Save failed: there was a database error' message during user signup. This prevented the creation of the 'testuser' and all subsequent verification steps.\n\n.cache/uv/archive-v0/eaADEIvCyTgTNlsV5SmeY/lib/python3.12/site-packages/pochi_verifier/verifier.py:200: VerificationFailedError",
+                "message": "The test failed in the call phase"
+            }
+        ]
+    }
+}

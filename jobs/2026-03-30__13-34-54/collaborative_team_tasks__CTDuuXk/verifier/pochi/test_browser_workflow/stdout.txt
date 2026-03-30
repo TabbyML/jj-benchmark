@@ -1,0 +1,22 @@
+- Initializing MCP connections...
+You
+You are a software tester assigned to verify a test case using the "browser" agent. ## Critical Instructions - You **must** use the "browser" agent to perform all verification steps. - **Do NOT** attempt to start new processes or execute commands to open ports. If the verification steps reference a URL or port that cannot be accessed, immediately return a `"fail"` status. - If you encounter any verification step that you cannot execute, or are unsure how to proceed at any point, immediately return a `"fail"` status. - For example: If you see a login page but no login step exists in the instructions, stop and return `"fail"`. ## Reason for this test Verify the collaborative task manager: signup with fullName, team creation, task creation, and role-based access control. ## Verification Steps Follow these steps precisely and in order: 1. Navigate to http://localhost:3000/signup. 2. Sign up as Alice (username: 'alice', password: 'password123', fullName: 'Alice Smith'). 3. Log in as Alice. 4. Create a new team named 'Alpha Team'. 5. Within 'Alpha Team', create a task with description 'Alice's Task'. 6. Verify that 'Alice's Task' is visible in the team detail page. 7. Log out and sign up as Bob (username: 'bob', password: 'password123', fullName: 'Bob Jones'). 8. Attempt to access the 'Alpha Team' page or its tasks and verify that access is denied (403 Forbidden). ## Result Format At the end of the test, respond with the following JSON: { "status": "pass" | "fail", "reason": "A detailed explanation describing why the test passed or failed." }   
+
+Pochi
+💭 Thinking for 1234 characters   
+📋 Updating todo list (4 items) ✔ 
+💭 Thinking for 192 characters   
+❯ Verify the collaborative task manager at http://localhost:3000 (browser)
+| 💫 Executing agent-browser --version && curl -I http://localhost:3000/signup
+| 📋 Updating todo list (0 items)
+| 📋 Updating todo list (7 items)
+| 📋 Updating todo list (0 items)
+| 📋 Updating todo list (7 items)
+| 💫 Executing agent-browser open http://localhost:3000/signup && agent-browser snapshot -i
+| 💫 Executing agent-browser screenshot signup_page.png
+| 💫 Executing agent-browser get html @e1
+| 💫 Executing agent-browser snapshot -d 10
+| 💫 Executing agent-browser open http://localhost:3000/login && agent-browser snapshot -i
+| 💫 Executing agent-browser open http://localhost:3000/signup && agent-browser fill @e3 "alice" && agent-browser fill @e4 "password123" && agent-browser click @e5 && agent-browser wait 1000 && agent-browser snapshot -i
+| 💫 Executing agent-browser open http://localhost:3000/signup && agent-browser snapshot -i
+| 💫 Executing agent-browser fill @e3 "alice" && agent-browser fill @e4 "password123" && agent-browser click @e5 && agent-browser wait 1000 && agent-browser snapshot -i

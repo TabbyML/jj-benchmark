@@ -1,0 +1,89 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 6,
+            "passed": 1,
+            "failed": 5,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774848468.0933607,
+            "stop": 1774848845.0853543
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_main_wasp_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 8.156798907089978,
+                "start": 1774848468.105442,
+                "stop": 1774848476.2756622,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_main_wasp_content():\n        main_wasp_path = os.path.join(PROJECT_DIR, \"main.wasp\")\n        assert os.path.isfile(main_wasp_path), \"main.wasp file is missing.\"\n        with open(main_wasp_path, \"r\") as f:\n            content = f.read()\n>       assert \"fullName String\" in content, \"fullName field missing from User entity in main.wasp.\"\nE       AssertionError: fullName field missing from User entity in main.wasp.\nE       assert 'fullName String' in 'app myAuthApp {\\n  wasp: {\\n    version: \"^0.21.1\"\\n  },\\n  title: \"My Auth App\",\\n  auth: {\\n    userEntity: User,\\n...naction createTag {\\n  fn: import { createTag } from \"@src/tags/actions\",\\n  entities: [Tag]\\n}\\n// #endregion Tasks\\n'\n\n/tests/test_final_state.py:64: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_signup_logic_content",
+                "status": "passed",
+                "duration": 0.0003286210121586919,
+                "start": 1774848476.2758815,
+                "stop": 1774848476.2763143,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_signup_page_customization",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0003550429828464985,
+                "start": 1774848476.276431,
+                "stop": 1774848476.279497,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_signup_page_customization():\n        signup_page_path = os.path.join(PROJECT_DIR, \"src\", \"SignupPage.jsx\")\n        if not os.path.exists(signup_page_path):\n            signup_page_path = os.path.join(PROJECT_DIR, \"src\", \"SignupPage.tsx\")\n    \n>       assert os.path.isfile(signup_page_path), \"SignupPage component file is missing.\"\nE       AssertionError: SignupPage component file is missing.\nE       assert False\nE        +  where False = <function isfile at 0x761650d20220>('/home/user/my-auth-app/src/SignupPage.tsx')\nE        +    where <function isfile at 0x761650d20220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:80: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_main_page_display",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0003457129932940006,
+                "start": 1774848476.279625,
+                "stop": 1774848476.2819998,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_main_page_display():\n        main_page_path = os.path.join(PROJECT_DIR, \"src\", \"MainPage.jsx\")\n        if not os.path.exists(main_page_path):\n            main_page_path = os.path.join(PROJECT_DIR, \"src\", \"MainPage.tsx\")\n    \n>       assert os.path.isfile(main_page_path), \"MainPage component file is missing.\"\nE       AssertionError: MainPage component file is missing.\nE       assert False\nE        +  where False = <function isfile at 0x761650d20220>('/home/user/my-auth-app/src/MainPage.tsx')\nE        +    where <function isfile at 0x761650d20220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:91: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_browser_verification",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 368.7095618000021,
+                "start": 1774848476.2821248,
+                "stop": 1774848844.9978428,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_browser_verification():\n        reason = \"The application should feature a customized signup form with a 'Full Name' field and display it after login.\"\n        truth = (\n            \"Navigate to http://localhost:3000/signup. Verify that an input field with the label 'Full Name' exists in the form. \"\n            \"Try to sign up without entering a Full Name and verify the error 'Full name is required'. \"\n            \"Fill in the form with Username: 'testuser', Password: 'password123', Full Name: 'John Doe', and submit. \"\n            \"Verify redirection to the main page and that 'Hello, John Doe!' is displayed.\"\n        )\n    \n        verifier = PochiVerifier()\n>       result = verifier.verify(\n            reason=reason,\n            truth=truth,\n            use_browser_agent=True,\n            trajectory_dir=\"/logs/verifier/pochi/custom_auth_fields\"\n        )\n\n/tests/test_final_state.py:106: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n.cache/uv/archive-v0/ZH9lZePKKRrvcu2Sd5Vb0/lib/python3.12/site-packages/pochi_verifier/verifier.py:149: in verify\n    return self._parse_result(proc.stdout, proc.stderr)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = <pochi_verifier.verifier.PochiVerifier object at 0x761650462c30>\nstdout = '- Initializing MCP connections...\\nYou\\nYou are a software tester assigned to verify a test case using the \"browser\" ...ented the verification of redirection to the main page and the presence of the \\'Hello, John Doe!\\' text.\"\\n}   \\n  \\n'\nstderr = '\\x1b[37m2026-03-30 05:27:57.504\\x1b[39m\\x1b[0m\\x1b[0m\\t\\x1b[32m\\x1b[1mDEBUG\\x1b[22m\\x1b[39m\\x1b[0m\\x1b[0m\\t\\x1b[37mna...b[0m\\t\\x1b[37mevents:98\\x1b[39m\\x1b[0m\\x1b[0m\\x1b[1m\\x1b[37m\\tMjpegToMp4\\x1b[39m\\x1b[22m\\x1b[0m\\x1b[0m\\t[ffmpeg] end\\n'\n\n    def _parse_result(self, stdout: str, stderr: str) -> VerificationResult:\n        \"\"\"Parses the stdout from pochi to extract the verification result.\"\"\"\n        # Find the JSON object that follows the `Task Completed` marker (with possible whitespace)\n        match = re.search(r\"Task Completed.*?(\\{.*)\", stdout, re.DOTALL)\n        if not match:\n            raise PochiOutputError(\"Cannot extract the JSON from the output message.\")\n        json_str = match.group(1)\n        # Extract the full JSON object, accounting for nested/escaped braces\n        brace_count = 0\n        in_string = False\n        escape = False\n        for i, c in enumerate(json_str):\n            if escape:\n                escape = False\n                continue\n            if c == '\\\\':\n                escape = True\n                continue\n            if c == '\"':\n                in_string = not in_string\n            if not in_string:\n                if c == '{':\n                    brace_count += 1\n                elif c == '}':\n                    brace_count -= 1\n                    if brace_count == 0:\n                        json_str = json_str[:i+1]\n                        break\n        try:\n            parsed_json = json.loads(json_str)\n        except json.JSONDecodeError as e:\n            raise PochiOutputError(f\"Failed to parse JSON from pochi output: {e}\") from e\n    \n        status = parsed_json.get(\"status\")\n        reason = parsed_json.get(\"reason\")\n    \n        if not status or not reason:\n            raise PochiOutputError(\"The result JSON is missing 'status' or 'reason'.\")\n    \n        if status == \"fail\":\n>           raise VerificationFailedError(f\"Verification failed: {reason}\")\nE           pochi_verifier.verifier.VerificationFailedError: Verification failed: The verification failed because the signup form did not redirect to the main page after submission. While steps 1 to 3 were successful (navigating to the page, verifying the 'Full Name' field, and confirming the 'Full name is required' error message), step 5 failed. Upon filling out the form with 'testuser', 'password123', and 'John Doe' and submitting, the application displayed a 'Save failed: there was a database error' message and remained on the signup page. This prevented the verification of redirection to the main page and the presence of the 'Hello, John Doe!' text.\n\n.cache/uv/archive-v0/ZH9lZePKKRrvcu2Sd5Vb0/lib/python3.12/site-packages/pochi_verifier/verifier.py:200: VerificationFailedError",
+                "message": "The test failed in the call phase"
+            },
+            {
+                "name": "test_final_state.py::test_database_persistence",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.08491787896491587,
+                "start": 1774848844.9980104,
+                "stop": 1774848845.0851042,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_database_persistence():\n        # Attempt to find the SQLite database file\n        db_path = os.path.join(PROJECT_DIR, \".wasp\", \"out\", \"db\", \"dev.db\")\n        if not os.path.exists(db_path):\n            # Alternative common Wasp DB locations\n            db_path = os.path.join(PROJECT_DIR, \"dev.db\")\n    \n        if os.path.exists(db_path):\n            import sqlite3\n            conn = sqlite3.connect(db_path)\n            cursor = conn.cursor()\n            try:\n                # Check for the user and fullName\n                cursor.execute(\"SELECT fullName FROM User WHERE username = 'testuser'\")\n                row = cursor.fetchone()\n>               assert row is not None, \"testuser was not found in the database User table.\"\nE               AssertionError: testuser was not found in the database User table.\nE               assert None is not None\n\n/tests/test_final_state.py:129: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

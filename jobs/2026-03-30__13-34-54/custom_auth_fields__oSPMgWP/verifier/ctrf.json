@@ -1,0 +1,74 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 5,
+            "passed": 2,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1774849227.8345706,
+            "stop": 1774849233.1055157
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_main_wasp_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 3.0370806839782745,
+                "start": 1774849227.8471584,
+                "stop": 1774849230.8970838,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_main_wasp_content():\n        main_wasp_path = os.path.join(PROJECT_DIR, \"main.wasp\")\n        assert os.path.isfile(main_wasp_path), \"main.wasp file is missing.\"\n        with open(main_wasp_path, \"r\") as f:\n            content = f.read()\n>       assert \"fullName String\" in content, \"fullName field missing from User entity in main.wasp.\"\nE       AssertionError: fullName field missing from User entity in main.wasp.\nE       assert 'fullName String' in 'app myAuthApp {\\n  wasp: {\\n    version: \"^0.21.1\"\\n  },\\n  title: \"my-auth-app\",\\n  head: [\\n    \"<link rel=\\'icon\\'...naction createTag {\\n  fn: import { createTag } from \"@src/tags/actions\",\\n  entities: [Tag]\\n}\\n// #endregion Tasks\\n'\n\n/tests/test_final_state.py:64: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_signup_logic_content",
+                "status": "passed",
+                "duration": 0.00029984198044985533,
+                "start": 1774849230.8972964,
+                "stop": 1774849230.8976948,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_signup_page_customization",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00034639204386621714,
+                "start": 1774849230.897805,
+                "stop": 1774849230.9007134,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_signup_page_customization():\n        signup_page_path = os.path.join(PROJECT_DIR, \"src\", \"SignupPage.jsx\")\n        if not os.path.exists(signup_page_path):\n            signup_page_path = os.path.join(PROJECT_DIR, \"src\", \"SignupPage.tsx\")\n    \n>       assert os.path.isfile(signup_page_path), \"SignupPage component file is missing.\"\nE       AssertionError: SignupPage component file is missing.\nE       assert False\nE        +  where False = <function isfile at 0x769ea6f48220>('/home/user/my-auth-app/src/SignupPage.tsx')\nE        +    where <function isfile at 0x769ea6f48220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:80: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_main_page_display",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0003394419909454882,
+                "start": 1774849230.9008365,
+                "stop": 1774849230.903157,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_main_page_display():\n        main_page_path = os.path.join(PROJECT_DIR, \"src\", \"MainPage.jsx\")\n        if not os.path.exists(main_page_path):\n            main_page_path = os.path.join(PROJECT_DIR, \"src\", \"MainPage.tsx\")\n    \n>       assert os.path.isfile(main_page_path), \"MainPage component file is missing.\"\nE       AssertionError: MainPage component file is missing.\nE       assert False\nE        +  where False = <function isfile at 0x769ea6f48220>('/home/user/my-auth-app/src/MainPage.tsx')\nE        +    where <function isfile at 0x769ea6f48220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\n/tests/test_final_state.py:91: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_browser_verification",
+                "status": "passed",
+                "duration": 9.489100193604827e-05,
+                "start": 1774849230.9032767,
+                "stop": 0,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

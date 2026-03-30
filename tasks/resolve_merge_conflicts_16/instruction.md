@@ -1,9 +1,0 @@
-You are a developer migrating from Git to jj. You have a repository at `/home/user/repo`. There are two bookmarks, `feature-a` and `feature-b`, which modify the same line in `app.py` in conflicting ways. Your task is to:
-1. Create a new merge commit with both `feature-a` and `feature-b` as parents.
-2. Resolve the conflict in `app.py` so that it contains both features (e.g., both function calls). The final `app.py` should look like:
-```python
-def main():
-    print("Feature A")
-    print("Feature B")
-```
-3. Move the `feature-a` bookmark to this new resolved merge commit.

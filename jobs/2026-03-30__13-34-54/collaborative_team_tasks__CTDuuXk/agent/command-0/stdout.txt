@@ -1,0 +1,103 @@
+- Initializing MCP connections...
+You
+# Collaborative Task Manager with Role-Based Access ## Background Wasp is a full-stack framework that uses a declarative DSL to define application structure, combined with React and Node.js. This task involves building a multi-user task management system where users can belong to teams, and access is controlled based on membership. ## Requirements 1. **Data Model**: * `User`: Standard auth user. * `Team`: Has a `name` and a list of `members` (Users). * `Task`: Has a `description`, `isDone` status, and belongs to a `Team`. 2. **Authentication**: * Use `usernameAndPassword` authentication. * Customize the signup process to include a `fullName` field on the `User` entity. 3. **Operations**: * **Query** `getMyTeams`: Returns all teams the logged-in user belongs to. * **Action** `createTeam`: Creates a new team and adds the creator as the first member. * **Action** `createTask`: Creates a task for a specific team. **Constraint**: Only team members can create tasks for that team. * **Query** `getTeamTasks`: Returns all tasks for a specific team. **Constraint**: Only team members can view tasks for that team. 4. **Frontend**: * A Dashboard page showing the user's teams. * A Team Detail page (using dynamic routes `/team/:id`) showing tasks and a form to add new tasks. * Use Wasp's `useQuery` and `useAction` hooks for data fetching and mutations. ## Implementation Guide 1. **Project Setup**: * Initialize a new Wasp project: `wasp new team_manager -t minimal`. * Base path: `/home/user/team_manager`. 2. **Schema Definition**: * Define `User`, `Team`, and `Task` in `schema.prisma`. * Ensure proper relations (Many-to-Many between User and Team, One-to-Many between Team and Task). 3. **Auth Configuration**: * In `main.wasp`, configure `auth` with `userSignupFields` to capture `fullName`. * Implement `userSignupFields` in `src/auth.ts`. 4. **Backend Logic**: * Implement queries and actions in `src/queries.ts` and `src/actions.ts`. * Use `context.user` to verify identity and `context.entities` for database access. * Throw `HttpError(403)` if a user tries to access/modify a team they don't belong to. 5. **Frontend Implementation**: * Create `src/pages/Dashboard.tsx` and `src/pages/TeamPage.tsx`. * Use `wasp/client/operations` to call your queries and actions. ## Constraints * Project path: `/home/user/team_manager` * Start command: `wasp start` * Port: 3000 * Database: SQLite (default) * Use TypeScript for all implementation files.   
+
+Pochi
+💭 Thinking for 998 characters   
+💫 Executing mkdir -p /home/user && cd /home/user && wasp new team_manager -t minimal ✔ 
+💭 Thinking for 305 characters   
+📂 Listing files in /home/user/team_manager recursively ✔ 
+💭 Thinking for 219 characters   
+📋 Updating todo list (5 items) ✔ 
+💭 Thinking for 710 characters   
+📖 Reading /home/user/team_manager/schema.prisma ✔ 
+💭 Thinking for 688 characters   
+📖 Reading /home/user/team_manager/main.wasp ✔ 
+💭 Thinking for 1039 characters   
+✏️  Writing /home/user/team_manager/schema.prisma ✔ 
+💭 Thinking for 1172 characters   
+✏️  Writing /home/user/team_manager/main.wasp ✔ 
+💭 Thinking for 772 characters   
+✏️  Writing /home/user/team_manager/src/auth.ts ✔ 
+💭 Thinking for 676 characters   
+✏️  Writing /home/user/team_manager/src/queries.ts ✔ 
+💭 Thinking for 352 characters   
+✏️  Writing /home/user/team_manager/src/actions.ts ✔ 
+💭 Thinking for 1140 characters   
+✏️  Writing /home/user/team_manager/src/pages/Auth.tsx ✔ 
+💭 Thinking for 1039 characters   
+✏️  Writing /home/user/team_manager/src/pages/Dashboard.tsx ✔ 
+💭 Thinking for 1061 characters   
+✏️  Writing /home/user/team_manager/src/pages/TeamPage.tsx ✔ 
+💭 Thinking for 1171 characters   
+📋 Updating todo list (5 items) ✔ 
+💭 Thinking for 767 characters   
+💫 Executing cd /home/user/team_manager && wasp db migrate-dev --name init ✖ "Command exited with code 1"
+📖 Reading /home/user/team_manager/package.json ✔ 
+💭 Thinking for 799 characters   
+🔍 Searching for Link in /home/user/team_manager/.wasp/out/sdk/wasp/src/client ✖ "rg command failed with code 2: rg: /home/user/team_manager/.wasp/out/sdk/wasp/src/client: IO error for operation on /home/user/team_manager/.wasp/out/sdk/wasp/src/client: No such file or directory (os error 2)\n"
+💭 Thinking for 299 characters   
+🔧 Applying diff to /home/user/team_manager/src/pages/Dashboard.tsx ✔ 
+💭 Thinking for 242 characters   
+🔧 Applying diff to /home/user/team_manager/src/pages/TeamPage.tsx ✔ 
+💭 Thinking for 267 characters   
+💫 Executing cd /home/user/team_manager && wasp db migrate-dev --name init ✖ "Command exited with code 1"
+💭 Thinking for 770 characters   
+💫 Executing cd /home/user/team_manager && npm install react-router-dom ✔ 
+💭 Thinking for 297 characters   
+🔧 Applying diff to /home/user/team_manager/src/pages/TeamPage.tsx ✔ 
+💭 Thinking for 675 characters   
+🔧 Applying diff to /home/user/team_manager/src/pages/Dashboard.tsx ✔ 
+💭 Thinking for 216 characters   
+💫 Executing cd /home/user/team_manager && wasp db migrate-dev --name init ✔ 
+💭 Thinking for 675 characters   
+🛠️ Tool startBackgroundJob ✔ 
+💭 Thinking for 219 characters   
+🛠️ Tool readBackgroundJobOutput ✔ 
+💭 Thinking for 1839 characters   
+🛠️ Tool killBackgroundJob ✔ 
+💭 Thinking for 192 characters   
+🎉 Task Completed
+I have successfully built the Collaborative Task Manager using the Wasp framework.
+
+### Key Implementation Details:
+
+1.  **Data Model**:
+    *   Defined `User`, `Team`, and `Task` in `schema.prisma`.
+    *   Established a Many-to-Many relation between `User` and `Team` (members).
+    *   Established a One-to-Many relation between `Team` and `Task`.
+
+2.  **Authentication**:
+    *   Configured `usernameAndPassword` authentication in `main.wasp`.
+    *   Implemented `userSignupFields` in `src/auth.ts` to capture and validate a required `fullName` field during signup.
+    *   Created `src/pages/Auth.tsx` with customized login and signup pages.
+
+3.  **Backend Operations**:
+    *   **Queries** (`src/queries.ts`):
+        *   `getMyTeams`: Returns teams where the current user is a member.
+        *   `getTeamTasks`: Returns tasks for a specific team, with a membership check (throwing `403` if not a member).
+    *   **Actions** (`src/actions.ts`):
+        *   `createTeam`: Creates a team and automatically adds the creator as a member.
+        *   `createTask`: Creates a task for a team, with a membership check (throwing `403` if not a member).
+
+4.  **Frontend Implementation**:
+    *   **Dashboard** (`src/pages/Dashboard.tsx`): Displays a list of the user's teams and a form to create new teams.
+    *   **Team Page** (`src/pages/TeamPage.tsx`): Displays tasks for a specific team and a form to add new tasks. It uses Wasp's typed `Link` and dynamic routing.
+    *   **Routing**: Defined routes in `main.wasp` with `authRequired: true` for protected pages.
+
+5.  **Project Setup & Compilation**:
+    *   Initialized the project with `wasp new team_manager -t minimal`.
+    *   Successfully compiled the project and applied database migrations using `wasp db migrate-dev`.
+    *   Installed `react-router-dom` to support `useParams` in the Team Detail page.
+
+The project is located at `/home/user/team_manager`. You can start it by running:
+```bash
+cd /home/user/team_manager
+wasp start
+```
+
+🤖 Generated with [Pochi](https://getpochi.com)
+   
+- Waiting for async work to complete (timeout: 60000ms)...
+✖ Async wait timeout reached. Remaining: 0 subtask(s), 1 job(s)
+  

@@ -1,0 +1,102 @@
+{
+    "id": "5e09a2e5-506f-4931-a9e6-abea076c6f8a",
+    "task_name": "collaborative_team_tasks",
+    "trial_name": "collaborative_team_tasks__sLKRLQv",
+    "trial_uri": "file:///mnt/E/Icy/github/endless-datagen/tasks-wasp/jobs/2026-03-30__13-17-05/collaborative_team_tasks__sLKRLQv",
+    "task_id": {
+        "path": "tasks/collaborative_team_tasks"
+    },
+    "source": "tasks",
+    "task_checksum": "27e0f7ed7b65a1e2bca369a33cd5708ccd54540495342227be440582b84e4120",
+    "config": {
+        "task": {
+            "path": "tasks/collaborative_team_tasks",
+            "git_url": null,
+            "git_commit_id": null,
+            "overwrite": false,
+            "download_dir": null,
+            "source": "tasks"
+        },
+        "trial_name": "collaborative_team_tasks__sLKRLQv",
+        "trials_dir": "jobs/2026-03-30__13-17-05",
+        "timeout_multiplier": 1.0,
+        "agent_timeout_multiplier": null,
+        "verifier_timeout_multiplier": null,
+        "agent_setup_timeout_multiplier": null,
+        "environment_build_timeout_multiplier": null,
+        "agent": {
+            "name": null,
+            "import_path": "agents.pochi:Pochi",
+            "model_name": "google/gemini-3-flash",
+            "override_timeout_sec": null,
+            "override_setup_timeout_sec": null,
+            "max_timeout_sec": null,
+            "kwargs": {},
+            "env": {}
+        },
+        "environment": {
+            "type": "daytona",
+            "import_path": null,
+            "force_build": false,
+            "delete": true,
+            "override_cpus": null,
+            "override_memory_mb": null,
+            "override_storage_mb": null,
+            "override_gpus": null,
+            "suppress_override_warnings": false,
+            "kwargs": {}
+        },
+        "verifier": {
+            "override_timeout_sec": null,
+            "max_timeout_sec": null,
+            "disable": false
+        },
+        "artifacts": [],
+        "job_id": "bf9ca10b-f13b-4c7e-b624-447ea4c2b037"
+    },
+    "agent_info": {
+        "name": "pochi",
+        "version": "unknown",
+        "model_info": {
+            "name": "gemini-3-flash",
+            "provider": "google"
+        }
+    },
+    "agent_result": {
+        "n_input_tokens": 0,
+        "n_cache_tokens": 0,
+        "n_output_tokens": 0,
+        "cost_usd": null,
+        "rollout_details": null,
+        "metadata": null
+    },
+    "verifier_result": {
+        "rewards": {
+            "reward": 0.0
+        }
+    },
+    "exception_info": {
+        "exception_type": "AgentTimeoutError",
+        "exception_message": "Agent execution timed out after 600.0 seconds",
+        "exception_traceback": "Traceback (most recent call last):\n  File \"/home/icy/snap/code/230/.local/share/uv/python/cpython-3.12.10-linux-x86_64-gnu/lib/python3.12/asyncio/tasks.py\", line 520, in wait_for\n    return await fut\n           ^^^^^^^^^\n  File \"/mnt/E/Icy/github/endless-datagen/.venv/lib/python3.12/site-packages/harbor/agents/installed/base.py\", line 156, in run\n    result = await environment.exec(\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/E/Icy/github/endless-datagen/.venv/lib/python3.12/site-packages/harbor/environments/daytona.py\", line 1058, in exec\n    return await self._strategy.exec(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/E/Icy/github/endless-datagen/.venv/lib/python3.12/site-packages/harbor/environments/daytona.py\", line 255, in exec\n    return await self._env._sandbox_exec(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/E/Icy/github/endless-datagen/.venv/lib/python3.12/site-packages/harbor/environments/daytona.py\", line 939, in _sandbox_exec\n    result = await self._poll_response(session_id, response.cmd_id)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/E/Icy/github/endless-datagen/.venv/lib/python3.12/site-packages/harbor/environments/daytona.py\", line 880, in _poll_response\n    await asyncio.sleep(1)\n  File \"/home/icy/snap/code/230/.local/share/uv/python/cpython-3.12.10-linux-x86_64-gnu/lib/python3.12/asyncio/tasks.py\", line 665, in sleep\n    return await future\n           ^^^^^^^^^^^^\nasyncio.exceptions.CancelledError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/mnt/E/Icy/github/endless-datagen/.venv/lib/python3.12/site-packages/harbor/trial/trial.py\", line 259, in _execute_agent\n    await asyncio.wait_for(\n  File \"/home/icy/snap/code/230/.local/share/uv/python/cpython-3.12.10-linux-x86_64-gnu/lib/python3.12/asyncio/tasks.py\", line 519, in wait_for\n    async with timeouts.timeout(timeout):\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/icy/snap/code/230/.local/share/uv/python/cpython-3.12.10-linux-x86_64-gnu/lib/python3.12/asyncio/timeouts.py\", line 115, in __aexit__\n    raise TimeoutError from exc_val\nTimeoutError\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/mnt/E/Icy/github/endless-datagen/.venv/lib/python3.12/site-packages/harbor/trial/trial.py\", line 483, in run\n    await self._execute_agent()\n  File \"/mnt/E/Icy/github/endless-datagen/.venv/lib/python3.12/site-packages/harbor/trial/trial.py\", line 268, in _execute_agent\n    raise AgentTimeoutError(\nharbor.trial.trial.AgentTimeoutError: Agent execution timed out after 600.0 seconds\n",
+        "occurred_at": "2026-03-30T13:27:17.538595"
+    },
+    "started_at": "2026-03-30T05:17:05.689007Z",
+    "finished_at": "2026-03-30T05:30:04.926348Z",
+    "environment_setup": {
+        "started_at": "2026-03-30T05:17:05.689252Z",
+        "finished_at": "2026-03-30T05:17:08.223140Z"
+    },
+    "agent_setup": {
+        "started_at": "2026-03-30T05:17:08.223197Z",
+        "finished_at": "2026-03-30T05:17:17.529882Z"
+    },
+    "agent_execution": {
+        "started_at": "2026-03-30T05:17:17.529995Z",
+        "finished_at": "2026-03-30T05:27:17.531277Z"
+    },
+    "verifier": {
+        "started_at": "2026-03-30T05:27:27.417203Z",
+        "finished_at": "2026-03-30T05:30:03.782310Z"
+    }
+}

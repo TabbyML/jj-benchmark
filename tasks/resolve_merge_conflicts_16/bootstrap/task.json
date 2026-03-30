@@ -1,5 +1,0 @@
-{
-  "task_name": "resolve_merge_conflicts_16",
-  "task_description": "You are a developer migrating from Git to jj. You have a repository at `/home/user/repo`. There are two bookmarks, `feature-a` and `feature-b`, which modify the same line in `app.py` in conflicting ways. Your task is to:\n1. Create a new merge commit with both `feature-a` and `feature-b` as parents.\n2. Resolve the conflict in `app.py` so that it contains both features (e.g., both function calls). The final `app.py` should look like:\n```python\ndef main():\n    print(\"Feature A\")\n    print(\"Feature B\")\n```\n3. Move the `feature-a` bookmark to this new resolved merge commit.",
-  "truth": "The repository at `/home/user/repo` must have a commit that is a merge of the original `feature-a` and `feature-b` commits. The `feature-a` bookmark must point to this new merge commit. The file `app.py` in this commit must contain exactly the resolved content without any conflict markers."
-}

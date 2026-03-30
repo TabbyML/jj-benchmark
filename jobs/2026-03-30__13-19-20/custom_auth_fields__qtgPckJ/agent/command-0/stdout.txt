@@ -1,0 +1,92 @@
+- Initializing MCP connections...
+You
+# Customizing Wasp Signup with Extra Fields ## Background Wasp provides a powerful authentication system out of the box. While the default setup handles email/password or social logins, many real-world applications require collecting additional information during registration, such as a user's full name or organization. This task involves extending the Wasp `User` entity and the built-in `SignupForm` to collect and save a `fullName` field. ## Requirements * **Database Schema**: Update the `User` entity to include a `fullName` string field. * **Backend Logic**: Implement a `userSignupFields` function to process and validate the `fullName` from the signup data. * **Frontend UI**: Customize the `SignupForm` component to include a "Full Name" input field with basic validation. * **Display**: Show the `fullName` of the logged-in user on the main page. ## Implementation Guide ### 1. Project Setup Initialize a new Wasp project in `/home/user/my-auth-app`: ```bash wasp new my-auth-app cd my-auth-app ``` ### 2. Update Schema (`main.wasp`) Modify the `User` entity to add `fullName`: ```wasp entity User { id Int @id @default(autoincrement()) username String @unique password String fullName String // Add this field } ``` ### 3. Configure Auth (`main.wasp`) In the `auth` section of your `app` declaration, add the `userSignupFields` import: ```wasp app myAuthApp { wasp: { version: "^0.15.0" }, title: "My Auth App", auth: { userEntity: User, methods: { usernameAndPassword: {} }, onAuthFailedRedirectTo: "/login", userSignupFields: import { userSignupFields } from "@src/auth/signup.js" } } ``` ### 4. Backend Logic (`src/auth/signup.js`) Create `src/auth/signup.js` and export `userSignupFields`. Use `defineUserSignupFields` to map the incoming data to your entity fields: ```javascript import { defineUserSignupFields } from 'wasp/server/auth' export const userSignupFields = defineUserSignupFields({ fullName: (data) => { if (!data.fullName) { throw new Error('Full name is required') } return data.fullName }, }) ``` ### 5. Frontend UI (`src/SignupPage.jsx`) Customize the `SignupForm` by passing the `additionalFields` prop: ```javascript import { SignupForm } from 'wasp/client/auth' export const SignupPage = () => { return ( <SignupForm additionalFields={[ { name: 'fullName', label: 'Full Name', type: 'input', validations: { required: 'Full name is required', }, }, ]} /> ) } ``` Remember to update `main.wasp` to use this custom `SignupPage` component for the `/signup` route. ### 6. Display User Info (`src/MainPage.jsx`) Update the `MainPage` to display the user's full name: ```javascript export const MainPage = ({ user }) => { return ( <div> <h1>Hello, {user.fullName}!</h1> {/* ... logout button ... */} </div> ) } ``` ## Constraints * Project path: `/home/user/my-auth-app` * Start command: `wasp start` (Note: You'll need to run `wasp db migrate-dev` first) * Port: 3000   
+
+Pochi
+💭 Thinking for 560 characters   
+📋 Updating todo list (6 items) ✔ 
+💫 Executing ls -d /home/user || mkdir -p /home/user ✔ 
+💭 Thinking for 261 characters   
+💫 Executing wasp version ✔ 
+💭 Thinking for 283 characters   
+💫 Executing cd /home/user && wasp new my-auth-app --template saas ✔ 
+💭 Thinking for 258 characters   
+📂 Listing files in /home/user/my-auth-app recursively ✔ 
+💭 Thinking for 645 characters   
+📖 Reading /home/user/my-auth-app/app/main.wasp ✔ 
+💭 Thinking for 786 characters   
+📖 Reading /home/user/my-auth-app/app/schema.prisma ✔ 
+💭 Thinking for 649 characters   
+💫 Executing rm -rf /home/user/my-auth-app && cd /home/user && printf "1\n" | wasp new my-auth-app ✔ 
+💭 Thinking for 206 characters   
+📂 Listing files in /home/user/my-auth-app recursively ✔ 
+💭 Thinking for 233 characters   
+📖 Reading /home/user/my-auth-app/main.wasp ✔ 
+📖 Reading /home/user/my-auth-app/schema.prisma ✔ 
+💭 Thinking for 306 characters   
+💭 Thinking for 2260 characters   
+📋 Updating todo list (6 items) ✔ 
+✏️  Writing /home/user/my-auth-app/main.wasp ✔ 
+💭 Thinking for 677 characters   
+✏️  Writing /home/user/my-auth-app/src/auth/signup.js ✔ 
+💭 Thinking for 250 characters   
+✏️  Writing /home/user/my-auth-app/src/SignupPage.jsx ✔ 
+💭 Thinking for 281 characters   
+✏️  Writing /home/user/my-auth-app/src/MainPage.jsx ✔ 
+✏️  Writing /home/user/my-auth-app/src/LoginPage.jsx ✔ 
+💭 Thinking for 196 characters   
+📖 Reading /home/user/my-auth-app/src/App.tsx ✔ 
+💭 Thinking for 357 characters   
+📂 Listing files in /home/user/my-auth-app ✔ 
+💭 Thinking for 724 characters   
+✏️  Writing /home/user/my-auth-app/schema.prisma ✔ 
+💭 Thinking for 191 characters   
+💫 Executing cd /home/user/my-auth-app && wasp db migrate-dev init-auth ✖ "Command exited with code 1"
+💭 Thinking for 696 characters   
+✏️  Writing /home/user/my-auth-app/main.wasp ✔ 
+💭 Thinking for 350 characters   
+✏️  Writing /home/user/my-auth-app/schema.prisma ✔ 
+💭 Thinking for 282 characters   
+💫 Executing cd /home/user/my-auth-app && wasp db migrate-dev init-auth ✖ "Command exited with code 1"
+💭 Thinking for 652 characters   
+✏️  Writing /home/user/my-auth-app/main.wasp ✔ 
+💭 Thinking for 282 characters   
+💫 Executing cd /home/user/my-auth-app && wasp db migrate-dev init-auth ✖ "Command exited with code 1"
+💭 Thinking for 359 characters   
+✏️  Writing /home/user/my-auth-app/main.wasp ✔ 
+💭 Thinking for 282 characters   
+💫 Executing cd /home/user/my-auth-app && wasp db migrate-dev init-auth ✖ "Command exited with code 1"
+💭 Thinking for 882 characters   
+💫 Executing rm -rf /home/user/my-auth-app/src/tasks /home/user/my-auth-app/src/tags /home/user/my-auth-app/src/auth/email ✔ 
+💭 Thinking for 318 characters   
+📖 Reading /home/user/my-auth-app/src/App.tsx ✔ 
+💭 Thinking for 311 characters   
+📖 Reading /home/user/my-auth-app/src/shared/components/Header.tsx ✔ 
+💭 Thinking for 389 characters   
+💫 Executing cd /home/user/my-auth-app && wasp db migrate-dev init-auth ✖ "Command exited with code 1"
+💭 Thinking for 358 characters   
+💫 Executing wasp db migrate-dev --help ✖ "Command exited with code 1"
+💭 Thinking for 148 characters   
+💫 Executing cd /home/user/my-auth-app && wasp db migrate-dev --name init-auth ✔ 
+💭 Thinking for 1174 characters   
+📋 Updating todo list (6 items) ✔ 
+🎉 Task Completed
+I have successfully customized the Wasp signup process with an extra `fullName` field.
+
+### Summary of Changes:
+1.  **Project Initialization**: Created a new Wasp project in `/home/user/my-auth-app` using the basic template.
+2.  **Schema Update**: Modified `schema.prisma` to include the `fullName` field in the `User` entity, along with `username` and `password` for authentication.
+3.  **Auth Configuration**: Updated `main.wasp` to use the `usernameAndPassword` authentication method and configured the `userSignupFields` import to handle the additional field.
+4.  **Backend Logic**: Created `src/auth/signup.js` to process and validate the `fullName` during registration.
+5.  **Frontend Customization**:
+    *   Created `src/SignupPage.jsx` using the `SignupForm` component with the `additionalFields` prop to collect the "Full Name".
+    *   Created `src/LoginPage.jsx` for user login.
+    *   Updated `src/MainPage.jsx` to display the logged-in user's full name.
+6.  **Database Migration**: Executed `wasp db migrate-dev` to apply the schema changes to the database.
+
+The application is now ready to collect and display the user's full name during the signup process.
+
+🤖 Generated with [Pochi](https://getpochi.com) | [Task](https://getpochi.com/task/wasp-signup-customization)
+
+Co-Authored-By: Pochi <noreply@getpochi.com>   
+  
