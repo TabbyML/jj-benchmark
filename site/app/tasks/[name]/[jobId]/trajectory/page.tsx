@@ -353,11 +353,7 @@ function TrajectoryPageFallback({ tabsConfig }: { tabsConfig: TabConfig[] }) {
               {tabsConfig.map((tab, index) => (
                 <div
                   key={tab.value}
-                  className={`flex h-full w-full items-center justify-center rounded-lg border-0 py-0 leading-none text-sm font-medium transition-colors ${
-                    index === 0
-                      ? "bg-primary/18 text-foreground shadow-none"
-                      : "text-muted-foreground"
-                  }`}
+                  className="flex h-full w-full items-center justify-center rounded-lg border-0 py-0 leading-none text-sm font-medium transition-colors text-muted-foreground"
                 >
                   {tab.label}
                 </div>
