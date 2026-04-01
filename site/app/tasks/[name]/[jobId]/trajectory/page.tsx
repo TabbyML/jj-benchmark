@@ -24,6 +24,7 @@ type TrialEntry = {
     verifier?: number | null;
   };
   trajectory_id?: string;
+  browser_verification_cases?: string[];
 };
 
 function formatStartTime(jobName: string): string {
@@ -151,6 +152,16 @@ function buildClipUrl(jobName: string, trialName: string, title: string): string
   return url.toString();
 }
 
+function buildBrowserVerificationUrl(jobName: string, trialName: string, testCase: string): string {
+  const ownerRepo = getGithubOwnerRepo();
+  const branch = getGithubBranchName();
+  const url = new URL(
+    `/f/raw.githubusercontent.com/${ownerRepo}/refs/heads/${branch}/jobs/${jobName}/${trialName}/verifier/pochi/${testCase}/trajectory.jsonl`,
+    getServerBaseUrl(),
+  );
+  return url.toString();
+}
+
 function buildRawGithubContentUrl(jobName: string, trialName: string, filePath: string): string {
   const ownerRepo = getGithubOwnerRepo();
   const branch = getGithubBranchName();
@@ -266,10 +277,16 @@ export default async function TrajectoryRoutePage({
   const trajectoryUrl = trialEntry
     ? buildClipUrl(trialEntry.job_name, trialEntry.trial_name, resolvedParams.name)
     : null;
-  
+  const browserVerificationUrls = trialEntry?.browser_verification_cases
+    ? trialEntry.browser_verification_cases.map((testCase) => ({
+        name: testCase,
+        url: buildBrowserVerificationUrl(trialEntry.job_name, trialEntry.trial_name, testCase),
+      }))
+    : [];
+
   // Redirect
   if (!trajectoryUrl || !trialEntry) {
-    redirect(fallbackUrl ?? '/tasks');
+    redirect(fallbackUrl ?? "/tasks");
   }
 
   const stderrLogUrl = trialEntry
@@ -315,7 +332,8 @@ export default async function TrajectoryRoutePage({
       <div className="min-h-0 flex-1">
         <TrajectoryPage
           trajectoryUrl={trajectoryUrl}
-          fallbackUrl={fallbackUrl ?? ''}
+          browserVerificationUrls={browserVerificationUrls}
+          fallbackUrl={fallbackUrl ?? ""}
           stderrLogUrl={stderrLogUrl}
           verifierLogUrl={verifierLogUrl}
         />
