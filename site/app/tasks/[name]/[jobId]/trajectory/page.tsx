@@ -315,7 +315,7 @@ export default async function TrajectoryRoutePage({
     : null;
 
 
-  if (browserVerificationUrls) {
+  if (browserVerificationUrls.length) {
     tabsConfig.push({
       value: "browser-verification",
       label: (

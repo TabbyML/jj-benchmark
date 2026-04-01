@@ -182,7 +182,11 @@ export function TrajectoryPage({
             className="flex h-full min-h-0 flex-col gap-0 overflow-hidden rounded-xl border border-border bg-background/70 backdrop-blur-sm shadow-sm"
           >
             <div className="border-b border-border bg-background/40 px-3 py-3 sm:px-4">
-              <TabsList className="flex h-11 w-full sm:w-[640px] max-w-full items-stretch gap-1 rounded-xl bg-muted/55 p-1">
+              <TabsList
+                className={`flex h-11 w-full ${
+                  tabsConfig.length <= 3 ? "sm:w-[480px]" : "sm:w-[640px]"
+                } max-w-full items-stretch gap-1 rounded-xl bg-muted/55 p-1`}
+              >
                 {tabsConfig.map((tab) => (
                   <TabsTrigger
                     key={tab.value}
@@ -267,7 +271,7 @@ export function TrajectoryPage({
                       ))}
                     </div>
                   </div>
-                  <div className="relative min-h-0 flex-1 border-t border-border/50">
+                  <div className="relative min-h-0 flex-1">
                     <div
                       className={`absolute inset-0 z-10 overflow-auto bg-background/80 transition-opacity duration-420 ease-out delay-220 ${
                         !mounted || browserIframeLoading[activeBrowserVerificationTab]
