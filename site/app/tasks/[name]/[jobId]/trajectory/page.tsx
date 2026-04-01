@@ -1,8 +1,9 @@
 import tasksData from "@/zealt/tasks.json";
-import { TrajectoryPage } from "./components/trajectory-page";
+import { TrajectoryPage, type TabConfig } from "./components/trajectory-page";
 import zealtConfig from "@/zealt/config.json";
 import { redirect } from "next/navigation";
 import { AlertTriangle, Check, ExternalLink, HelpCircle, X as XIcon } from "lucide-react";
+import { Suspense } from "react";
 
 
 type RouteParams = {
@@ -251,6 +252,21 @@ export default async function TrajectoryRoutePage({
 }) {
   const resolvedParams = await params;
 
+  const tabsConfig: TabConfig[] = [
+    {
+      value: "trajectory",
+      label: "Trajectory",
+    },
+    {
+      value: "log",
+      label: "Log",
+    },
+    {
+      value: "test",
+      label: "Test",
+    },
+  ];
+
   const trialEntry = findTrialEntry(resolvedParams.name, resolvedParams.jobId);
   const fallbackUrl = trialEntry
     ? buildFallbackUrl(trialEntry.job_name, trialEntry.trial_name)
@@ -313,12 +329,67 @@ export default async function TrajectoryRoutePage({
         </div>
       </div>
       <div className="min-h-0 flex-1">
-        <TrajectoryPage
-          trajectoryUrl={trajectoryUrl}
-          fallbackUrl={fallbackUrl ?? ''}
-          stderrLogUrl={stderrLogUrl}
-          verifierLogUrl={verifierLogUrl}
-        />
+        <Suspense fallback={<TrajectoryPageFallback tabsConfig={tabsConfig} />}>
+          <TrajectoryPage
+            trajectoryUrl={trajectoryUrl}
+            fallbackUrl={fallbackUrl ?? ''}
+            stderrLogUrl={stderrLogUrl}
+            verifierLogUrl={verifierLogUrl}
+            tabsConfig={tabsConfig}
+          />
+        </Suspense>
+      </div>
+    </div>
+  );
+}
+
+function TrajectoryPageFallback({ tabsConfig }: { tabsConfig: TabConfig[] }) {
+  return (
+    <div className="h-full w-full pb-4 pt-4 sm:pb-6 sm:pt-5">
+      <div className="mx-auto h-full w-full max-w-[1400px] px-4 sm:px-7 lg:px-10">
+        <div className="flex h-full min-h-0 flex-col gap-0 overflow-hidden rounded-xl border border-border bg-background/70 backdrop-blur-sm shadow-sm">
+          <div className="border-b border-border bg-background/40 px-3 py-3 sm:px-4">
+            <div className="grid h-11 w-[300px] max-w-full grid-cols-3 items-stretch gap-1 rounded-xl bg-muted/55 p-1">
+              {tabsConfig.map((tab, index) => (
+                <div
+                  key={tab.value}
+                  className={`flex h-full w-full items-center justify-center rounded-lg border-0 py-0 leading-none text-sm font-medium transition-colors ${
+                    index === 0
+                      ? "bg-primary/18 text-foreground shadow-none"
+                      : "text-muted-foreground"
+                  }`}
+                >
+                  {tab.label}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative min-h-0 flex-1 overflow-hidden px-2">
+            <div className="absolute inset-0 z-10 overflow-auto bg-background/80">
+              <div className="animate-pulse space-y-2 p-4">
+                <div className="flex items-center space-x-3">
+                  <div className="size-6 rounded-full bg-muted/50" />
+                  <div className="h-4 w-16 bg-muted/50 rounded" />
+                </div>
+                <div className="space-y-2 pt-1">
+                  <div className="h-4 w-[80%] bg-muted/50 rounded" />
+                  <div className="h-4 w-[50%] bg-muted/50 rounded" />
+                </div>
+                <div className="mt-8 flex items-center space-x-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="size-6 rounded-full bg-muted/50" />
+                    <div className="h-4 w-16 bg-muted/50 rounded" />
+                  </div>
+                </div>
+                <div className="space-y-2 pt-1">
+                  <div className="h-4 w-[80%] bg-muted/50 rounded" />
+                  <div className="h-4 w-[80%] bg-muted/50 rounded" />
+                  <div className="h-4 w-[50%] bg-muted/50 rounded" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
