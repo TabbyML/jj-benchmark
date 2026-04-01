@@ -1,4 +1,10 @@
-mkdir -p ~/.pochi && cat << EOF > ~/.pochi/config.jsonc
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash  && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
 {
   "providers": {
     "deepinfra": {
@@ -40,7 +46,8 @@ mkdir -p ~/.pochi && cat << EOF > ~/.pochi/config.jsonc
   }
 }
 EOF
-sed -i 's/OPENAI_API_KEY/'$OPENAI_API_KEY'/g' ~/.pochi/config.jsonc && sed -i 's/DEEPINFRA_API_KEY/'$DEEPINFRA_API_KEY'/g' ~/.pochi/config.jsonc && sed -i 's/ANTHROPIC_API_KEY/'$ANTHROPIC_API_KEY'/g' ~/.pochi/config.jsonc && pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --stream-json /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3-flash --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
 You are a developer migrating from Git to `jj` (Jujutsu), working in a repository at `/home/user/project`.
 
 The repository has the following structure:
@@ -62,3 +69,6 @@ Your task is complete when:
 - `/home/user/project/rebase.log` exists and contains both `chore: project setup` and `feat: add helper`
 
 EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
