@@ -94,7 +94,6 @@ export function TrajectoryPage({
     setMounted(true);
   }, []);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: need to reset iframe loading state when iframeUrl changes
   useEffect(() => {
     if (!mounted || !iframeUrl) {
       return;
@@ -183,12 +182,12 @@ export function TrajectoryPage({
             className="flex h-full min-h-0 flex-col gap-0 overflow-hidden rounded-xl border border-border bg-background/70 backdrop-blur-sm shadow-sm"
           >
             <div className="border-b border-border bg-background/40 px-3 py-3 sm:px-4">
-              <TabsList className="grid h-11 w-[300px] max-w-full grid-cols-3 items-stretch gap-1 rounded-xl bg-muted/55 p-1">
+              <TabsList className="flex h-11 w-full sm:w-[640px] max-w-full items-stretch gap-1 rounded-xl bg-muted/55 p-1">
                 {tabsConfig.map((tab) => (
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
-                    className="h-full w-full cursor-pointer rounded-lg border-0 py-0 leading-none text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground data-[state=active]:bg-primary/18 data-[state=active]:text-foreground data-[state=active]:shadow-none"
+                    className="flex-1 h-full cursor-pointer rounded-lg border-0 py-0 leading-none text-muted-foreground transition-colors hover:bg-primary/10 hover:text-foreground data-[state=active]:bg-primary/18 data-[state=active]:text-foreground data-[state=active]:shadow-none"
                   >
                     {tab.label}
                   </TabsTrigger>
@@ -268,7 +267,7 @@ export function TrajectoryPage({
                       ))}
                     </div>
                   </div>
-                  <div className="relative min-h-0 flex-1 px-2 border-t border-border/50">
+                  <div className="relative min-h-0 flex-1 border-t border-border/50">
                     <div
                       className={`absolute inset-0 z-10 overflow-auto bg-background/80 transition-opacity duration-420 ease-out delay-220 ${
                         !mounted || browserIframeLoading[activeBrowserVerificationTab]

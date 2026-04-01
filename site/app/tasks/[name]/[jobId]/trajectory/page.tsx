@@ -315,14 +315,14 @@ export default async function TrajectoryRoutePage({
     : null;
 
 
-  if (browserVerificationUrls.length) {
+  if (browserVerificationUrls) {
     tabsConfig.push({
       value: "browser-verification",
       label: (
-        <>
+        <span>
           <span className="hidden sm:inline whitespace-nowrap">Browser Verification</span>
           <span className="sm:hidden">Browser</span>
-        </>
+        </span>
       )
     })
   }
