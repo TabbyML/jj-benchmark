@@ -152,7 +152,7 @@ export function TrajectoryPage({
               </TabsList>
             </div>
 
-            <TabsContent value="trajectory" className="relative min-h-0 flex-1 overflow-hidden px-2" forceMount>
+            <TabsContent value="trajectory" className="relative min-h-0 flex-1 overflow-hidden" forceMount>
               <div
                 className={`absolute inset-0 z-10 overflow-auto bg-background/80 transition-opacity duration-420 ease-out delay-220 ${!mounted || iframeLoading ? "opacity-100" : "pointer-events-none opacity-0"}`}
               >
