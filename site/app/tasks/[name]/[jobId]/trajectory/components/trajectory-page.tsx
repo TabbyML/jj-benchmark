@@ -75,40 +75,40 @@ export function TrajectoryPage({
 
   const iframeUrl = useMemo(() => {
     const url = new URL(trajectoryUrl);
-    url.searchParams.set("theme", iframeTheme);
+    const hashParams = new URLSearchParams(url.hash.slice(1));
+    hashParams.set("theme", iframeTheme);
+    url.hash = hashParams.toString();
     return url.toString();
   }, [trajectoryUrl, iframeTheme]);
 
-  const activeBrowserVerificationUrl = useMemo(() => {
+  const activeBrowserVerificationBaseUrl = useMemo(() => {
     const testCase = browserVerificationUrls.find((tc) => tc.name === activeBrowserVerificationTab);
-    if (!testCase) {
+    return testCase ? testCase.url : null;
+  }, [browserVerificationUrls, activeBrowserVerificationTab]);
+
+  const activeBrowserVerificationUrl = useMemo(() => {
+    if (!activeBrowserVerificationBaseUrl) {
       return null;
     }
 
-    const url = new URL(testCase.url);
-    url.searchParams.set("theme", iframeTheme);
+    const url = new URL(activeBrowserVerificationBaseUrl);
+    const hashParams = new URLSearchParams(url.hash.slice(1));
+    hashParams.set("theme", iframeTheme);
+    url.hash = hashParams.toString();
     return url.toString();
-  }, [browserVerificationUrls, activeBrowserVerificationTab, iframeTheme]);
+  }, [activeBrowserVerificationBaseUrl, iframeTheme]);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted || !iframeUrl) {
-      return;
-    }
-
-    setIframeLoading(true);
-  }, [iframeUrl, mounted]);
-
-  useEffect(() => {
-    if (!mounted || !activeBrowserVerificationUrl) {
+    if (!mounted || !activeBrowserVerificationBaseUrl) {
       return;
     }
 
     setBrowserIframeLoading((prev) => ({ ...prev, [activeBrowserVerificationTab]: true }));
-  }, [activeBrowserVerificationUrl, activeBrowserVerificationTab, mounted]);
+  }, [activeBrowserVerificationBaseUrl, activeBrowserVerificationTab, mounted]);
 
   const stderrQuery = useQuery({
     queryKey: ["trajectory-stderr", stderrLogUrl],
