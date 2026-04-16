@@ -1,0 +1,77 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash  && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model openai/gpt-5.2-codex --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Simulating and Resolving Concurrent Operations in Jujutsu
+
+## Background
+Jujutsu (`jj`) uses an operation log to enable lock-free concurrency. It is possible to simulate divergent operations by running commands at a specific past operation using the `--at-operation=<operation ID>` flag.
+
+## Requirements
+1. In the repository at `/home/user/repo`, there is a change that was originally created with the description `Feature X`.
+2. The repository currently has its description updated to `Feature X - variant 1`.
+3. You need to simulate a concurrent operation by describing the commit as `Feature X - variant 2` at the exact operation ID where the `Feature X` commit was originally created (before it was updated to `variant 1`).
+4. Trigger the operation log merge to see the divergence.
+5. Resolve the divergence by keeping only the `Feature X - variant 2` commit and abandoning the `Feature X - variant 1` commit.
+
+## Implementation Guide
+1. Go to `/home/user/repo`.
+2. Use `jj op log` to find the operation ID where `jj new -m 'Feature X'` was run (the `new empty commit` operation).
+3. Run `jj --at-operation=<op_id> describe <change_id> -m 'Feature X - variant 2'`, replacing `<op_id>` with the operation ID from step 2, and `<change_id>` with the Change ID of the `Feature X` commit.
+4. Run `jj st` to trigger the merge of the divergent operations.
+5. Use `jj log` to see the divergent changes (they will share the same Change ID and have `??` after it).
+6. Abandon the commit with the description `Feature X - variant 1` using `jj abandon <commit_id>`.
+
+## Constraints
+- Project path: `/home/user/repo`
+- The final state must have only one visible commit for the `Feature X` change, with the description `Feature X - variant 2`.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

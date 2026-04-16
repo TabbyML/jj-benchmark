@@ -1,0 +1,50 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 30ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 4 items
+
+tests/test_final_state.py F...                                           [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_config_py_reverted ____________________________
+
+    def test_config_py_reverted():
+        """Verify config.py matches the parent commit's state."""
+        config_path = os.path.join(PROJECT_DIR, "config.py")
+        with open(config_path, "r") as f:
+            content = f.read().strip()
+    
+>       assert content == "DEBUG = False", \
+            f"Expected config.py to be 'DEBUG = False', but got: {content}"
+E       AssertionError: Expected config.py to be 'DEBUG = False', but got: DEBUG = False
+E         PORT = 8080
+E       assert 'DEBUG = False\nPORT = 8080' == 'DEBUG = False'
+E         
+E         - DEBUG = False
+E         + DEBUG = False
+E         ?              +
+E         + PORT = 8080
+
+tests/test_final_state.py:13: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_utils_py_restored
+PASSED tests/test_final_state.py::test_app_py_unchanged
+PASSED tests/test_final_state.py::test_working_copy_description
+FAILED tests/test_final_state.py::test_config_py_reverted - AssertionError: E...
+========================= 1 failed, 3 passed in 0.05s ==========================
