@@ -1,0 +1,45 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 20ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+tests/test_final_state.py F..                                            [100%]
+
+=================================== FAILURES ===================================
+________________________ test_final_commit_description _________________________
+
+    def test_final_commit_description():
+        result = subprocess.run(
+            ["jj", "log", "--no-graph", "-T", "description", "-r", "description('Feature X')"],
+            cwd=PROJECT_DIR,
+            capture_output=True,
+            text=True
+        )
+        assert result.returncode == 0, "Failed to run jj log."
+>       assert "Feature X - variant 2" in result.stdout, "Final commit description should be 'Feature X - variant 2'."
+E       AssertionError: Final commit description should be 'Feature X - variant 2'.
+E       assert 'Feature X - variant 2' in ''
+E        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description', '-r', "description('Feature X')"], returncode=0, stdout='', stderr='').stdout
+
+tests/test_final_state.py:15: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_no_divergence
+PASSED tests/test_final_state.py::test_operation_log_has_reconcile
+FAILED tests/test_final_state.py::test_final_commit_description - AssertionEr...
+========================= 1 failed, 2 passed in 0.10s ==========================

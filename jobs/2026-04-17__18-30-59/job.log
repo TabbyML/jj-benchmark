@@ -1,0 +1,1344 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Restore File from Specific Revision
+
+## Background
+You are working in a Jujutsu (`jj`) repository at `/home/user/repo`. The file `config.txt` has been modified multiple times across several commits. You need to restore `config.txt` to the exact state it was in the parent commit of the current working copy.
+
+## Requirements
+- Restore the contents of `/home/user/repo/config.txt` to match its contents in the parent revision (`@-`).
+- Do not create a new commit or change the parent commit; just update the working copy of the file.
+
+## Implementation Guide
+1. Change directory to `/home/user/repo`.
+2. Use `jj` commands (e.g., `jj restore -c @- config.txt` or `jj cat -r @- config.txt > config.txt`) to overwrite the current `config.txt` with its parent's version.
+
+## Constraints
+- Project path: `/home/user/repo`
+- The repository must remain a valid `jj` repository.
+EOF
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# undo_mistaken_rebase\n\n## Background\nPerform a rebase, then use `jj undo` to revert it.\n\n## Requirements\nComplete the task as described.\n\n## Implementation\nUse jj commands in `/home/user/repo`.\n\n## Output\n- Project path: `/home/user/repo`\n- Start command: `None`\n- Port: `None`
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Revset Querying in Jujutsu
+
+## Background
+You are working in a Jujutsu (`jj`) repository. Jujutsu has a powerful revset language for querying revisions. Your task is to perform a series of operations to create some history, and then use a revset query to filter specific commits.
+
+## Requirements
+1. Set your `jj` configuration: user name to `Bob` and email to `bob@example.com`.
+2. In the repository at `/home/user/repo`, create a new bookmark named `bob-feature` on the current working copy.
+3. Create a new file `bob.txt` with the content `bob's work`.
+4. Describe the current working copy (commit) with the message `Bob's first commit`.
+5. Create a new commit on top of it (e.g., using `jj new`), add `more work` to `bob.txt`, and describe this new commit with `Bob's second commit`.
+6. Use a `jj` revset query to find all commits authored by `Bob` that are not reachable from the `main` bookmark but are ancestors of the current working copy `@`.
+7. Save the **Change IDs** (not commit IDs) of these commits into a file named `bob_commits.txt` in the root of the repository (`/home/user/repo/bob_commits.txt`), one ID per line.
+
+## Constraints
+- Project path: `/home/user/repo`
+- The repository already has a `main` bookmark.
+- You must use `jj` commands to complete the task.
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Revert and Restore Files in Jujutsu
+
+## Background
+You are working on a Python project managed with Jujutsu (`jj`). You've made several changes in your current working copy, but you realize that some of these changes were a mistake. You need to selectively revert and restore specific files to earlier states while keeping your other work intact.
+
+## Requirements
+1. You must discard the uncommitted changes to `config.py`, reverting it to its exact state in the parent commit.
+2. You must restore the file `utils.py` to its state from a previous commit marked with the bookmark `v1.0`.
+3. You must keep the uncommitted changes to `app.py` exactly as they are in the current working copy.
+4. You must set the description of the current working-copy commit to exactly: `Restore configuration and utilities`
+
+## Implementation Guide
+1. Navigate to the project directory.
+2. Use `jj restore` to revert the uncommitted changes in `config.py`.
+3. Use `jj restore` with the appropriate flag to restore `utils.py` from the `v1.0` bookmark.
+4. Use `jj describe` to update the commit message of the working copy.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- Do not create any new commits or branches; modify only the current working-copy commit.
+- Do not modify any other files in the repository.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Create a New Root Commit in Jujutsu
+
+## Background
+In Jujutsu (`jj`), every repository has a virtual `root()` commit that is the oldest ancestor of all other commits. Creating a new commit directly on top of the root commit is useful for starting a new branch without any history (similar to an orphan branch in Git).
+
+## Requirements
+- You have a Jujutsu repository at `/home/user/myproject`.
+- Create a new, empty change that is a direct child of the `root()` commit.
+- The working copy (`@`) must be updated to point to this newly created commit.
+
+## Implementation
+1. Navigate to `/home/user/myproject`.
+2. Run a single `jj` command to create a new commit that uses the `root()` revset as its parent.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- Only use `jj` commands.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Inspecting Commits with Jujutsu
+
+## Background
+You have a Jujutsu (jj) repository at `/home/user/project` with a few commits. You need to create a script to easily show the Git-format diff of specific commits and use it to extract patches for two specific commits.
+
+## Requirements
+1. Create a bash script at `/home/user/project/show_commit.sh`.
+2. The script must take a single argument: a Jujutsu revset.
+3. The script must execute `jj show` for the given revset, outputting the diff in Git format (`--git`).
+4. Make the script executable.
+5. Run your script for the revset `description(substring:"Add configuration file")` and redirect the output to `/home/user/project/add_config.patch`.
+6. Run your script for the revset `description(substring:"Update configuration file")` and redirect the output to `/home/user/project/update_config.patch`.
+
+## Constraints
+- Project path: `/home/user/project`
+- The script must be executable.
+- The output files must contain the Git-format diff.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Split a Commit in Jujutsu
+
+## Background
+You are working on a project using `jj` (Jujutsu). You have a single commit that introduces two features at once, but you realize they should be separated into two distinct commits for a cleaner history.
+
+## Requirements
+- The repository is located at `/home/user/myproject`.
+- The parent of the current working copy (`@-`) contains two files: `feature_a.py` and `feature_b.py`, and has the description "Add feature A and feature B".
+- You must split this commit into two separate commits.
+- The first commit (older) must contain ONLY `feature_a.py` and have the description exactly "Add feature A".
+- The second commit (newer, child of the first) must contain ONLY `feature_b.py` and have the description exactly "Add feature B".
+- The current working copy (`@`) should remain empty and be a child of the "Add feature B" commit.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- Use only `jj` commands.
+EOF
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Squash Commits in Jujutsu
+
+## Background
+You are working in a `jj` repository at `/home/user/myproject`. The repository contains a chain of commits modifying `app.py`.
+
+## Requirements
+1. Squash the commit with the description "add feature B" into its parent commit (which has the description "add feature A").
+2. The resulting combined commit must have the description "add feature A and B".
+3. The descendant commit "add feature C" must remain intact and be rebased automatically by `jj`.
+
+## Implementation
+- Use `jj squash` or `jj rebase` to combine the commits.
+- Update the description of the combined commit to "add feature A and B".
+- All operations should be performed within `/home/user/myproject`.
+
+## Constraints
+- Project path: `/home/user/myproject`
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Squash a Range of Commits
+
+## Background
+In Jujutsu (`jj`), you can use `jj squash` to move changes from one or more commits into another commit. By using revsets, you can squash a range of commits into a target commit in a single command.
+
+## Requirements
+- You have a `jj` repository at `/home/user/myproject`.
+- It contains a commit with the description `feat: initial structure`.
+- It has two child commits with descriptions `fix: syntax error` and `fix: logic error`.
+- There is a descendant commit `feat: add more stuff`.
+- Squash the two `fix` commits into the `feat: initial structure` commit using a single `jj squash` command with a range or revset.
+
+## Implementation
+1. Navigate to `/home/user/myproject`.
+2. Use `jj squash` with the `--from` (`-f`) and `--into` (`-t`) arguments to squash the two fix commits into the initial feature commit.
+3. The `fix` commits should be empty and abandoned (which is the default behavior of `jj squash`), and their changes should be part of the `feat: initial structure` commit.
+
+## Constraints
+- Project path: `/home/user/myproject`
+EOF
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Ignore and Untrack a File in Jujutsu
+
+## Background
+In Jujutsu (`jj`), files in the working copy are automatically tracked. If you create a file that should be ignored (like a build artifact or log file) and it gets tracked, simply adding it to `.gitignore` is not enough to remove it from the working-copy commit. You must also explicitly untrack it.
+
+## Requirements
+You have a Jujutsu repository at `/home/user/project`. It contains a file named `build.log` which is currently tracked by `jj`.
+
+Your task is to:
+1. Add `build.log` to the `.gitignore` file in the repository root so it is ignored.
+2. Untrack `build.log` in Jujutsu so it is no longer tracked by the version control system.
+
+## Constraints
+- Project path: `/home/user/project`
+- **Do not delete** the `build.log` file from the filesystem. It must remain in the `/home/user/project` directory.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Customize jj log output with Templates
+
+## Background
+Jujutsu (`jj`) supports a powerful functional templating language to customize the output of commands like `jj log`. You can define template aliases in your config to reuse custom formats.
+
+## Requirements
+You have a jj repository initialized at `/home/user/repo`.
+Your task is to configure a new template alias named `log_custom` for the `jj` CLI.
+The alias must output the short change ID (`change_id.short()`), followed by `" | "`, followed by the first line of the commit description (`description.first_line()`), and ending with a newline (`"\n"`).
+
+## Implementation
+1. Navigate to `/home/user/repo`.
+2. Use `jj config set` to define a `template-aliases` entry for `log_custom`.
+3. The alias should evaluate to: `change_id.short() ++ " | " ++ description.first_line() ++ "\n"`
+
+## Constraints
+- Project path: `/home/user/repo`
+- The alias must be named exactly `log_custom`.
+EOF
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Track an Ignored File in Jujutsu (jj)
+
+## Background
+In `jj` (Jujutsu), new files are automatically tracked and included in the working copy commit. However, files that match patterns in `.gitignore` are ignored and not automatically tracked. Sometimes, you may need to explicitly track a specific file that is otherwise ignored, without modifying the `.gitignore` rules.
+
+## Requirements
+- Explicitly track the ignored file `app.log` in the repository.
+- Do not modify the existing `.gitignore` file.
+- Finalize the current working copy by creating a new commit with the message "Track log file".
+
+## Implementation Guide
+1. Navigate to the repository at `/home/user/project`.
+2. Use the `jj file track --include-ignored` command to explicitly track the `app.log` file.
+3. Run `jj commit -m "Track log file"` to finalize the working copy commit and start a new one.
+
+## Constraints
+- Project path: `/home/user/project`
+EOF
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Customize jj log output with Templates
+
+## Background
+Jujutsu (`jj`) provides a powerful functional templating language to customize the output of commands like `jj log`. You can define template aliases and use them to change the default output of `jj log`.
+
+## Requirements
+1. Initialize a new `jj` repository in the existing directory `/home/user/myproject`.
+2. Create an initial commit with description "Initial commit".
+3. Create a new commit with the description "Second commit".
+4. Configure the repository-level `jj` config (`/home/user/myproject/.jj/repo/config.toml`) to define a custom template alias named `'custom_log'` under `[template-aliases]`.
+   The alias should format a commit as: `<short_commit_id> | <author_email_local_part> | <first_line_of_description>\n`
+   (e.g., `12345678 | test | Initial commit\n`).
+   *Hint: Use `commit_id.short()`, `author.email().local()`, and `description.first_line()` functions.*
+5. Configure the default log template in the same config file to use your `custom_log` alias (under `[templates]` set `log = 'custom_log'`).
+
+## Implementation Guide
+1. `cd` into `/home/user/myproject`.
+2. Run `jj git init` to initialize the repository.
+3. Set your user name to "Test User" and email to "test@example.com" in the repository config (`jj config set --repo user.name "Test User"` and `jj config set --repo user.email "test@example.com"`).
+4. Use `jj describe -m "Initial commit"` to set the first commit's description.
+5. Use `jj new -m "Second commit"` to create the second commit.
+6. Edit `.jj/repo/config.toml` (or use `jj config set --repo`) to add the `custom_log` template alias and set it as the default `log` template.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- The repository must be initialized with `jj git init`.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Untrack a File in Jujutsu
+
+## Background
+You are working in a `jj` (Jujutsu) repository. You accidentally created a `.env` file containing secrets. Because `jj` automatically tracks all files in the working copy, it was included in the current working copy commit.
+
+## Requirements
+- Stop tracking the `.env` file in `jj`.
+- Ensure the `.env` file remains on the disk (do not delete it).
+- Add `.env` to the `.gitignore` file so it is ignored by `jj` in the future.
+
+## Implementation Guide
+1. Navigate to the project directory: `/home/user/myproject`.
+2. Append `.env` to the `.gitignore` file.
+3. Use the appropriate `jj` command to untrack the `.env` file without deleting it from the filesystem.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- Do not delete the `.env` file.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Working Copy as Commit
+
+## Background
+In Jujutsu (`jj`), the working copy is always a permanent commit. Any file change is automatically recorded in the current commit when you run any `jj` command. This eliminates the need for a separate staging area and makes it easy to track changes.
+
+## Requirements
+1. Initialize a new Git-compatible jj repository in the `/home/user/repo` directory.
+2. Configure your identity for the repository (e.g., `jj config set --user user.name "Test User"` and `jj config set --user user.email "test@example.com"`).
+3. Create a file named `hello.txt` containing the text `Hello jj`.
+4. Create a new empty working copy on top of your current changes (leaving the changes to `hello.txt` in the previous commit).
+
+## Constraints
+- The repository must be located at `/home/user/repo`.
+- The file `hello.txt` must be committed in the parent of the current working copy (`@-`).
+- The current working copy (`@`) must be empty.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Add a new jj workspace
+
+## Background
+You have a Jujutsu repository initialized at `/home/user/myproject`. You want to work on a different feature simultaneously without disturbing your current working copy. You can do this by adding a new workspace.
+
+## Requirements
+- Create a new workspace for the repository at `/home/user/myproject-workspace2`.
+
+## Implementation
+1. Use the `jj workspace add` command to create the new workspace.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- Workspace path: `/home/user/myproject-workspace2`
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Remove an Obsolete jj Workspace
+
+## Background
+A developer is working on a jujutsu (`jj`) project and created a secondary workspace for an experiment that is no longer needed. The developer wants to remove this workspace from `jj`'s tracking and delete its files from the disk to free up space.
+
+## Requirements
+- The main repository is located at `/home/user/myproject`.
+- There is a secondary workspace named `experiment` located at `/home/user/myproject-experiment`.
+- The `experiment` workspace must be "forgotten" by `jj` so it is no longer tracked.
+- The directory `/home/user/myproject-experiment` must be completely deleted from the disk.
+
+## Implementation Guide
+1. Navigate to the main project directory: `cd /home/user/myproject`.
+2. Stop tracking the workspace by running `jj workspace forget experiment`.
+3. Remove the directory from the filesystem using `rm -rf /home/user/myproject-experiment`.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- The `experiment` workspace must not be tracked by `jj` anymore.
+- The `/home/user/myproject-experiment` directory must not exist.
+EOF
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Find Workspace Root
+
+## Background
+Jujutsu (`jj`) provides a command to quickly find the root directory of the current workspace. This is useful when you are working in deeply nested directories and need to reference the root of the repository.
+
+## Requirements
+- Find the root path of the `jj` workspace you are currently in.
+- Save the output to a file named `root_path.txt` in the `/home/user` directory.
+
+## Implementation
+1. Navigate to `/home/user/repo/deeply/nested/dir`.
+2. Run the `jj` command that prints the workspace root.
+3. Save the output of that command to `/home/user/root_path.txt`.
+
+## Constraints
+- Project path: `/home/user/repo`
+- The output file must be exactly `/home/user/root_path.txt` and contain the absolute path to the workspace root.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash -x -s pochi-v0.6.7 && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model google/gemini-3.1-pro --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Update Stale Workspace
+
+## Background
+You are working in a `jj` repository at `/home/user/myproject`. Another user (or process) recently modified the repository from another workspace (`/home/user/workspace_b`), which caused your current workspace's working copy to become stale. A stale working copy means the `jj` operation log has advanced, but your working copy files haven't been updated to match the new state.
+
+## Requirements
+1. Update the stale working copy in `/home/user/myproject` so that it is no longer stale.
+2. After updating, you will see that `config.json` has been modified by the other workspace (the `status` field is now `"pending"` and `new` is `true`).
+3. Modify `config.json` by changing the `"status"` field from `"pending"` to `"active"`.
+4. Commit the change with the exact description `"Activate config"`.
+
+## Implementation
+- Project path: `/home/user/myproject`
+- Use `jj workspace update-stale` to update the stale workspace.
+- Use standard text editing tools to modify `config.json`.
+- Use `jj commit -m "Activate config"` to commit the change.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

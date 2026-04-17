@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776419542.7854853,
+            "stop": 1776419543.0129764
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_revset_txt_exists",
+                "status": "passed",
+                "duration": 0.0006021279987180606,
+                "start": 1776419542.7972672,
+                "stop": 1776419542.7981374,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_revset_evaluates_correctly",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.19938394000200788,
+                "start": 1776419542.7983766,
+                "stop": 1776419543.0127697,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_revset_evaluates_correctly():\n        with open(os.path.join(PROJECT_DIR, \"revset.txt\"), \"r\") as f:\n            revset = f.read().strip()\n    \n        result = subprocess.run(\n            [\"jj\", \"log\", \"-T\", \"description\", \"-r\", revset],\n            capture_output=True, text=True, cwd=PROJECT_DIR\n        )\n        assert result.returncode == 0, f\"'jj log' failed with revset '{revset}': {result.stderr}\"\n>       assert \"Bob 1\" in result.stdout, \"Expected 'Bob 1' in revset evaluation.\"\nE       AssertionError: Expected 'Bob 1' in revset evaluation.\nE       assert 'Bob 1' in '\u25cb  Alice 1\\n\u25cb  Bob 2\\n\u2502\\n~\\n'\nE        +  where '\u25cb  Alice 1\\n\u25cb  Bob 2\\n\u2502\\n~\\n' = CompletedProcess(args=['jj', 'log', '-T', 'description', '-r', 'author(\"Bob\") & ~::main & ::@'], returncode=0, stdout='\u25cb  Alice 1\\n\u25cb  Bob 2\\n\u2502\\n~\\n', stderr='').stdout\n\ntests/test_final_state.py:19: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

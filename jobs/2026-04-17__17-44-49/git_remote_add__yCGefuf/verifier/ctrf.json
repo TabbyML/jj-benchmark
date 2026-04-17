@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776420670.4472501,
+            "stop": 1776420670.4948583
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_repo_is_colocated",
+                "status": "passed",
+                "duration": 0.0004793740008608438,
+                "start": 1776420670.4583566,
+                "stop": 1776420670.459036,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_remotes_configured_correctly",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02104552798846271,
+                "start": 1776420670.4592652,
+                "stop": 1776420670.4946856,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_remotes_configured_correctly():\n        \"\"\"Priority 1: Use jj CLI to verify the remotes.\"\"\"\n        result = subprocess.run(\n            [\"jj\", \"git\", \"remote\", \"list\"],\n            capture_output=True, text=True, cwd=PROJECT_DIR\n        )\n        assert result.returncode == 0, f\"'jj git remote list' failed: {result.stderr}\"\n    \n        stdout = result.stdout\n    \n        # Verify public remote exists and points to the correct URL\n        assert \"public\" in stdout, f\"Expected 'public' remote to exist, got: {stdout}\"\n        assert \"https://github.com/example/upstream.git\" in stdout, f\"Expected 'public' remote to point to https://github.com/example/upstream.git, got: {stdout}\"\n    \n        # Verify origin and upstream do not exist\n        assert \"origin\" not in stdout, f\"Expected 'origin' remote to not exist, got: {stdout}\"\n>       assert \"upstream\" not in stdout, f\"Expected 'upstream' remote to not exist, got: {stdout}\"\nE       AssertionError: Expected 'upstream' remote to not exist, got: public https://github.com/example/upstream.git\nE         \nE       assert 'upstream' not in 'public http...stream.git\\n'\nE         \nE         'upstream' is contained here:\nE           public https://github.com/example/upstream.git\nE         ?                                   ++++++++\n\ntests/test_final_state.py:28: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}
