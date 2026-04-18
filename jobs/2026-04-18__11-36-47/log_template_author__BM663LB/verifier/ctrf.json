@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776484961.660335,
+            "stop": 1776484961.7077959
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_script_exists_and_executable",
+                "status": "passed",
+                "duration": 0.0006263930117711425,
+                "start": 1776484961.6682518,
+                "stop": 1776484961.6690874,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_script_output",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023800206996384077,
+                "start": 1776484961.6693094,
+                "stop": 1776484961.7076287,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_script_output():\n        try:\n            output = subprocess.check_output(\n                [\"./get_author.sh\"],\n                cwd=PROJECT_DIR,\n                text=True,\n            )\n>           assert output == \"Author: Test User <test@example.com>\\n\", f\"Unexpected output: {repr(output)}\"\nE           AssertionError: Unexpected output: 'Author: Test User <test@example.com>'\nE           assert 'Author: Test...@example.com>' == 'Author: Test...xample.com>\\n'\nE             \nE             - Author: Test User <test@example.com>\nE             ?                                     -\nE             + Author: Test User <test@example.com>\n\ntests/test_final_state.py:19: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

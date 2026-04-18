@@ -1,0 +1,44 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 14ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+tests/test_final_state.py ..F                                            [100%]
+
+=================================== FAILURES ===================================
+____________________ test_jj_log_does_not_contain_commit_5 _____________________
+
+    def test_jj_log_does_not_contain_commit_5():
+        result = subprocess.run(
+            ["jj", "log"],
+            capture_output=True, text=True, cwd=PROJECT_DIR
+        )
+        assert result.returncode == 0, f"'jj log' failed: {result.stderr}"
+        assert "Commit 5" not in result.stdout, "Expected 'Commit 5' to be reverted."
+>       assert "Commit 2" in result.stdout, "Expected 'Commit 2' to be present."
+E       AssertionError: Expected 'Commit 2' to be present.
+E       assert 'Commit 2' in '@  umrzqkzm alice@example.com 2026-04-02 10:47:19 741cdf8c\n│  (no description set)\n○  lkpklwxk alice@example.com 2026-04-02 10:47:19 b24378e4\n│  Commit 1\n◆  zzzzzzzz root() 00000000\n'
+E        +  where '@  umrzqkzm alice@example.com 2026-04-02 10:47:19 741cdf8c\n│  (no description set)\n○  lkpklwxk alice@example.com 2026-04-02 10:47:19 b24378e4\n│  Commit 1\n◆  zzzzzzzz root() 00000000\n' = CompletedProcess(args=['jj', 'log'], returncode=0, stdout='@  umrzqkzm alice@example.com 2026-04-02 10:47:19 741cdf8c\...t)\n○  lkpklwxk alice@example.com 2026-04-02 10:47:19 b24378e4\n│  Commit 1\n◆  zzzzzzzz root() 00000000\n', stderr='').stdout
+
+tests/test_final_state.py:23: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_file1_and_file2_exist
+PASSED tests/test_final_state.py::test_file3_to_file5_absent
+FAILED tests/test_final_state.py::test_jj_log_does_not_contain_commit_5 - Ass...
+========================= 1 failed, 2 passed in 0.05s ==========================

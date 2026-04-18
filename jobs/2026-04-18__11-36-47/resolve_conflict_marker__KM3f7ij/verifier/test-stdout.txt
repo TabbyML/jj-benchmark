@@ -1,0 +1,47 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 13ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 2 items
+
+tests/test_final_state.py F.                                             [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_file_txt_content _____________________________
+
+    def test_file_txt_content():
+        file_path = os.path.join(PROJECT_DIR, "file.txt")
+        assert os.path.isfile(file_path), f"{file_path} does not exist."
+    
+        with open(file_path, "r") as f:
+            content = f.read()
+    
+        expected_content = "A and B\n"
+>       assert content == expected_content, f"Expected file.txt to contain exactly {repr(expected_content)}, but got {repr(content)}"
+E       AssertionError: Expected file.txt to contain exactly 'A and B\n', but got 'A and B'
+E       assert 'A and B' == 'A and B\n'
+E         
+E         - A and B
+E         ?        -
+E         + A and B
+
+tests/test_final_state.py:15: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_jj_status_no_conflicts
+FAILED tests/test_final_state.py::test_file_txt_content - AssertionError: Exp...
+========================= 1 failed, 1 passed in 0.04s ==========================

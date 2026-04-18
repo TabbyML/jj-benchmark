@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776483886.876373,
+            "stop": 1776483886.9268694
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_file1_and_file2_exist",
+                "status": "passed",
+                "duration": 0.00048781302757561207,
+                "start": 1776483886.8882077,
+                "stop": 1776483886.8889008,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_file3_to_file5_absent",
+                "status": "passed",
+                "duration": 0.00041820101614575833,
+                "start": 1776483886.8890927,
+                "stop": 1776483886.8896444,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_jj_log_does_not_contain_commit_5",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02247470201109536,
+                "start": 1776483886.8898103,
+                "stop": 1776483886.926693,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_jj_log_does_not_contain_commit_5():\n        result = subprocess.run(\n            [\"jj\", \"log\"],\n            capture_output=True, text=True, cwd=PROJECT_DIR\n        )\n        assert result.returncode == 0, f\"'jj log' failed: {result.stderr}\"\n        assert \"Commit 5\" not in result.stdout, \"Expected 'Commit 5' to be reverted.\"\n>       assert \"Commit 2\" in result.stdout, \"Expected 'Commit 2' to be present.\"\nE       AssertionError: Expected 'Commit 2' to be present.\nE       assert 'Commit 2' in '@  umrzqkzm alice@example.com 2026-04-02 10:47:19 741cdf8c\\n\u2502  (no description set)\\n\u25cb  lkpklwxk alice@example.com 2026-04-02 10:47:19 b24378e4\\n\u2502  Commit 1\\n\u25c6  zzzzzzzz root() 00000000\\n'\nE        +  where '@  umrzqkzm alice@example.com 2026-04-02 10:47:19 741cdf8c\\n\u2502  (no description set)\\n\u25cb  lkpklwxk alice@example.com 2026-04-02 10:47:19 b24378e4\\n\u2502  Commit 1\\n\u25c6  zzzzzzzz root() 00000000\\n' = CompletedProcess(args=['jj', 'log'], returncode=0, stdout='@  umrzqkzm alice@example.com 2026-04-02 10:47:19 741cdf8c\\...t)\\n\u25cb  lkpklwxk alice@example.com 2026-04-02 10:47:19 b24378e4\\n\u2502  Commit 1\\n\u25c6  zzzzzzzz root() 00000000\\n', stderr='').stdout\n\ntests/test_final_state.py:23: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

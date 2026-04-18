@@ -1,0 +1,59 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 3,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776485542.6433647,
+            "stop": 1776485542.690077
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_config_py_reverted",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0008035589999053627,
+                "start": 1776485542.652232,
+                "stop": 1776485542.667311,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_config_py_reverted():\n        \"\"\"Verify config.py matches the parent commit's state.\"\"\"\n        config_path = os.path.join(PROJECT_DIR, \"config.py\")\n        with open(config_path, \"r\") as f:\n            content = f.read().strip()\n    \n>       assert content == \"DEBUG = False\", \\\n            f\"Expected config.py to be 'DEBUG = False', but got: {content}\"\nE       AssertionError: Expected config.py to be 'DEBUG = False', but got: DEBUG = False\nE         PORT = 8080\nE       assert 'DEBUG = False\\nPORT = 8080' == 'DEBUG = False'\nE         \nE         - DEBUG = False\nE         + DEBUG = False\nE         ?              +\nE         + PORT = 8080\n\ntests/test_final_state.py:13: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_utils_py_restored",
+                "status": "passed",
+                "duration": 0.00044367602095007896,
+                "start": 1776485542.6675217,
+                "stop": 1776485542.6681013,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_app_py_unchanged",
+                "status": "passed",
+                "duration": 0.0003905259945895523,
+                "start": 1776485542.6682744,
+                "stop": 1776485542.6687856,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_working_copy_description",
+                "status": "passed",
+                "duration": 0.020754428987856954,
+                "start": 1776485542.668947,
+                "stop": 1776485542.6898851,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}
