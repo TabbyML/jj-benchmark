@@ -32,5 +32,8 @@ def test_no_unresolved_conflicts():
         ["jj", "resolve", "--list", "-r", "feature-branch"],
         capture_output=True, text=True, cwd=PROJECT_DIR
     )
-    assert result.returncode == 0, f"'jj resolve --list' failed: {result.stderr}"
-    assert result.stdout.strip() == "", f"Expected no unresolved conflicts, but found: {result.stdout}"
+    # If there are no conflicts, jj resolve --list returns exit code 2 and an error message
+    if result.returncode != 0:
+        assert "No conflicts found" in result.stderr or "No conflicts found" in result.stdout, f"Unexpected error from jj resolve: {result.stderr}"
+    else:
+        assert result.stdout.strip() == "", f"Expected no unresolved conflicts, but found: {result.stdout}"
