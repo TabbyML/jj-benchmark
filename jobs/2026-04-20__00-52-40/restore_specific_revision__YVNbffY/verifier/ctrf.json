@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776618488.6722322,
+            "stop": 1776618488.7249846
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_config_restored",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0012470750079955906,
+                "start": 1776618488.6815782,
+                "stop": 1776618488.6984823,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_config_restored():\n        config_path = os.path.join(PROJECT_DIR, \"config.txt\")\n        assert os.path.isfile(config_path), f\"Config file {config_path} does not exist.\"\n    \n        with open(config_path) as f:\n            content = f.read().strip()\n    \n>       assert content == \"version=2\", f\"Expected config.txt to be restored to 'version=2', but got '{content}'.\"\nE       AssertionError: Expected config.txt to be restored to 'version=2', but got '<<<<<<< conflict 1 of 1\nE         %%%%%%% diff from: xzouttnp bdd48687 \"v2\" (parents of rebased revision)\nE         \\\\\\\\\\\\\\        to: xzouttnp 16066003 \"v2\" (rebase destination)\nE         -version=2\nE         +version=1\nE         +++++++ mzpulrsr db07eaed (rebased revision)\nE         version=3\nE         >>>>>>> conflict 1 of 1 ends'.\nE       assert '<<<<<<< conf...t 1 of 1 ends' == 'version=2'\nE         \nE         + <<<<<<< conflict 1 of 1\nE         + %%%%%%% diff from: xzouttnp bdd48687 \"v2\" (parents of rebased revision)\nE         + \\\\\\\\\\\\\\        to: xzouttnp 16066003 \"v2\" (rebase destination)\nE         - version=2\nE         + -version=2\nE         ? +         +...\nE         \nE         ...Full output truncated (4 lines hidden), use '-vv' to show\n\ntests/test_final_state.py:14: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_jj_repo_intact",
+                "status": "passed",
+                "duration": 0.025837992987362668,
+                "start": 1776618488.6987474,
+                "stop": 1776618488.724792,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

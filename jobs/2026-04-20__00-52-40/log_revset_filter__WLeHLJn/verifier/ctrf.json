@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776618211.8429656,
+            "stop": 1776618211.8883626
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_result_file_exists",
+                "status": "passed",
+                "duration": 0.0004749230283778161,
+                "start": 1776618211.8522098,
+                "stop": 1776618211.8528936,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_result_content_matches_expected",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.020838905998971313,
+                "start": 1776618211.8530927,
+                "stop": 1776618211.888188,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_result_content_matches_expected():\n        # Run jj log to get the expected output\n        result = subprocess.run(\n            [\"jj\", \"log\", \"-r\", \"author(\\\"Bob\\\") & main..@\", \"-T\", \"change_id.short() ++ \\\"\\\\n\\\"\"],\n            cwd=PROJECT_DIR,\n            capture_output=True,\n            text=True\n        )\n        assert result.returncode == 0, \"Failed to run jj log to determine the expected output.\"\n        expected_output = result.stdout.strip().splitlines()\n    \n        # Read the actual output\n        with open(RESULT_FILE, \"r\") as f:\n            actual_output = f.read().strip().splitlines()\n    \n>       assert len(actual_output) > 0, f\"The output file {RESULT_FILE} is empty.\"\nE       AssertionError: The output file /home/user/result.txt is empty.\nE       assert 0 > 0\nE        +  where 0 = len([])\n\ntests/test_final_state.py:26: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

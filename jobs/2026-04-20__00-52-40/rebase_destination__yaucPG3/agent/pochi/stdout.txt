@@ -1,0 +1,26 @@
+- Initializing MCP connections...
+You
+# Rebase a branch to a new destination ## Background You have a Jujutsu (`jj`) repository located at `/home/user/myproject`. The repository contains a `main` bookmark and a `feature` bookmark. The `feature` bookmark diverges from `main`. ## Requirements Rebase the `feature` bookmark onto the `main` bookmark using the `jj rebase` command. ## Constraints - Project path: `/home/user/myproject`   
+
+Pochi
+📋 Updating todo list (3 items) ✔ 
+📂 Listing files in /home/user/myproject ✔ 
+  
+💫 Executing jj status ✔ 
+📋 Updating todo list (3 items) ✔ 
+💫 Executing jj rebase -b feature -d main ✔ 
+📋 Updating todo list (3 items) ✔ 
+💫 Executing jj log -r 'feature|main|feature-' --no-graph ✔ 
+💫 Executing jj log -r 'feature::main | main::feature' ✔ 
+📋 Updating todo list (3 items) ✔ 
+🎉 Task Completed
+Rebased the `feature` bookmark onto `main` in `/home/user/myproject` using:
+
+- `jj rebase -b feature -d main`
+
+Verification shows `feature` is now a descendant of `main`:
+- `main` at `4e928e8e` (`Main commit`)
+- `feature` at `4d216ccd` (`Feature commit`)
+
+Note: the repository also has existing working copy changes (`A main.txt`), which were present before the rebase and were not modified by this operation.   
+  

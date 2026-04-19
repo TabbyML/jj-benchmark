@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776617999.8142152,
+            "stop": 1776617999.917755
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_final_commit_description",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.033553523011505604,
+                "start": 1776617999.8243387,
+                "stop": 1776617999.8724449,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_final_commit_description():\n        result = subprocess.run(\n            [\"jj\", \"log\", \"--no-graph\", \"-T\", \"description\", \"-r\", \"description('Feature X')\"],\n            cwd=PROJECT_DIR,\n            capture_output=True,\n            text=True\n        )\n        assert result.returncode == 0, \"Failed to run jj log.\"\n>       assert \"Feature X - variant 2\" in result.stdout, \"Final commit description should be 'Feature X - variant 2'.\"\nE       AssertionError: Final commit description should be 'Feature X - variant 2'.\nE       assert 'Feature X - variant 2' in ''\nE        +  where '' = CompletedProcess(args=['jj', 'log', '--no-graph', '-T', 'description', '-r', \"description('Feature X')\"], returncode=0, stdout='', stderr='').stdout\n\ntests/test_final_state.py:15: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_no_divergence",
+                "status": "passed",
+                "duration": 0.022113088023616,
+                "start": 1776617999.872775,
+                "stop": 1776617999.895112,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_operation_log_has_reconcile",
+                "status": "passed",
+                "duration": 0.02197153604356572,
+                "start": 1776617999.895414,
+                "stop": 1776617999.9175682,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}
