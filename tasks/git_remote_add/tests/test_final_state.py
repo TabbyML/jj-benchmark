@@ -21,7 +21,7 @@ def test_remotes_configured_correctly():
     
     # Verify public remote exists and points to the correct URL
     assert "public" in stdout, f"Expected 'public' remote to exist, got: {stdout}"
-    assert "https://github.com/example/upstream.git" in stdout, f"Expected 'public' remote to point to https://github.com/example/upstream.git, got: {stdout}"
+    assert "https://github.com/example/up.git" in stdout, f"Expected 'public' remote to point to https://github.com/example/up.git, got: {stdout}"
     
     # Verify origin and upstream do not exist
     assert "origin" not in stdout, f"Expected 'origin' remote to not exist, got: {stdout}"

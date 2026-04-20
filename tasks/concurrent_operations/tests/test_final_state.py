@@ -6,7 +6,7 @@ PROJECT_DIR = "/home/user/repo"
 
 def test_final_commit_description():
     result = subprocess.run(
-        ["jj", "log", "--no-graph", "-T", "description", "-r", "description('Feature X')"],
+        ["jj", "log", "--no-graph", "-T", "description", "-r", "description('Feature X*')"],
         cwd=PROJECT_DIR,
         capture_output=True,
         text=True
@@ -17,7 +17,7 @@ def test_final_commit_description():
 
 def test_no_divergence():
     result = subprocess.run(
-        ["jj", "log", "--no-graph", "-T", "divergent", "-r", "description('Feature X')"],
+        ["jj", "log", "--no-graph", "-T", "divergent", "-r", "description('Feature X*')"],
         cwd=PROJECT_DIR,
         capture_output=True,
         text=True

@@ -1,5 +1,0 @@
-{
-  "task_name": "init_and_config",
-  "task_description": "# Initialize and Configure Jujutsu\n\n## Background\nJujutsu (`jj`) requires setting up user identity before making commits, similar to Git. It can initialize a repository collocated with a Git repository.\n\n## Requirements\n- Initialize a collocated `jj` repository in `/home/user/repo`.\n- Configure user name as `Test User` and email as `test@example.com` globally or for the repository.\n\n## Implementation\n1. Run `git init /home/user/repo` to create a Git repository.\n2. Run `jj git init --colocate /home/user/repo` to initialize `jj`.\n3. Configure `user.name` and `user.email` using `jj config set`.\n\n## Constraints\n- The project path under `/home/user`: `/home/user/repo`.",
-  "truth": "# Verification Plan\n\n## Setup\n1. `cd /home/user/repo`\n\n## Verification Steps\n1. Verify that `.jj` directory exists in `/home/user/repo`.\n2. Verify that `jj config get user.name` returns `Test User`.\n3. Verify that `jj config get user.email` returns `test@example.com`."
-}

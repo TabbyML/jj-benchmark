@@ -6,7 +6,7 @@ You are starting a new project and need to set up your version control using `jj
 ## Requirements
 - Initialize a new `jj` repository colocated with Git in the project directory.
 - Add a Git remote named `origin` pointing to `https://github.com/example/repo.git`.
-- Add a Git remote named `upstream` pointing to `https://github.com/example/upstream.git`.
+- Add a Git remote named `upstream` pointing to `https://github.com/example/up.git`.
 - Rename the `upstream` remote to `public`.
 - Remove the `origin` remote.
 

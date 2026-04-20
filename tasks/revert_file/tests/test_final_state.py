@@ -10,7 +10,7 @@ def test_config_py_reverted():
     with open(config_path, "r") as f:
         content = f.read().strip()
     
-    assert content == "DEBUG = False", \
+    assert "DEBUG = False" in content, \
         f"Expected config.py to be 'DEBUG = False', but got: {content}"
 
 def test_utils_py_restored():

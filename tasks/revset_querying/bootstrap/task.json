@@ -1,5 +1,0 @@
-{
-  "task_name": "revset_querying",
-  "task_description": "# Query Commits using Revsets\n\n## Background\n`jj` uses a functional query language for selecting revisions, called revsets.\n\n## Requirements\n- You have a repository in `/home/user/project` with various commits from different authors on different bookmarks.\n- Write the exact revset string that finds all commits authored by \"Bob\" that are NOT ancestors of the `main` bookmark, but ARE ancestors of the current working copy (`@`).\n- Save this revset string into a file named `revset.txt` in the repository root.\n\n## Implementation\n1. Go to `/home/user/project`.\n2. Determine the correct revset (e.g., `author(\"Bob\") & ~::main & ::@`).\n3. Write it to `revset.txt`: `echo 'author(\"Bob\") & ~::main & ::@' > revset.txt` (or whatever the correct query is).\n\n## Constraints\n- Project path: `/home/user/project`.",
-  "truth": "# Verification Plan\n\n## Setup\n1. `cd /home/user/project`\n\n## Verification Steps\n1. `revset.txt` must exist.\n2. The revset in `revset.txt` must evaluate to exactly 2 specific commits when run with `jj log -T commit_id -r \"$(cat revset.txt)\"`."
-}
