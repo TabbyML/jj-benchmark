@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776275415.7045405,
+            "stop": 1776275415.7645035
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_config_restored",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.00127375777810812,
+                "start": 1776275415.7153082,
+                "stop": 1776275415.7344885,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_config_restored():\n        config_path = os.path.join(PROJECT_DIR, \"config.txt\")\n        assert os.path.isfile(config_path), f\"Config file {config_path} does not exist.\"\n    \n        with open(config_path) as f:\n            content = f.read().strip()\n    \n>       assert content == \"version=2\", f\"Expected config.txt to be restored to 'version=2', but got '{content}'.\"\nE       AssertionError: Expected config.txt to be restored to 'version=2', but got 'version=1'.\nE       assert 'version=1' == 'version=2'\nE         \nE         - version=2\nE         ?         ^\nE         + version=1\nE         ?         ^\n\ntests/test_final_state.py:14: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_jj_repo_intact",
+                "status": "passed",
+                "duration": 0.02905951999127865,
+                "start": 1776275415.7348907,
+                "stop": 1776275415.7642388,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

@@ -1,8 +1,0 @@
-You are an OS engineer comparing how `jj` handles branches compared to Git. In a provided repository at `/home/user/repo`, there is a single commit with a bookmark `main`.
-Your task is to:
-1. Use `jj` to create a new commit on top of `main` that adds a file `git_semantics.txt` with the text 'git semantics'. Describe the commit as 'add git semantics'.
-2. Create a bookmark named `git_branch` pointing to this new commit.
-3. Use `jj` to create another new commit on top of `main` that adds a file `jj_semantics.txt` with the text 'jj semantics'. Describe the commit as 'add jj semantics'.
-4. Create a bookmark named `jj_branch` pointing to this second new commit.
-5. Export the bookmarks to git using `jj git export`.
-6. Run a `jj log` command that shows only the `git_branch` and `jj_branch` commits, and save the output to `/home/user/comparison_log.txt`.

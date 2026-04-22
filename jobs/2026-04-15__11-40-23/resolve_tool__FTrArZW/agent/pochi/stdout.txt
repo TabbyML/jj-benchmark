@@ -1,0 +1,17 @@
+- Initializing MCP connections...
+You
+# Resolve Conflicts with Built-in Tools ## Background Jujutsu (`jj`) supports resolving conflicts using external merge tools or built-in tools. The built-in merge tools `:ours` and `:theirs` can be used to choose side #1 and side #2 of the conflict respectively. ## Requirements - Resolve the conflict in `file1.txt` by choosing side #1 (`:ours`). - Resolve the conflict in `file2.txt` by choosing side #2 (`:theirs`). ## Constraints - Project path: `/home/user/myproject`   
+
+Pochi
+💭 Thinking for 162 characters   
+💫 Executing cd /home/user/myproject && jj resolve --tool :ours file1.txt && jj resolve --tool :theirs file2.txt ✔ 
+Both conflicts have been resolved successfully: - **`file1.txt`** — resolved using `jj resolve --tool :ours`, selecting **side #1**. - **`file2.txt`** — resolved using `jj resolve --tool :theirs`, selecting **side #2**. The output confirms that all existing conflicts were resolved — the working copy commit `lqlxmstn` no longer has any conflict markers.   
+💭 Thinking for 99 characters   
+🎉 Task Completed
+Both conflicts in `/home/user/myproject` have been resolved using `jj`'s built-in tools:
+
+- **`file1.txt`** → resolved with `jj resolve --tool :ours` (side #1)
+- **`file2.txt`** → resolved with `jj resolve --tool :theirs` (side #2)
+
+The working copy commit (`lqlxmstn`) is now conflict-free, as confirmed by the `jj resolve` output: *"Existing conflicts were resolved or abandoned from 1 commits."*   
+  

@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776225347.5802,
+            "stop": 1776225347.6998277
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_first_commit_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02480504661798477,
+                "start": 1776225347.5942154,
+                "stop": 1776225347.635473,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_first_commit_content():\n        \"\"\"Priority 1: Use jj CLI to verify the grandparent commit (@--).\"\"\"\n        # Check description\n        result_desc = subprocess.run(\n            [\"jj\", \"log\", \"-r\", \"@--\", \"--no-graph\", \"-T\", \"description\"],\n            cwd=PROJECT_DIR,\n            capture_output=True,\n            text=True\n        )\n        assert result_desc.returncode == 0, f\"jj log failed: {result_desc.stderr}\"\n>       assert result_desc.stdout.strip() == \"Add feature A\", \\\n            f\"Expected first commit description to be 'Add feature A', got '{result_desc.stdout.strip()}'.\"\nE       AssertionError: Expected first commit description to be 'Add feature A', got 'Add feature A\nE         \nE         Add feature B'.\nE       assert 'Add feature ...Add feature B' == 'Add feature A'\nE         \nE         - Add feature A\nE         + Add feature A\nE         ?              +\nE         + \nE         + Add feature B\n\ntests/test_final_state.py:17: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_second_commit_content",
+                "status": "passed",
+                "duration": 0.042472888715565205,
+                "start": 1776225347.6357286,
+                "stop": 1776225347.6784146,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_working_copy_empty",
+                "status": "passed",
+                "duration": 0.0207939138635993,
+                "start": 1776225347.6786442,
+                "stop": 1776225347.6996245,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

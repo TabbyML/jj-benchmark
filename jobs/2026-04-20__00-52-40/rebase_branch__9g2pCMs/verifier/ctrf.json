@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776618371.6564007,
+            "stop": 1776618371.7423947
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_branch_rebased_onto_main",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.020409617020050064,
+                "start": 1776618371.6665733,
+                "stop": 1776618371.7012775,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_branch_rebased_onto_main():\n        \"\"\"Priority 1: Use jj CLI to verify feature-branch is rebased onto main.\"\"\"\n        result = subprocess.run(\n            [\"jj\", \"log\", \"-r\", \"main..feature-branch\", \"--no-graph\", \"-T\", \"commit_id\\n\"],\n            capture_output=True, text=True, cwd=PROJECT_DIR\n        )\n        assert result.returncode == 0, f\"'jj log' failed: {result.stderr}\"\n    \n        commits = [line for line in result.stdout.strip().split('\\n') if line]\n>       assert len(commits) == 2, f\"Expected exactly 2 commits in main..feature-branch, got {len(commits)}: {commits}\"\nE       AssertionError: Expected exactly 2 commits in main..feature-branch, got 1: ['1321fb8f8db381c86d02554b74e9454050da00dee952d193c46dba5fb22d141b1f7a9b5ac4472190']\nE       assert 1 == 2\nE        +  where 1 = len(['1321fb8f8db381c86d02554b74e9454050da00dee952d193c46dba5fb22d141b1f7a9b5ac4472190'])\n\ntests/test_final_state.py:16: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_conflict_resolved_content",
+                "status": "passed",
+                "duration": 0.02012783198733814,
+                "start": 1776618371.7014878,
+                "stop": 1776618371.7218165,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_no_unresolved_conflicts",
+                "status": "passed",
+                "duration": 0.01988174201687798,
+                "start": 1776618371.7220387,
+                "stop": 1776618371.7421167,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

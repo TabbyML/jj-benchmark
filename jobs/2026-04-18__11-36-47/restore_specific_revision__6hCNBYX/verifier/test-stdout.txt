@@ -1,0 +1,47 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 18ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 2 items
+
+tests/test_final_state.py F.                                             [100%]
+
+=================================== FAILURES ===================================
+_____________________________ test_config_restored _____________________________
+
+    def test_config_restored():
+        config_path = os.path.join(PROJECT_DIR, "config.txt")
+        assert os.path.isfile(config_path), f"Config file {config_path} does not exist."
+    
+        with open(config_path) as f:
+            content = f.read().strip()
+    
+>       assert content == "version=2", f"Expected config.txt to be restored to 'version=2', but got '{content}'."
+E       AssertionError: Expected config.txt to be restored to 'version=2', but got 'version=1'.
+E       assert 'version=1' == 'version=2'
+E         
+E         - version=2
+E         ?         ^
+E         + version=1
+E         ?         ^
+
+tests/test_final_state.py:14: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_jj_repo_intact
+FAILED tests/test_final_state.py::test_config_restored - AssertionError: Expe...
+========================= 1 failed, 1 passed in 0.05s ==========================

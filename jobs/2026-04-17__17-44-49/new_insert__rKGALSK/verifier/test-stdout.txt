@@ -1,0 +1,45 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 16ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+tests/test_final_state.py F..                                            [100%]
+
+=================================== FAILURES ===================================
+___________________________ test_feature_file_exists ___________________________
+
+    def test_feature_file_exists():
+        feature_path = os.path.join(PROJECT_DIR, "feature.txt")
+        assert os.path.isfile(feature_path), "feature.txt does not exist in the working directory."
+        with open(feature_path, "r") as f:
+            content = f.read()
+>       assert content == "new feature\n", f"Expected 'new feature\\n', got {repr(content)}"
+E       AssertionError: Expected 'new feature\n', got 'new feature'
+E       assert 'new feature' == 'new feature\n'
+E         
+E         - new feature
+E         ?            -
+E         + new feature
+
+tests/test_final_state.py:12: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_commit_stack_order
+PASSED tests/test_final_state.py::test_new_commit_adds_feature_txt
+FAILED tests/test_final_state.py::test_feature_file_exists - AssertionError: ...
+========================= 1 failed, 2 passed in 0.25s ==========================

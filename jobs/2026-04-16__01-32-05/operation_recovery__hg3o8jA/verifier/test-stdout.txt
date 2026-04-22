@@ -1,0 +1,65 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 184ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+tests/test_final_state.py .FF                                            [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_file3_to_file5_absent __________________________
+
+    def test_file3_to_file5_absent():
+>       assert not os.path.exists(os.path.join(PROJECT_DIR, "file3.txt")), "file3.txt should not exist."
+E       AssertionError: file3.txt should not exist.
+E       assert not True
+E        +  where True = <function exists at 0x7ae9d3407560>('/home/user/project/file3.txt')
+E        +    where <function exists at 0x7ae9d3407560> = <module 'posixpath' (frozen)>.exists
+E        +      where <module 'posixpath' (frozen)> = os.path
+E        +    and   '/home/user/project/file3.txt' = <function join at 0x7ae9d31c4c20>('/home/user/project', 'file3.txt')
+E        +      where <function join at 0x7ae9d31c4c20> = <module 'posixpath' (frozen)>.join
+E        +        where <module 'posixpath' (frozen)> = os.path
+
+tests/test_final_state.py:12: AssertionError
+____________________ test_jj_log_does_not_contain_commit_5 _____________________
+
+    def test_jj_log_does_not_contain_commit_5():
+        result = subprocess.run(
+            ["jj", "log"],
+            capture_output=True, text=True, cwd=PROJECT_DIR
+        )
+        assert result.returncode == 0, f"'jj log' failed: {result.stderr}"
+>       assert "Commit 5" not in result.stdout, "Expected 'Commit 5' to be reverted."
+E       AssertionError: Expected 'Commit 5' to be reverted.
+E       assert 'Commit 5' not in '@  wrmmypro...) 00000000\n'
+E         
+E         'Commit 5' is contained here:
+E           911b1e
+E           │  Commit 5
+E           ○  yulwvlys alice@example.com 2026-04-15 17:36:03 332f3753
+E           │  Commit 4
+E           ○  rlnmtuvv alice@example.com 2026-04-15 17:36:00 53bf6a54...
+E         
+E         ...Full output truncated (6 lines hidden), use '-vv' to show
+
+tests/test_final_state.py:22: AssertionError
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED tests/test_final_state.py::test_file1_and_file2_exist
+FAILED tests/test_final_state.py::test_file3_to_file5_absent - AssertionError...
+FAILED tests/test_final_state.py::test_jj_log_does_not_contain_commit_5 - Ass...
+========================= 2 failed, 1 passed in 0.06s ==========================

@@ -1,0 +1,5 @@
+{
+  "task_name": "resolve_tool",
+  "task_description": "# Resolve Conflicts with Built-in Tools\n\n## Background\nJujutsu (`jj`) supports resolving conflicts using external merge tools or built-in tools. The built-in merge tools `:ours` and `:theirs` can be used to choose side #1 and side #2 of the conflict respectively.\n\n## Requirements\n- Resolve the conflict in `file1.txt` by choosing side #1 (`:ours`).\n- Resolve the conflict in `file2.txt` by choosing side #2 (`:theirs`).\n\n## Constraints\n- Project path: `/home/user/myproject`",
+  "truth": "# Verification Plan\n\n## Setup\n1. `cd /home/user/myproject`\n\n## Verification Steps\n1. `jj status` should show no unresolved conflicts.\n2. The content of `file1.txt` should be `side 1`.\n3. The content of `file2.txt` should be `side 2`."
+}

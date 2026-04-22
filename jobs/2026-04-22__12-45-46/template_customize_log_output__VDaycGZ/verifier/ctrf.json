@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776834182.2012777,
+            "stop": 1776834182.6380959
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_template_alias_configured",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.018043285992462188,
+                "start": 1776834182.2170653,
+                "stop": 1776834182.2530305,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_template_alias_configured():\n        \"\"\"Priority 1: Use jj CLI to verify the configured template alias.\"\"\"\n        result = subprocess.run(\n            [\"jj\", \"config\", \"get\", \"template-aliases.log_custom\"],\n            capture_output=True, text=True, cwd=PROJECT_DIR\n        )\n        assert result.returncode == 0, f\"'jj config get' failed: {result.stderr}\"\n    \n        output = result.stdout.strip()\n        # The output might have quotes depending on how it was set, but it should contain the key parts\n        assert \"change_id.short()\" in output, f\"Alias missing change_id.short(): {output}\"\n        assert \"description.first_line()\" in output, f\"Alias missing description.first_line(): {output}\"\n        assert \"\\\" | \\\"\" in output or \"' | '\" in output, f\"Alias missing pipe separator: {output}\"\n>       assert \"\\\"\\\\n\\\"\" in output or \"'\\\\n'\" in output, f\"Alias missing newline: {output}\"\nE       AssertionError: Alias missing newline: change_id.short() ++ \" | \" ++ description.first_line() ++ \"\nE         \"\nE       assert ('\"\\\\n\"' in 'change_id.short() ++ \" | \" ++ description.first_line() ++ \"\\n\"' or \"'\\\\n'\" in 'change_id.short() ++ \" | \" ++ description.first_line() ++ \"\\n\"')\n\ntests/test_final_state.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_template_alias_output",
+                "status": "passed",
+                "duration": 0.3843544239643961,
+                "start": 1776834182.2533424,
+                "stop": 1776834182.6379092,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

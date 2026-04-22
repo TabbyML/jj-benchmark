@@ -1,0 +1,68 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 0,
+            "failed": 4,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776833404.8673997,
+            "stop": 1776833405.040085
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_files_in_working_copy",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.000984871934633702,
+                "start": 1776833404.8817432,
+                "stop": 1776833404.8998177,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_files_in_working_copy():\n        assert os.path.isfile(os.path.join(PROJECT_DIR, \"a.txt\")), \"a.txt should exist.\"\n        assert os.path.isfile(os.path.join(PROJECT_DIR, \"d.txt\")), \"d.txt should exist.\"\n>       assert not os.path.isfile(os.path.join(PROJECT_DIR, \"b.txt\")), \"b.txt should be removed.\"\nE       AssertionError: b.txt should be removed.\nE       assert not True\nE        +  where True = <function isfile at 0x720393234220>('/home/user/myproject/b.txt')\nE        +    where <function isfile at 0x720393234220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\nE        +    and   '/home/user/myproject/b.txt' = <function join at 0x720393234c20>('/home/user/myproject', 'b.txt')\nE        +      where <function join at 0x720393234c20> = <module 'posixpath' (frozen)>.join\nE        +        where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:14: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_experiment_bookmark_retained",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0683428039192222,
+                "start": 1776833404.9001544,
+                "stop": 1776833404.9720726,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_experiment_bookmark_retained():\n        res = run_jj_cmd([\"log\", \"-r\", \"experiment\", \"-T\", \"description\"])\n        assert res.returncode == 0, \"Bookmark 'experiment' should exist.\"\n>       assert \"commit A\" in res.stdout, \"Bookmark 'experiment' should point to 'commit A'.\"\nE       AssertionError: Bookmark 'experiment' should point to 'commit A'.\nE       assert 'commit A' in '\u25cb  commit B\\n\u2502\\n~\\n'\nE        +  where '\u25cb  commit B\\n\u2502\\n~\\n' = CompletedProcess(args=['jj', 'log', '-r', 'experiment', '-T', 'description'], returncode=0, stdout='\u25cb  commit B\\n\u2502\\n~\\n', stderr='').stdout\n\ntests/test_final_state.py:20: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_draft_bookmark_deleted",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.03177241497905925,
+                "start": 1776833404.9724176,
+                "stop": 1776833405.0064783,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_draft_bookmark_deleted():\n        res = run_jj_cmd([\"log\", \"-r\", \"draft\"])\n>       assert res.returncode != 0, \"Bookmark 'draft' should be deleted and not resolvable.\"\nE       AssertionError: Bookmark 'draft' should be deleted and not resolvable.\nE       assert 0 != 0\nE        +  where 0 = CompletedProcess(args=['jj', 'log', '-r', 'draft'], returncode=0, stdout='\u25cb  kwzmstrp test@example.com 2026-04-14 16:42:29 draft 5b8f9ff6\\n\u2502  commit C\\n~\\n', stderr='').returncode\n\ntests/test_final_state.py:24: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_working_copy_description",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.029821856995113194,
+                "start": 1776833405.0067835,
+                "stop": 1776833405.0395403,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_working_copy_description():\n        res = run_jj_cmd([\"log\", \"-r\", \"@\", \"-T\", \"description\"])\n        assert res.returncode == 0\n>       assert \"cleanup complete\" in res.stdout, \"Working copy description should be 'cleanup complete'.\"\nE       AssertionError: Working copy description should be 'cleanup complete'.\nE       assert 'cleanup complete' in '@  commit D\\n\u2502\\n~\\n'\nE        +  where '@  commit D\\n\u2502\\n~\\n' = CompletedProcess(args=['jj', 'log', '-r', '@', '-T', 'description'], returncode=0, stdout='@  commit D\\n\u2502\\n~\\n', stderr='').stdout\n\ntests/test_final_state.py:29: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

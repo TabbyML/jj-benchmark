@@ -1,0 +1,53 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 1,
+            "failed": 2,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776274586.9034975,
+            "stop": 1776274586.9594586
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_file1_and_file2_exist",
+                "status": "passed",
+                "duration": 0.0005337903276085854,
+                "start": 1776274586.9179463,
+                "stop": 1776274586.9187026,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_file3_to_file5_absent",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0006108004599809647,
+                "start": 1776274586.9189172,
+                "stop": 1776274586.933682,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_file3_to_file5_absent():\n>       assert not os.path.exists(os.path.join(PROJECT_DIR, \"file3.txt\")), \"file3.txt should not exist.\"\nE       AssertionError: file3.txt should not exist.\nE       assert not True\nE        +  where True = <function exists at 0x7ae9d3407560>('/home/user/project/file3.txt')\nE        +    where <function exists at 0x7ae9d3407560> = <module 'posixpath' (frozen)>.exists\nE        +      where <module 'posixpath' (frozen)> = os.path\nE        +    and   '/home/user/project/file3.txt' = <function join at 0x7ae9d31c4c20>('/home/user/project', 'file3.txt')\nE        +      where <function join at 0x7ae9d31c4c20> = <module 'posixpath' (frozen)>.join\nE        +        where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:12: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_jj_log_does_not_contain_commit_5",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023212578147649765,
+                "start": 1776274586.933892,
+                "stop": 1776274586.9592612,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_jj_log_does_not_contain_commit_5():\n        result = subprocess.run(\n            [\"jj\", \"log\"],\n            capture_output=True, text=True, cwd=PROJECT_DIR\n        )\n        assert result.returncode == 0, f\"'jj log' failed: {result.stderr}\"\n>       assert \"Commit 5\" not in result.stdout, \"Expected 'Commit 5' to be reverted.\"\nE       AssertionError: Expected 'Commit 5' to be reverted.\nE       assert 'Commit 5' not in '@  wrmmypro...) 00000000\\n'\nE         \nE         'Commit 5' is contained here:\nE           911b1e\nE           \u2502  Commit 5\nE           \u25cb  yulwvlys alice@example.com 2026-04-15 17:36:03 332f3753\nE           \u2502  Commit 4\nE           \u25cb  rlnmtuvv alice@example.com 2026-04-15 17:36:00 53bf6a54...\nE         \nE         ...Full output truncated (6 lines hidden), use '-vv' to show\n\ntests/test_final_state.py:22: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

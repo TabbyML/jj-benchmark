@@ -1,1 +1,0 @@
-The jj+git colocated repo at `/home/user/local-repo` tracks an upstream remote at `/home/user/upstream.git`. The upstream has 2 new commits you don't have locally. You have 3 local commits on top of an older base. Fetch from upstream, rebase your local commits onto the new upstream HEAD resolving any conflicts, and write a status report to `/home/user/status_report.txt`.

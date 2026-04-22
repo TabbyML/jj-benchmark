@@ -1,0 +1,41 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 2,
+            "passed": 1,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776485319.8086388,
+            "stop": 1776485319.8536823
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_file_txt_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0007589960150653496,
+                "start": 1776485319.8173227,
+                "stop": 1776485319.8314266,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_file_txt_content():\n        file_path = os.path.join(PROJECT_DIR, \"file.txt\")\n        assert os.path.isfile(file_path), f\"{file_path} does not exist.\"\n    \n        with open(file_path, \"r\") as f:\n            content = f.read()\n    \n        expected_content = \"A and B\\n\"\n>       assert content == expected_content, f\"Expected file.txt to contain exactly {repr(expected_content)}, but got {repr(content)}\"\nE       AssertionError: Expected file.txt to contain exactly 'A and B\\n', but got 'A and B'\nE       assert 'A and B' == 'A and B\\n'\nE         \nE         - A and B\nE         ?        -\nE         + A and B\n\ntests/test_final_state.py:15: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_jj_status_no_conflicts",
+                "status": "passed",
+                "duration": 0.02162857900839299,
+                "start": 1776485319.831632,
+                "stop": 1776485319.8534935,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

@@ -1,0 +1,5 @@
+{
+  "task_name": "workspace_root",
+  "task_description": "# Find Workspace Root\n\n## Background\nJujutsu (`jj`) provides a command to quickly find the root directory of the current workspace. This is useful when you are working in deeply nested directories and need to reference the root of the repository.\n\n## Requirements\n- Find the root path of the `jj` workspace you are currently in.\n- Save the output to a file named `root_path.txt` in the `/home/user` directory.\n\n## Implementation\n1. Navigate to `/home/user/repo/deeply/nested/dir`.\n2. Run the `jj` command that prints the workspace root.\n3. Save the output of that command to `/home/user/root_path.txt`.\n\n## Constraints\n- Project path: `/home/user/repo`\n- The output file must be exactly `/home/user/root_path.txt` and contain the absolute path to the workspace root.",
+  "truth": "# Verification Plan\n\n## Setup\n1. Ensure the `jj` workspace exists at `/home/user/repo`.\n\n## Test Cases\n1. **Check Output File**: The file `/home/user/root_path.txt` should exist.\n2. **Verify Path**: The content of the file should be `/home/user/repo` (with or without a trailing newline)."
+}

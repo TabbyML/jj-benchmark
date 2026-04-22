@@ -1,0 +1,59 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 4,
+            "passed": 3,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776421362.7563853,
+            "stop": 1776421362.8580446
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_repo_exists",
+                "status": "passed",
+                "duration": 0.0008355019963346422,
+                "start": 1776421362.7851334,
+                "stop": 1776421362.7863135,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_hello_txt_exists",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0010131039962288924,
+                "start": 1776421362.7866917,
+                "stop": 1776421362.807186,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_hello_txt_exists():\n        file_path = \"/home/user/repo/hello.txt\"\n>       assert os.path.isfile(file_path), \"The file hello.txt does not exist.\"\nE       AssertionError: The file hello.txt does not exist.\nE       assert False\nE        +  where False = <function isfile at 0x7fae78f3c220>('/home/user/repo/hello.txt')\nE        +    where <function isfile at 0x7fae78f3c220> = <module 'posixpath' (frozen)>.isfile\nE        +      where <module 'posixpath' (frozen)> = os.path\n\ntests/test_final_state.py:9: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_parent_commit_contains_hello",
+                "status": "passed",
+                "duration": 0.02497777799726464,
+                "start": 1776421362.8074398,
+                "stop": 1776421362.8326428,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_working_copy_is_empty",
+                "status": "passed",
+                "duration": 0.02469178799947258,
+                "start": 1776421362.832914,
+                "stop": 1776421362.8578203,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            }
+        ]
+    }
+}

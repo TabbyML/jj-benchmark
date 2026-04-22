@@ -1,7 +1,1 @@
-You are a developer migrating from Git. You accidentally rebased the `feature` bookmark onto the wrong commit (`dev` instead of `main`).
-
-Your task is to:
-1. Use the operation log to undo the mistaken rebase operation.
-2. Correctly rebase the `feature` bookmark onto the `main` bookmark.
-3. Verify the `feature` bookmark is now a direct child of `main`.
-4. Run `jj log -r 'main..feature' -T 'bookmarks ++ "\n"' > /home/user/rebase_verification.log` to save the verification output.
+# undo_mistaken_rebase\n\n## Background\nPerform a rebase, then use `jj undo` to revert it.\n\n## Requirements\nComplete the task as described.\n\n## Implementation\nUse jj commands in `/home/user/repo`.\n\n## Output\n- Project path: `/home/user/repo`\n- Start command: `None`\n- Port: `None`

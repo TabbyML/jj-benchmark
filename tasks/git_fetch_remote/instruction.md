@@ -1,0 +1,18 @@
+# Fetch and Rebase with jj
+
+## Background
+`jj` (Jujutsu) allows you to seamlessly interact with Git remotes. In this task, you need to fetch new changes from a remote repository, rebase your local work onto the updated main branch, and push your changes back.
+
+## Requirements
+- Fetch the latest changes from the `origin` remote.
+- Rebase the `feature` bookmark onto the updated `main` branch (which is tracked as `main@origin`).
+- Push the `feature` bookmark to the `origin` remote.
+
+## Implementation
+1. Navigate to the project directory: `cd /home/user/repo`
+2. Run `jj git fetch` to retrieve the latest commits from the remote.
+3. Rebase the `feature` bookmark onto the `main@origin` branch (e.g., using `jj rebase -b feature -d main@origin`).
+4. Push the `feature` bookmark to the remote using `jj git push --bookmark feature`.
+
+## Constraints
+- Project path: `/home/user/repo`

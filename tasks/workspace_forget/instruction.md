@@ -1,0 +1,20 @@
+# Remove an Obsolete jj Workspace
+
+## Background
+A developer is working on a jujutsu (`jj`) project and created a secondary workspace for an experiment that is no longer needed. The developer wants to remove this workspace from `jj`'s tracking and delete its files from the disk to free up space.
+
+## Requirements
+- The main repository is located at `/home/user/myproject`.
+- There is a secondary workspace named `experiment` located at `/home/user/myproject-experiment`.
+- The `experiment` workspace must be "forgotten" by `jj` so it is no longer tracked.
+- The directory `/home/user/myproject-experiment` must be completely deleted from the disk.
+
+## Implementation Guide
+1. Navigate to the main project directory: `cd /home/user/myproject`.
+2. Stop tracking the workspace by running `jj workspace forget experiment`.
+3. Remove the directory from the filesystem using `rm -rf /home/user/myproject-experiment`.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- The `experiment` workspace must not be tracked by `jj` anymore.
+- The `/home/user/myproject-experiment` directory must not exist.

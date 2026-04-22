@@ -1,0 +1,77 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 16ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 4 items
+
+tests/test_final_state.py FFFF                                           [100%]
+
+=================================== FAILURES ===================================
+__________________________ test_files_in_working_copy __________________________
+
+    def test_files_in_working_copy():
+        assert os.path.isfile(os.path.join(PROJECT_DIR, "a.txt")), "a.txt should exist."
+        assert os.path.isfile(os.path.join(PROJECT_DIR, "d.txt")), "d.txt should exist."
+>       assert not os.path.isfile(os.path.join(PROJECT_DIR, "b.txt")), "b.txt should be removed."
+E       AssertionError: b.txt should be removed.
+E       assert not True
+E        +  where True = <function isfile at 0x720393234220>('/home/user/myproject/b.txt')
+E        +    where <function isfile at 0x720393234220> = <module 'posixpath' (frozen)>.isfile
+E        +      where <module 'posixpath' (frozen)> = os.path
+E        +    and   '/home/user/myproject/b.txt' = <function join at 0x720393234c20>('/home/user/myproject', 'b.txt')
+E        +      where <function join at 0x720393234c20> = <module 'posixpath' (frozen)>.join
+E        +        where <module 'posixpath' (frozen)> = os.path
+
+tests/test_final_state.py:14: AssertionError
+______________________ test_experiment_bookmark_retained _______________________
+
+    def test_experiment_bookmark_retained():
+        res = run_jj_cmd(["log", "-r", "experiment", "-T", "description"])
+        assert res.returncode == 0, "Bookmark 'experiment' should exist."
+>       assert "commit A" in res.stdout, "Bookmark 'experiment' should point to 'commit A'."
+E       AssertionError: Bookmark 'experiment' should point to 'commit A'.
+E       assert 'commit A' in '○  commit B\n│\n~\n'
+E        +  where '○  commit B\n│\n~\n' = CompletedProcess(args=['jj', 'log', '-r', 'experiment', '-T', 'description'], returncode=0, stdout='○  commit B\n│\n~\n', stderr='').stdout
+
+tests/test_final_state.py:20: AssertionError
+_________________________ test_draft_bookmark_deleted __________________________
+
+    def test_draft_bookmark_deleted():
+        res = run_jj_cmd(["log", "-r", "draft"])
+>       assert res.returncode != 0, "Bookmark 'draft' should be deleted and not resolvable."
+E       AssertionError: Bookmark 'draft' should be deleted and not resolvable.
+E       assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['jj', 'log', '-r', 'draft'], returncode=0, stdout='○  kwzmstrp test@example.com 2026-04-14 16:42:29 draft 5b8f9ff6\n│  commit C\n~\n', stderr='').returncode
+
+tests/test_final_state.py:24: AssertionError
+________________________ test_working_copy_description _________________________
+
+    def test_working_copy_description():
+        res = run_jj_cmd(["log", "-r", "@", "-T", "description"])
+        assert res.returncode == 0
+>       assert "cleanup complete" in res.stdout, "Working copy description should be 'cleanup complete'."
+E       AssertionError: Working copy description should be 'cleanup complete'.
+E       assert 'cleanup complete' in '@  commit D\n│\n~\n'
+E        +  where '@  commit D\n│\n~\n' = CompletedProcess(args=['jj', 'log', '-r', '@', '-T', 'description'], returncode=0, stdout='@  commit D\n│\n~\n', stderr='').stdout
+
+tests/test_final_state.py:29: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_files_in_working_copy - AssertionError...
+FAILED tests/test_final_state.py::test_experiment_bookmark_retained - Asserti...
+FAILED tests/test_final_state.py::test_draft_bookmark_deleted - AssertionErro...
+FAILED tests/test_final_state.py::test_working_copy_description - AssertionEr...
+============================== 4 failed in 0.17s ===============================

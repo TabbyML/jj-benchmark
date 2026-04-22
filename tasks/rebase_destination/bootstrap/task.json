@@ -1,0 +1,5 @@
+{
+  "task_name": "rebase_destination",
+  "task_description": "# Rebase a branch to a new destination\n\n## Background\nYou have a Jujutsu (`jj`) repository located at `/home/user/myproject`. The repository contains a `main` bookmark and a `feature` bookmark. The `feature` bookmark diverges from `main`.\n\n## Requirements\nRebase the `feature` bookmark onto the `main` bookmark using the `jj rebase` command.\n\n## Constraints\n- Project path: `/home/user/myproject`",
+  "truth": "# Verification Plan\n\n## Setup\n1. `cd /home/user/myproject`\n\n## Test Cases\n1. **Verify rebase**: Run `jj log -r 'feature' -T 'parents.map(|p| p.bookmarks()).join(\",\")'`. Expected: The output should contain `main`, indicating that `main` is now the parent of `feature`."
+}

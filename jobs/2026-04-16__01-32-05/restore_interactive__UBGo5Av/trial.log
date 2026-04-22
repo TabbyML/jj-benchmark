@@ -1,0 +1,74 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash  && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model openai/gpt-5.2-codex --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Interactive Restore in Jujutsu
+
+## Background
+You are working on a Python project using `jj`. You have made several changes to `main.py` in your working copy, adding two new functions: `foo()` and `bar()`. You realize that you only want to keep the addition of `bar()` and want to undo the addition of `foo()` so that it matches the parent commit.
+
+## Requirements
+- Modify the working copy so that `main.py` contains `hello()` and `bar()`, but `foo()` is removed.
+- You can achieve this using `jj restore -i` if your environment supports interactive terminal tools, or you can simply edit `/home/user/myproject/main.py` directly to remove `foo()`.
+- The repository must remain intact and the working copy should reflect this specific state.
+
+## Implementation Guide
+1. Navigate to `/home/user/myproject`.
+2. Inspect the changes in the working copy using `jj diff`.
+3. Either use `jj restore -i` (if you can use interactive prompts) or directly edit `main.py` to remove the `foo()` function.
+4. Verify the working copy diff using `jj diff` to ensure only `bar()` is being added compared to the parent.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- The parent commit must still contain only `hello()`.
+
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

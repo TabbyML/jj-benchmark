@@ -1,5 +1,0 @@
-{
-  "task_name": "rebase_abandoned_branch_19",
-  "task_description": "You are a support engineer recovering lost work for a developer. They abandoned a branch named `feature-x` and now need to recover it and rebase it onto the `main` branch. \nYour task is to:\n1. Find the abandoned revision that was previously pointed to by `feature-x`.\n2. Restore the bookmark `feature-x` to point to that revision.\n3. Rebase `feature-x` onto the `main` branch.\n4. Save the output of `jj log -r feature-x` to `/home/user/log.txt`.",
-  "truth": "Initial state: Repo in `/home/user/repo` with a commit 'A' on `main` and a commit 'B' that was previously on `feature-x` but `feature-x` was deleted and the commit abandoned. The agent must use `jj log -r 'hidden()'` or similar to find the abandoned commit, `jj bookmark set feature-x -r <rev>`, and `jj rebase -b feature-x -d main`. Then `jj log -r feature-x > /home/user/log.txt`. Verification checks if `feature-x` is a child of `main` and `log.txt` is correct."
-}

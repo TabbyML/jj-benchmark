@@ -1,0 +1,5 @@
+{
+  "task_name": "operation_recovery",
+  "task_description": "# Undo Operations in Jujutsu\n\n## Background\nEvery repository operation (commit, rebase, push) is recorded in `jj` and can be reverted using `jj undo`.\n\n## Requirements\n- You have a repository in `/home/user/project` with several recent operations.\n- The operation log has 5 distinct operations beyond the initial setup.\n- Undo back to the state immediately after the operation that created `file2.txt`.\n\n## Implementation\n1. Go to `/home/user/project`.\n2. Run `jj op log` to view the history of operations.\n3. Identify the operation ID where `Commit 2` (which added `file2.txt`) was created.\n4. Run `jj undo <operation_id>` or `jj op restore <operation_id>` to return the repo to that state.\n\n## Constraints\n- Project path: `/home/user/project`.",
+  "truth": "# Verification Plan\n\n## Setup\n1. `cd /home/user/project`\n\n## Verification Steps\n1. `file1.txt` and `file2.txt` must exist in the working copy or commit history.\n2. `file3.txt`, `file4.txt`, and `file5.txt` must NOT exist in the working copy or commit history."
+}

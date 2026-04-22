@@ -1,0 +1,84 @@
+downloading uv 0.9.7 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
+Downloading pygments (1.2MiB)
+ Downloading pygments
+Installed 7 packages in 18ms
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5
+collected 3 items
+
+tests/test_final_state.py FFF                                            [100%]
+
+=================================== FAILURES ===================================
+____________________ test_feature_branch_rebased_onto_main _____________________
+
+    def test_feature_branch_rebased_onto_main():
+        """Priority 1: Use jj CLI to verify feature-branch is rebased onto main."""
+        result = subprocess.run(
+            ["jj", "log", "-r", "main..feature-branch", "--no-graph", "-T", "commit_id\n"],
+            capture_output=True, text=True, cwd=PROJECT_DIR
+        )
+        assert result.returncode == 0, f"'jj log' failed: {result.stderr}"
+    
+        commits = [line for line in result.stdout.strip().split('\n') if line]
+>       assert len(commits) == 2, f"Expected exactly 2 commits in main..feature-branch, got {len(commits)}: {commits}"
+E       AssertionError: Expected exactly 2 commits in main..feature-branch, got 1: ['8b3ae9679ac036b3261055c7c6e0b9b827fbbce901dd37a0d2c8029732bb1e45c6ae2b91fc096e44']
+E       assert 1 == 2
+E        +  where 1 = len(['8b3ae9679ac036b3261055c7c6e0b9b827fbbce901dd37a0d2c8029732bb1e45c6ae2b91fc096e44'])
+
+tests/test_final_state.py:16: AssertionError
+________________________ test_conflict_resolved_content ________________________
+
+    def test_conflict_resolved_content():
+        """Priority 1: Use jj CLI to check the content of data.txt in feature-branch."""
+        result = subprocess.run(
+            ["jj", "file", "show", "data.txt", "-r", "feature-branch"],
+            capture_output=True, text=True, cwd=PROJECT_DIR
+        )
+        assert result.returncode == 0, f"'jj file show' failed: {result.stderr}"
+    
+        expected_content = "Line from main\nLine from feature\n"
+>       assert result.stdout == expected_content, f"Expected data.txt to contain exactly '{expected_content}', got '{result.stdout}'"
+E       AssertionError: Expected data.txt to contain exactly 'Line from main
+E         Line from feature
+E         ', got 'Line from main
+E         Line from feature'
+E       assert 'Line from ma... from feature' == 'Line from ma...rom feature\n'
+E         
+E           Line from main
+E         - Line from feature
+E         ?                  -
+E         + Line from feature
+
+tests/test_final_state.py:27: AssertionError
+_________________________ test_no_unresolved_conflicts _________________________
+
+    def test_no_unresolved_conflicts():
+        """Priority 1: Use jj CLI to verify no unresolved conflicts exist."""
+        result = subprocess.run(
+            ["jj", "resolve", "--list", "-r", "feature-branch"],
+            capture_output=True, text=True, cwd=PROJECT_DIR
+        )
+>       assert result.returncode == 0, f"'jj resolve --list' failed: {result.stderr}"
+E       AssertionError: 'jj resolve --list' failed: Error: No conflicts found at this revision
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['jj', 'resolve', '--list', '-r', 'feature-branch'], returncode=2, stdout='', stderr='Error: No conflicts found at this revision\n').returncode
+
+tests/test_final_state.py:35: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_final_state.py::test_feature_branch_rebased_onto_main - Ass...
+FAILED tests/test_final_state.py::test_conflict_resolved_content - AssertionE...
+FAILED tests/test_final_state.py::test_no_unresolved_conflicts - AssertionErr...
+============================== 3 failed in 0.10s ===============================

@@ -1,0 +1,77 @@
+Running command: apt-get update && apt-get install -y curl ripgrep
+Command outputs captured
+Running command: set -euo pipefail; curl -fsSL https://getpochi.com/install.sh | bash  && mkdir -p /logs/agent/pochi && ~/.pochi/bin/pochi --version
+Command outputs captured
+Running command: ln -sf ~/.pochi/bin/pochi /usr/local/bin/pochi
+Command outputs captured
+Running command: mkdir -p ~/.pochi && cat << 'EOF' | sed -e "s/OPENAI_API_KEY/${OPENAI_API_KEY}/g" -e "s/DEEPINFRA_API_KEY/${DEEPINFRA_API_KEY}/g" -e "s/ANTHROPIC_API_KEY/${ANTHROPIC_API_KEY}/g" > ~/.pochi/config.jsonc
+{
+  "providers": {
+    "deepinfra": {
+      "kind": "openai",
+      "baseURL": "https://api.deepinfra.com/v1/openai",
+      "apiKey": "DEEPINFRA_API_KEY",
+      "models": {
+        "zai-org/GLM-4.7-Flash": {
+          "name": "glm-4.7-flash"
+        },
+        "moonshotai/Kimi-K2.5": {
+          "name": "kimi-K2.5"
+        },
+        "Qwen/Qwen3-Coder-480B-A35B-Instruct": {
+          "name": "qwen3-coder-480b"
+        }
+      }
+    },
+    "anthropic": {
+      "kind": "openai",
+      "baseURL": "https://api.anthropic.com/v1",
+      "apiKey": "ANTHROPIC_API_KEY",
+      "models": {
+        "claude-opus-4-6": {
+          "name": "claude-opus-4-6"
+        }
+      }
+    },
+    "openai": {
+      "kind": "openai",
+      "baseURL": "https://api.openai.com/v1",
+      "apiKey": "OPENAI_API_KEY",
+      "models": {
+        "gpt-5.4": {
+          "name": "gpt-5.4"
+        }
+      }
+    }
+  }
+}
+EOF
+Command outputs captured
+Running command: export PATH="$HOME/.pochi/bin:$PATH"; pochi --model openai/gpt-5.2-codex --max-steps 200 --max-retries 10 --blobs-dir /logs/agent/pochi/blobs --experimental-stream-trajectory /logs/agent/pochi/trajectory.jsonl > >(tee /logs/agent/pochi/stdout.txt) 2> >(tee /logs/agent/pochi/stderr.txt >&2) <<'EOF'
+# Insert a New Commit in a jj Stack
+
+## Background
+You have a `jj` repository with a stack of commits at `/home/user/myproject`. The commit graph looks like this: `A` -> `B` -> `C`. You need to insert a new commit between `A` and `B` without breaking the descendants.
+
+## Requirements
+- Insert a new commit that is a child of the commit with the description "commit A" and a parent of the commit with the description "commit B".
+- The new commit must contain a new file named `feature.txt` with the exact text `new feature\n`.
+- The descendants (`B` and `C`) must be rebased on top of this new commit.
+- The working copy should be left at the tip of the stack (the new version of `C`).
+
+## Implementation Guide
+1. Go to `/home/user/myproject`.
+2. Find the Change ID or Revision of "commit A".
+3. Start a new commit off of "commit A" using `jj new <commit_A_id>`.
+4. Create `feature.txt` with the text `new feature\n`.
+5. Rebase the sub-tree starting at "commit B" onto your new commit using `jj rebase -s <commit_B_id> -d @`.
+6. Move your working copy back to the new version of "commit C" using `jj new <commit_C_id>` or `jj edit <commit_C_id>`.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- Do not modify the contents of the existing commits `A`, `B`, or `C`.
+- The final stack should be `A` -> `New Commit` -> `B'` -> `C'`.
+EOF
+Command outputs captured
+Running command: rm -f ~/.pochi/config.jsonc
+Command outputs captured

@@ -1,0 +1,19 @@
+# Interactive Restore in Jujutsu
+
+## Background
+You are working on a Python project using `jj`. You have made several changes to `main.py` in your working copy, adding two new functions: `foo()` and `bar()`. You realize that you only want to keep the addition of `bar()` and want to undo the addition of `foo()` so that it matches the parent commit.
+
+## Requirements
+- Modify the working copy so that `main.py` contains `hello()` and `bar()`, but `foo()` is removed.
+- You can achieve this using `jj restore -i` if your environment supports interactive terminal tools, or you can simply edit `/home/user/myproject/main.py` directly to remove `foo()`.
+- The repository must remain intact and the working copy should reflect this specific state.
+
+## Implementation Guide
+1. Navigate to `/home/user/myproject`.
+2. Inspect the changes in the working copy using `jj diff`.
+3. Either use `jj restore -i` (if you can use interactive prompts) or directly edit `main.py` to remove the `foo()` function.
+4. Verify the working copy diff using `jj diff` to ensure only `bar()` is being added compared to the parent.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- The parent commit must still contain only `hello()`.

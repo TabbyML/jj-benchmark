@@ -1,0 +1,56 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 0,
+            "failed": 3,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776270210.432319,
+            "stop": 1776270210.5318844
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_feature_branch_rebased_onto_main",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022950134240090847,
+                "start": 1776270210.444037,
+                "stop": 1776270210.4827497,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_feature_branch_rebased_onto_main():\n        \"\"\"Priority 1: Use jj CLI to verify feature-branch is rebased onto main.\"\"\"\n        result = subprocess.run(\n            [\"jj\", \"log\", \"-r\", \"main..feature-branch\", \"--no-graph\", \"-T\", \"commit_id\\n\"],\n            capture_output=True, text=True, cwd=PROJECT_DIR\n        )\n        assert result.returncode == 0, f\"'jj log' failed: {result.stderr}\"\n    \n        commits = [line for line in result.stdout.strip().split('\\n') if line]\n>       assert len(commits) == 2, f\"Expected exactly 2 commits in main..feature-branch, got {len(commits)}: {commits}\"\nE       AssertionError: Expected exactly 2 commits in main..feature-branch, got 1: ['8b3ae9679ac036b3261055c7c6e0b9b827fbbce901dd37a0d2c8029732bb1e45c6ae2b91fc096e44']\nE       assert 1 == 2\nE        +  where 1 = len(['8b3ae9679ac036b3261055c7c6e0b9b827fbbce901dd37a0d2c8029732bb1e45c6ae2b91fc096e44'])\n\ntests/test_final_state.py:16: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_conflict_resolved_content",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.022488076239824295,
+                "start": 1776270210.4830012,
+                "stop": 1776270210.5077949,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_conflict_resolved_content():\n        \"\"\"Priority 1: Use jj CLI to check the content of data.txt in feature-branch.\"\"\"\n        result = subprocess.run(\n            [\"jj\", \"file\", \"show\", \"data.txt\", \"-r\", \"feature-branch\"],\n            capture_output=True, text=True, cwd=PROJECT_DIR\n        )\n        assert result.returncode == 0, f\"'jj file show' failed: {result.stderr}\"\n    \n        expected_content = \"Line from main\\nLine from feature\\n\"\n>       assert result.stdout == expected_content, f\"Expected data.txt to contain exactly '{expected_content}', got '{result.stdout}'\"\nE       AssertionError: Expected data.txt to contain exactly 'Line from main\nE         Line from feature\nE         ', got 'Line from main\nE         Line from feature'\nE       assert 'Line from ma... from feature' == 'Line from ma...rom feature\\n'\nE         \nE           Line from main\nE         - Line from feature\nE         ?                  -\nE         + Line from feature\n\ntests/test_final_state.py:27: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_final_state.py::test_no_unresolved_conflicts",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.02155724074691534,
+                "start": 1776270210.5080268,
+                "stop": 1776270210.5316384,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_no_unresolved_conflicts():\n        \"\"\"Priority 1: Use jj CLI to verify no unresolved conflicts exist.\"\"\"\n        result = subprocess.run(\n            [\"jj\", \"resolve\", \"--list\", \"-r\", \"feature-branch\"],\n            capture_output=True, text=True, cwd=PROJECT_DIR\n        )\n>       assert result.returncode == 0, f\"'jj resolve --list' failed: {result.stderr}\"\nE       AssertionError: 'jj resolve --list' failed: Error: No conflicts found at this revision\nE         \nE       assert 2 == 0\nE        +  where 2 = CompletedProcess(args=['jj', 'resolve', '--list', '-r', 'feature-branch'], returncode=2, stdout='', stderr='Error: No conflicts found at this revision\\n').returncode\n\ntests/test_final_state.py:35: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 3,
+            "passed": 2,
+            "failed": 1,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1776419261.2522347,
+            "stop": 1776419261.3467822
+        },
+        "tests": [
+            {
+                "name": "test_final_state.py::test_conflict_resolved",
+                "status": "passed",
+                "duration": 0.0005038529925514013,
+                "start": 1776419261.2626467,
+                "stop": 1776419261.2633598,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_rebase_successful",
+                "status": "passed",
+                "duration": 0.045273354997334536,
+                "start": 1776419261.2635474,
+                "stop": 1776419261.3090234,
+                "retries": 0,
+                "file_path": "test_final_state.py"
+            },
+            {
+                "name": "test_final_state.py::test_no_conflicts",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.023518401001638267,
+                "start": 1776419261.3093066,
+                "stop": 1776419261.3466055,
+                "retries": 0,
+                "file_path": "test_final_state.py",
+                "trace": "def test_no_conflicts():\n        result = subprocess.run([\"jj\", \"st\"], cwd=PROJECT_DIR, capture_output=True, text=True)\n>       assert \"conflict\" not in result.stdout.lower(), \"Repository still has conflicts.\"\nE       AssertionError: Repository still has conflicts.\nE       assert 'conflict' not in 'the working... feature b\\n'\nE         \nE         'conflict' is contained here:\nE           | resolve conflict: feature a and feature b\nE         ?           ++++++++\n\ntests/test_final_state.py:25: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

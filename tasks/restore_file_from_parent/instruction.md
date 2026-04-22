@@ -1,0 +1,19 @@
+# Restore File from Parent Commit
+
+## Background
+Jujutsu (`jj`) is a Git-compatible version control system where the working copy is treated as a permanent commit. Sometimes you might make changes to multiple files in the working copy but realize you want to discard the changes to one specific file, restoring it to its state in the parent commit.
+
+## Requirements
+You are working in a Jujutsu repository located at `/home/user/myproject`. You have modified two files: `app.py` and `config.txt`.
+
+You need to discard the uncommitted changes to `config.txt` so that it perfectly matches the version from the parent commit, while keeping your modifications to `app.py` intact.
+
+## Implementation
+1. Navigate to the project directory `/home/user/myproject`.
+2. Use the appropriate `jj` command to restore `config.txt` to its state in the parent commit.
+3. Do not modify `app.py` or create any new commits.
+
+## Constraints
+- Project path: `/home/user/myproject`
+- Start command: none
+- Port: none
