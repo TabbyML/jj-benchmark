@@ -9,6 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { HttpError } from "@/lib/http-error";
+import { ArtifactsPanel, type ArtifactNodeWithUrl } from "./artifacts-panel";
 
 export type TabConfig = {
   value: string;
@@ -22,9 +23,10 @@ type TrajectoryPageProps = {
   stderrLogUrl: string | null;
   verifierLogUrl: string | null;
   tabsConfig: TabConfig[];
+  artifactTree?: ArtifactNodeWithUrl[];
 };
 
-async function fetchLogText(url: string): Promise<string> {
+export async function fetchLogText(url: string): Promise<string> {
   let response: Response;
   try {
     response = await fetch(url, { cache: "force-cache" });
@@ -46,6 +48,7 @@ export function TrajectoryPage({
   stderrLogUrl,
   verifierLogUrl,
   tabsConfig,
+  artifactTree,
 }: TrajectoryPageProps) {
   const { resolvedTheme } = useTheme();
   const searchParams = useSearchParams();
@@ -297,13 +300,19 @@ export function TrajectoryPage({
                 </>
               )}
             </TabsContent>
+
+            {artifactTree && artifactTree.length > 0 && (
+              <TabsContent value="artifacts" className="min-h-0 flex-1 overflow-hidden" forceMount>
+                <ArtifactsPanel artifactTree={artifactTree} />
+              </TabsContent>
+            )}
           </Tabs>
       </div>
     </div>
   );
 }
 
-function LogErrorView({ message, onRetry }: { message: string; onRetry: () => void }) {
+export function LogErrorView({ message, onRetry }: { message: string; onRetry: () => void }) {
   return (
     <div className="rounded-md border border-red-200 bg-red-50 px-4 py-5 dark:border-red-500/30 dark:bg-red-500/5">
       <div className="flex flex-col items-center gap-4 text-center">
@@ -322,7 +331,7 @@ function LogErrorView({ message, onRetry }: { message: string; onRetry: () => vo
   );
 }
 
-function LogContentSkeleton() {
+export function LogContentSkeleton() {
   return (
     <div className="space-y-2">
       <Skeleton className="h-4 w-[90%]" />
@@ -360,7 +369,7 @@ function TrajectorySkeleton() {
   );
 }
 
-function getLogErrorMessage(error: unknown): string {
+export function getLogErrorMessage(error: unknown): string {
   if (!(error instanceof HttpError)) {
     return "Something went wrong. Please try again.";
   }

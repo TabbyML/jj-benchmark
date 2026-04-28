@@ -23,6 +23,14 @@ type TaskTrial = {
     cache: number;
   };
   browser_verification_cases?: string[];
+  artifacts?: ArtifactNode[];
+};
+
+type ArtifactNode = {
+  name: string;
+  type: "file" | "dir";
+  path: string;
+  children?: ArtifactNode[];
 };
 
 type TaskRecord = {
@@ -49,6 +57,44 @@ type ParsedResult = {
     n_cache_tokens?: number;
   };
 };
+
+async function readArtifactTree(absDir: string, relPath: string): Promise<ArtifactNode[]> {
+  let entries;
+  try {
+    entries = await fs.readdir(absDir, { withFileTypes: true });
+  } catch {
+    return [];
+  }
+
+  const sorted = entries
+    .slice()
+    .sort((a, b) => {
+      // directories first, then alphabetical
+      if (a.isDirectory() !== b.isDirectory()) return a.isDirectory() ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
+
+  const nodes: ArtifactNode[] = [];
+  for (const entry of sorted) {
+    const childAbs = path.join(absDir, entry.name);
+    const childRel = `${relPath}/${entry.name}`;
+    if (entry.isDirectory()) {
+      nodes.push({
+        name: entry.name,
+        type: "dir",
+        path: childRel,
+        children: await readArtifactTree(childAbs, childRel),
+      });
+    } else if (entry.isFile()) {
+      nodes.push({
+        name: entry.name,
+        type: "file",
+        path: childRel,
+      });
+    }
+  }
+  return nodes;
+}
 
 async function getResultFiles(dir: string): Promise<string[]> {
   const files: string[] = [];
@@ -162,6 +208,9 @@ async function main() {
       // directory doesn't exist or other error, ignore
     }
 
+    const artifactsDir = path.join(jobsDir, jobName, trialName, 'artifacts');
+    const artifacts = await readArtifactTree(artifactsDir, 'artifacts');
+
     tasks[taskName].trials.push({
       job_name: jobName,
       trial_name: trialName,
@@ -184,6 +233,7 @@ async function main() {
         cache: data.agent_result?.n_cache_tokens || 0,
       },
       browser_verification_cases: browserVerificationCases,
+      artifacts: artifacts.length > 0 ? artifacts : undefined,
     });
   }
 
