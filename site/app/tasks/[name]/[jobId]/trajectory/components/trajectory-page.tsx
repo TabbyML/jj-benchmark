@@ -57,7 +57,15 @@ export function TrajectoryPage({
   const [mounted, setMounted] = useState(false);
   const [iframeLoading, setIframeLoading] = useState(true);
 
-  const validTabs = tabsConfig.map((t) => t.value);
+  const experimentalArtifactsEnabled = searchParams.get("experimentalArtifacts") === "true";
+  const visibleTabsConfig = useMemo(
+    () =>
+      experimentalArtifactsEnabled
+        ? tabsConfig
+        : tabsConfig.filter((t) => t.value !== "artifacts"),
+    [tabsConfig, experimentalArtifactsEnabled],
+  );
+  const validTabs = visibleTabsConfig.map((t) => t.value);
   const [activeTab, setActiveTab] = useState(() => {
     const queryTab = searchParams.get("tab");
     return queryTab && validTabs.includes(queryTab) ? queryTab : validTabs[0];
@@ -187,10 +195,10 @@ export function TrajectoryPage({
             <div className="border-b border-border bg-background/40 px-3 py-3 sm:px-4">
               <TabsList
                 className={`flex h-11 w-full ${
-                  tabsConfig.length <= 3 ? "sm:w-[480px]" : "sm:w-[640px]"
+                  visibleTabsConfig.length <= 3 ? "sm:w-[480px]" : "sm:w-[640px]"
                 } max-w-full items-stretch gap-1 rounded-xl bg-muted/55 p-1`}
               >
-                {tabsConfig.map((tab) => (
+                {visibleTabsConfig.map((tab) => (
                   <TabsTrigger
                     key={tab.value}
                     value={tab.value}
@@ -301,7 +309,7 @@ export function TrajectoryPage({
               )}
             </TabsContent>
 
-            {artifactTree && artifactTree.length > 0 && (
+            {experimentalArtifactsEnabled && artifactTree && artifactTree.length > 0 && (
               <TabsContent value="artifacts" className="min-h-0 flex-1 overflow-hidden" forceMount>
                 <ArtifactsPanel artifactTree={artifactTree} />
               </TabsContent>
