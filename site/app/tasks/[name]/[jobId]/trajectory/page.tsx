@@ -1,5 +1,6 @@
 import tasksData from "@/zealt/tasks.json";
 import { TrajectoryPage, type TabConfig } from "./components/trajectory-page";
+import type { ArtifactNode, ArtifactNodeWithUrl } from "./components/artifacts-panel";
 import zealtConfig from "@/zealt/config.json";
 import { redirect } from "next/navigation";
 import { AlertTriangle, Check, ExternalLink, HelpCircle, X as XIcon } from "lucide-react";
@@ -26,6 +27,7 @@ type TrialEntry = {
   };
   trajectory_id?: string;
   browser_verification_cases?: string[];
+  artifacts?: ArtifactNode[];
 };
 
 function formatStartTime(jobName: string): string {
@@ -167,6 +169,29 @@ function buildRawGithubContentUrl(jobName: string, trialName: string, filePath: 
   const ownerRepo = getGithubOwnerRepo();
   const branch = getGithubBranchName();
   return `https://raw.githubusercontent.com/${ownerRepo}/refs/heads/${branch}/jobs/${jobName}/${trialName}/${filePath}`;
+}
+
+function attachArtifactUrls(
+  nodes: ArtifactNode[],
+  jobName: string,
+  trialName: string,
+): ArtifactNodeWithUrl[] {
+  return nodes.map<ArtifactNodeWithUrl>((node) => {
+    if (node.type === "file") {
+      return {
+        name: node.name,
+        type: "file",
+        path: node.path,
+        url: buildRawGithubContentUrl(jobName, trialName, node.path),
+      };
+    }
+    return {
+      name: node.name,
+      type: "dir",
+      path: node.path,
+      children: attachArtifactUrls(node.children ?? [], jobName, trialName),
+    };
+  });
 }
 
 function isTrialEntry(value: unknown): value is TrialEntry {
@@ -327,6 +352,17 @@ export default async function TrajectoryRoutePage({
     })
   }
 
+  const artifactTree: ArtifactNodeWithUrl[] = trialEntry.artifacts?.length
+    ? attachArtifactUrls(trialEntry.artifacts, trialEntry.job_name, trialEntry.trial_name)
+    : [];
+
+  if (artifactTree.length) {
+    tabsConfig.push({
+      value: "artifacts",
+      label: "Artifacts",
+    });
+  }
+
   return (
     <div className="flex h-screen w-full flex-col overflow-hidden bg-background text-foreground font-sans selection:bg-primary/20">
       <div className="fixed inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(#2a2a2a_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20 dark:opacity-40"></div>
@@ -369,6 +405,7 @@ export default async function TrajectoryRoutePage({
             stderrLogUrl={stderrLogUrl}
             verifierLogUrl={verifierLogUrl}
             tabsConfig={tabsConfig}
+            artifactTree={artifactTree}
           />
         </Suspense>
       </div>
