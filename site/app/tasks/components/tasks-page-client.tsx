@@ -123,7 +123,7 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
   const [selectedTask, setSelectedTask] = useState<string | null>(null);
   const [isInstructionOpen, setIsInstructionOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const [devMode, setDevMode] = useState(false);
+  const [devMode, setDevMode] = useState(process.env.NODE_ENV === "development");
 
   const hasActiveFilters =
     selectedStatuses.length > 0 ||
@@ -184,7 +184,7 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
     const initialAgents = (params.get("agent") || "").split(",").filter(Boolean);
     const initialSort = params.get("sort") || "default";
     const initialOrder = params.get("order") || "asc";
-    const initialDevMode = params.get("dev") === "true";
+    const initialDevMode = process.env.NODE_ENV === "development" || params.get("dev") === "true";
 
     setQueryQ(initialQ);
     setSearchQuery(initialQ);
@@ -213,8 +213,9 @@ export function TasksPageClient({ tasksData }: TasksPageClientProps) {
       tasksData.flatMap((task) =>
         task.trials
           .filter((trial) => {
-            if (!devMode && zealtConfig.pending_models && zealtConfig.pending_models.length > 0) {
-              return !(zealtConfig.pending_models as string[]).includes(trial.rawModel);
+            const config = zealtConfig as { pending_models?: string[] };
+            if (!devMode && config.pending_models && config.pending_models.length > 0) {
+              return !config.pending_models.includes(trial.rawModel);
             }
             return true;
           })

@@ -63,15 +63,16 @@ function ScoreCell({ value }: { value: number }) {
 export default function LeaderboardTable({ data }: { data: LeaderboardEntry[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const devMode = searchParams.get("dev") === "true";
+  const devMode = process.env.NODE_ENV === "development" || searchParams.get("dev") === "true";
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredData = useMemo(() => {
     let processedData = data;
+    const config = zealtConfig as { pending_models?: string[] };
 
-    if (!devMode && zealtConfig.pending_models && zealtConfig.pending_models.length > 0) {
+    if (!devMode && config.pending_models && config.pending_models.length > 0) {
       processedData = processedData.filter((item) =>
-        !(zealtConfig.pending_models as string[]).includes(item.rawModel)
+        !config.pending_models!.includes(item.rawModel)
       );
     }
 
