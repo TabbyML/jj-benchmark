@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { HttpError } from "@/lib/http-error";
 import { ArtifactsPanel, type ArtifactNodeWithUrl } from "./artifacts-panel";
+import { AnsiLog } from "./ansi-log";
 
 export type TabConfig = {
   value: string;
@@ -183,11 +184,7 @@ export function TrajectoryPage({
       return <p className="text-sm text-muted-foreground">{emptyMessage}</p>;
     }
 
-    return (
-      <pre className="w-max min-w-full whitespace-pre font-mono text-xs leading-5 text-foreground/95">
-        {text}
-      </pre>
-    );
+    return <AnsiLog text={text} />;
   };
 
   return (
